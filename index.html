@@ -37,7 +37,7 @@
       object-fit: cover;
       transition: transform 0.3s ease;
     }
-    .portfolio-item:hover img { transform: scale(1.03); }
+    .portfolio-item:hover img { transform: scale(1.04); }
     .portfolio-item .overlay {
         position: absolute; inset: 0;
         background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
@@ -107,8 +107,10 @@
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding: 8px 0;
+      padding: 12px 0;
       scrollbar-width: thin;
+      background: white;
+      border-radius: 0 0 1rem 1rem;
     }
     .modal-thumbnails::-webkit-scrollbar {
       height: 4px;
@@ -134,6 +136,13 @@
     .modal-thumbnails img.active-thumb {
       border-color: #fec643;
       box-shadow: 0 0 0 2px #fec643;
+    }
+
+    /* Container do carrossel no modal */
+    .modal-carousel-wrapper {
+      background: white;
+      border-radius: 1rem;
+      overflow: hidden;
     }
 
     /* Footer com BG amarelo */
@@ -194,11 +203,11 @@
         <a href="https://wa.me/+5581996385618" target="_blank" rel="noopener" class="menu-icon-link" title="WhatsApp">
           <i class="fa-brands fa-whatsapp"></i>
         </a>
-
+        <span class="menu-separator">|</span>
         <a href="https://instagram.com/yanne.vicente" target="_blank" rel="noopener" class="menu-icon-link" title="Instagram">
           <i class="fa-brands fa-instagram"></i>
         </a>
-    
+        <span class="menu-separator">|</span>
         <a onclick="switchPage('home')" class="nav-link" id="nav-home">HOME</a>
         <a onclick="switchPage('contact')" class="nav-link" id="nav-contact">CONTACT</a>
       </div>
@@ -281,8 +290,13 @@
       
       <!-- Container da imagem com stroke -->
       <div class="relative w-full md:w-3/5 bg-gray-100 flex flex-col items-center justify-center overflow-hidden aspect-video md:aspect-auto md:min-h-[450px] p-4">
-        <div class="modal-image-wrapper w-full h-full">
-          <img id="modalImage" class="w-full h-full object-contain" src="" alt="Projeto">
+        <div class="modal-carousel-wrapper w-full h-full">
+          <div class="modal-image-wrapper w-full h-full">
+            <img id="modalImage" class="w-full h-full object-contain" src="" alt="Projeto">
+          </div>
+          
+          <!-- Thumbnails -->
+          <div class="modal-thumbnails w-full px-2" id="modal-thumbnails"></div>
         </div>
         
         <!-- Navegação do carrossel -->
@@ -296,9 +310,6 @@
             <polyline points="9 18 15 12 9 6"></polyline>
           </svg>
         </button>
-        
-        <!-- Thumbnails -->
-        <div class="modal-thumbnails w-full px-2 mt-3" id="modal-thumbnails"></div>
       </div>
       
       <!-- Informações do projeto -->
@@ -338,7 +349,7 @@
 
   <script>
     // ========================================
-    // DADOS DO PORTFÓLIO - Cada projeto com suas próprias imagens
+    // DADOS DO PORTFÓLIO
     // ========================================
     const siteData = {
       portfolio: [
@@ -351,10 +362,12 @@
             "Winnie's Flying Guide is a poetry picture book for children ages 4 to 6 explores themes of belonging and friendship.",
             "It is most about the flying lessons of Winnie Pendragon, the good witch of East Winds, privately published for family and friends."
           ],
+          // Primeira imagem é a da GRADE (thumbnail), as outras são do carrossel
           images: [
-            "assets/images/projeto1.jpg",
-            "assets/images/projeto1_2.jpg",
-            "assets/images/projeto1_3.jpg"
+            "assets/images/projeto1.jpg",    // Imagem da grade
+            "assets/images/projeto1_1.jpg",  // Imagem do carrossel
+            "assets/images/projeto1_2.jpg",  // Imagem do carrossel
+            "assets/images/projeto1_3.jpg"   // Imagem do carrossel
           ]
         },
         {
@@ -367,6 +380,7 @@
           ],
           images: [
             "assets/images/projeto2.jpg",
+            "assets/images/projeto2_1.jpg",
             "assets/images/projeto2_2.jpg",
             "assets/images/projeto2_3.jpg"
           ]
@@ -383,6 +397,7 @@
           ],
           images: [
             "assets/images/projeto3.jpg",
+            "assets/images/projeto3_1.jpg",
             "assets/images/projeto3_2.jpg",
             "assets/images/projeto3_3.jpg"
           ]
@@ -399,6 +414,7 @@
           ],
           images: [
             "assets/images/projeto4.jpg",
+            "assets/images/projeto4_1.jpg",
             "assets/images/projeto4_2.jpg",
             "assets/images/projeto4_3.jpg"
           ]
@@ -415,6 +431,7 @@
           ],
           images: [
             "assets/images/projeto5.jpg",
+            "assets/images/projeto5_1.jpg",
             "assets/images/projeto5_2.jpg",
             "assets/images/projeto5_3.jpg"
           ]
@@ -430,6 +447,7 @@
           ],
           images: [
             "assets/images/projeto6.jpg",
+            "assets/images/projeto6_1.jpg",
             "assets/images/projeto6_2.jpg",
             "assets/images/projeto6_3.jpg"
           ]
@@ -445,6 +463,7 @@
           ],
           images: [
             "assets/images/projeto7.jpg",
+            "assets/images/projeto7_1.jpg",
             "assets/images/projeto7_2.jpg",
             "assets/images/projeto7_3.jpg"
           ]
@@ -460,6 +479,7 @@
           ],
           images: [
             "assets/images/projeto8.jpg",
+            "assets/images/projeto8_1.jpg",
             "assets/images/projeto8_2.jpg",
             "assets/images/projeto8_3.jpg"
           ]
@@ -474,6 +494,7 @@
           ],
           images: [
             "assets/images/projeto9.jpg",
+            "assets/images/projeto9_1.jpg",
             "assets/images/projeto9_2.jpg",
             "assets/images/projeto9_3.jpg"
           ]
@@ -502,15 +523,17 @@
     let currentImageIndex = 0;
 
     // ========================================
-    // RENDERIZA O PORTFÓLIO
+    // RENDERIZA O PORTFÓLIO (USA A PRIMEIRA IMAGEM)
     // ========================================
     function renderPortfolio() {
       const grid = document.getElementById('portfolio-grid');
       grid.innerHTML = '';
       siteData.portfolio.forEach((project, index) => {
+        // Usa a PRIMEIRA imagem do array (imagem da grade)
+        const thumbImage = project.images[0] || 'https://via.placeholder.com/800x800/cccccc/666666?text=Sem+imagem';
         grid.innerHTML += `
           <div class="portfolio-item" onclick="openProjectModal(${index})">
-            <img loading="lazy" src="${project.images[0]}" alt="${project.title}" onerror="this.src='https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada'">
+            <img loading="lazy" src="${thumbImage}" alt="${project.title}" onerror="this.src='https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada'">
             <div class="overlay">
               <p class="font-bold text-sm" style="color: white;">${project.title}</p>
               <p class="text-xs opacity-80" style="color: rgba(255,255,255,0.8);">${project.category} · ${project.year}</p>
@@ -526,7 +549,14 @@
     function renderProfile(profile) {
       document.getElementById('profile-name').textContent = profile.name;
       document.getElementById('profile-subtitle').textContent = profile.subtitle;
-      document.getElementById('profile-photo').src = profile.photo;
+      
+      // Força o carregamento da foto de perfil com timestamp para evitar cache
+      const profilePhoto = document.getElementById('profile-photo');
+      profilePhoto.src = profile.photo + '?t=' + new Date().getTime();
+      profilePhoto.onerror = function() {
+        this.src = 'https://via.placeholder.com/800x800/cccccc/666666?text=Foto+de+Perfil';
+      };
+      
       const bioContainer = document.getElementById('profile-bio');
       bioContainer.innerHTML = '';
       profile.bio.forEach(text => {
@@ -560,7 +590,14 @@
     // ========================================
     function openProjectModal(index) {
       currentProjectIndex = index;
-      currentImageIndex = 0;
+      currentImageIndex = 1; // COMEÇA NA PRIMEIRA IMAGEM DO CARROSSEL (índice 1)
+      
+      // Se não houver imagem extra, volta para a primeira
+      const project = siteData.portfolio[index];
+      if (project.images.length <= 1) {
+        currentImageIndex = 0;
+      }
+      
       updateModalContent();
       const modal = document.getElementById('projectModal');
       modal.classList.remove('opacity-0', 'pointer-events-none');
@@ -577,13 +614,30 @@
 
     function prevModalImage() {
       const project = siteData.portfolio[currentProjectIndex];
-      currentImageIndex = (currentImageIndex - 1 + project.images.length) % project.images.length;
+      // Pula a imagem 0 (que é da grade) se houver mais imagens
+      const startIndex = project.images.length > 1 ? 1 : 0;
+      const totalImages = project.images.length - startIndex;
+      
+      if (totalImages <= 0) {
+        currentImageIndex = 0;
+        return;
+      }
+      
+      currentImageIndex = currentImageIndex - 1;
+      if (currentImageIndex < startIndex) {
+        currentImageIndex = project.images.length - 1;
+      }
       updateModalContent();
     }
 
     function nextModalImage() {
       const project = siteData.portfolio[currentProjectIndex];
-      currentImageIndex = (currentImageIndex + 1) % project.images.length;
+      const startIndex = project.images.length > 1 ? 1 : 0;
+      
+      currentImageIndex = currentImageIndex + 1;
+      if (currentImageIndex >= project.images.length) {
+        currentImageIndex = startIndex;
+      }
       updateModalContent();
     }
 
@@ -605,7 +659,7 @@
         descContainer.innerHTML += `<p>${text}</p>`;
       });
       
-      // Renderiza thumbnails
+      // Renderiza thumbnails (todas as imagens)
       renderThumbnails(project.images);
     }
 
@@ -703,7 +757,6 @@
           if (response.ok) {
             successMessage.classList.add('show');
             form.reset();
-            // Esconde a mensagem após 5 segundos
             setTimeout(() => {
               successMessage.classList.remove('show');
             }, 5000);
