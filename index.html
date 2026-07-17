@@ -92,16 +92,20 @@
       .portfolio-grid { grid-template-columns: 1fr; }
     }
 
-    /* Estilos do Modal */
+    /* Estilos do Modal - IMAGENS 2x maiores */
     .modal-image-wrapper {
       border-radius: 1rem;
       overflow: hidden;
       border: 5px solid white;
+      width: 100%;
+      height: 100%;
+      min-height: 500px;
+      max-height: 70vh;
     }
     .modal-image-wrapper img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
     }
     .modal-thumbnails {
       display: flex;
@@ -143,6 +147,10 @@
       background: white;
       border-radius: 1rem;
       overflow: hidden;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
 
     /* Footer com BG amarelo */
@@ -166,10 +174,9 @@
       transform: scale(1.1);
     }
 
-    /* Separador do menu */
+    /* Separador do menu - removido */
     .menu-separator {
-      color: rgb(131, 147, 195);
-      opacity: 0.3;
+      display: none;
     }
 
     /* Mensagem de sucesso do formulário */
@@ -186,6 +193,74 @@
     .form-success.show {
       display: block;
     }
+
+    /* Navegação do modal - visível apenas no hover */
+    .modal-nav-btn {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.8);
+      border: none;
+      border-radius: 50%;
+      padding: 12px;
+      cursor: pointer;
+      z-index: 20;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+    }
+    .modal-nav-btn:hover {
+      background: white;
+      transform: translateY(-50%) scale(1.1);
+    }
+    .modal-image-container:hover .modal-nav-btn {
+      opacity: 1;
+    }
+    .modal-nav-btn.prev { left: 10px; }
+    .modal-nav-btn.next { right: 10px; }
+
+    /* Container da imagem no modal com posicionamento relativo */
+    .modal-image-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f5f5f5;
+      border-radius: 1rem 1rem 0 0;
+      min-height: 500px;
+    }
+
+    /* Logo */
+    .logo-img {
+      height: 40px;
+      width: auto;
+      cursor: pointer;
+    }
+
+    /* Ajuste do modal para melhor responsividade */
+    .modal-content-wrapper {
+      display: flex;
+      flex-direction: row;
+      max-height: 90vh;
+      max-width: 1200px;
+      width: 100%;
+      background: white;
+      border-radius: 1.5rem;
+      overflow: hidden;
+    }
+    @media (max-width: 768px) {
+      .modal-content-wrapper {
+        flex-direction: column;
+        max-height: 95vh;
+      }
+      .modal-image-wrapper {
+        min-height: 300px;
+        max-height: 50vh;
+      }
+    }
   </style>
 </head>
 
@@ -194,20 +269,18 @@
   <!-- NAVEGAÇÃO -->
   <nav class="sticky top-0 z-40 backdrop-blur-md border-b border-gray-200/50" style="background: rgba(250, 249, 247, 0.9);">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <!-- LOGO - Agora com imagem -->
-      <img src="assets/images/logo.png" alt="Yanne Vicente Logo" class="h-10 cursor-pointer" onclick="switchPage('home')" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';">
+      <!-- LOGO - Imagem PNG -->
+      <img src="assets/images/logo.png" alt="Yanne Vicente Logo" class="logo-img" onclick="switchPage('home')" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';">
       <span id="logo-fallback" class="text-2xl font-bold cursor-pointer" style="color: #fec643; display: none;" onclick="switchPage('home')">YV</span>
       
       <div class="flex items-center gap-4">
-        <!-- Ícones WhatsApp e Instagram -->
+        <!-- Ícones WhatsApp e Instagram (sem separadores) -->
         <a href="https://wa.me/+5581996385618" target="_blank" rel="noopener" class="menu-icon-link" title="WhatsApp">
           <i class="fa-brands fa-whatsapp"></i>
         </a>
-        <span class="menu-separator">|</span>
         <a href="https://instagram.com/yanne.vicente" target="_blank" rel="noopener" class="menu-icon-link" title="Instagram">
           <i class="fa-brands fa-instagram"></i>
         </a>
-        <span class="menu-separator">|</span>
         <a onclick="switchPage('home')" class="nav-link" id="nav-home">HOME</a>
         <a onclick="switchPage('contact')" class="nav-link" id="nav-contact">CONTACT</a>
       </div>
@@ -281,35 +354,35 @@
   <!-- MODAL -->
   <div id="projectModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeProjectModal()"></div>
-    <div class="group relative bg-white rounded-2xl shadow-2xl max-w-5xl w-full overflow-hidden flex flex-col md:flex-row z-10 max-h-[90vh]">
-      <button onclick="closeProjectModal()" class="absolute top-4 right-4 z-20 bg-white/80 hover:bg-white text-gray-800 rounded-full p-1.5 shadow-md transition-all duration-300 opacity-0 group-hover:opacity-100">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <div class="modal-content-wrapper relative">
+      <button onclick="closeProjectModal()" class="absolute top-4 right-4 z-30 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 shadow-md transition-all duration-300 opacity-0 group-hover:opacity-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
       
-      <!-- Container da imagem com stroke -->
-      <div class="relative w-full md:w-3/5 bg-gray-100 flex flex-col items-center justify-center overflow-hidden aspect-video md:aspect-auto md:min-h-[450px] p-4">
+      <!-- Container da imagem -->
+      <div class="relative w-full md:w-3/5 bg-gray-100 flex flex-col items-center justify-center overflow-hidden p-4">
         <div class="modal-carousel-wrapper w-full h-full">
-          <div class="modal-image-wrapper w-full h-full">
+          <div class="modal-image-container">
             <img id="modalImage" class="w-full h-full object-contain" src="" alt="Projeto">
+            
+            <!-- Botões de navegação - visíveis apenas no hover -->
+            <button onclick="prevModalImage()" class="modal-nav-btn prev">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button onclick="nextModalImage()" class="modal-nav-btn next">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
           </div>
           
           <!-- Thumbnails -->
           <div class="modal-thumbnails w-full px-2" id="modal-thumbnails"></div>
         </div>
-        
-        <!-- Navegação do carrossel -->
-        <button onclick="prevModalImage()" class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 shadow-md transition-all duration-300 z-10">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
-        <button onclick="nextModalImage()" class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 shadow-md transition-all duration-300 z-10">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
       </div>
       
       <!-- Informações do projeto -->
@@ -349,7 +422,7 @@
 
   <script>
     // ========================================
-    // DADOS DO PORTFÓLIO
+    // DADOS DO PORTFÓLIO - COM IMAGENS SEPARADAS
     // ========================================
     const siteData = {
       portfolio: [
@@ -362,12 +435,15 @@
             "Winnie's Flying Guide is a poetry picture book for children ages 4 to 6 explores themes of belonging and friendship.",
             "It is most about the flying lessons of Winnie Pendragon, the good witch of East Winds, privately published for family and friends."
           ],
-          // Primeira imagem é a da GRADE (thumbnail), as outras são do carrossel
-          images: [
-            "assets/images/projeto1.jpg",    // Imagem da grade
-            "assets/images/projeto1_1.jpg",  // Imagem do carrossel
-            "assets/images/projeto1_2.jpg",  // Imagem do carrossel
-            "assets/images/projeto1_3.jpg"   // Imagem do carrossel
+          // gradeImage: imagem que aparece na grade
+          gradeImage: "assets/images/projeto1.jpg",
+          // carouselImages: imagens que aparecem no carrossel (separadas da grade)
+          carouselImages: [
+            "assets/images/projeto1_1.jpg",
+            "assets/images/projeto1_2.jpg",
+            "assets/images/projeto1_3.jpg",
+            "assets/images/projeto1_4.jpg",
+            "assets/images/projeto1_5.jpg"
           ]
         },
         {
@@ -378,8 +454,8 @@
           description: [
             "A children's cover book illustration concept I made for Escolinha São José (St. Joseph Elementary School)."
           ],
-          images: [
-            "assets/images/projeto2.jpg",
+          gradeImage: "assets/images/projeto2.jpg",
+          carouselImages: [
             "assets/images/projeto2_1.jpg",
             "assets/images/projeto2_2.jpg",
             "assets/images/projeto2_3.jpg"
@@ -395,8 +471,8 @@
             "They asked me to illustrate a bunch of children's wallpapers for a sale catalogue.",
             "I spent a short time there to create a few illustrations in three themes: Safari, Teddy Bears, and Kitten Patterns."
           ],
-          images: [
-            "assets/images/projeto3.jpg",
+          gradeImage: "assets/images/projeto3.jpg",
+          carouselImages: [
             "assets/images/projeto3_1.jpg",
             "assets/images/projeto3_2.jpg",
             "assets/images/projeto3_3.jpg"
@@ -412,8 +488,8 @@
             "Located in the states of Pernambuco and Paraíba in Northeastern Brazil.",
             "Conceived as a tribute to the region's greatest artists, this series of 84 illustrations was produced between June and November 2025."
           ],
-          images: [
-            "assets/images/projeto4.jpg",
+          gradeImage: "assets/images/projeto4.jpg",
+          carouselImages: [
             "assets/images/projeto4_1.jpg",
             "assets/images/projeto4_2.jpg",
             "assets/images/projeto4_3.jpg"
@@ -429,8 +505,8 @@
             "Nothing really special happened during the first 20 years of her existence, but bumping a strange grumpy woman wearing a lab coat, everything changes.",
             "Timeless Journey is a webcomic I'm creating as the continuation of my undergraduate thesis project 'TRAVELERS'. It is being updated on Tapas."
           ],
-          images: [
-            "assets/images/projeto5.jpg",
+          gradeImage: "assets/images/projeto5.jpg",
+          carouselImages: [
             "assets/images/projeto5_1.jpg",
             "assets/images/projeto5_2.jpg",
             "assets/images/projeto5_3.jpg"
@@ -445,8 +521,8 @@
             "Some illustrations and comic strips I created.",
             "Including 'CAMAROTE DA VACINA NÃO' ('No Vaccine VIP Box')—a strip that criticized a proposed bill prioritizing early COVID-19 vaccine doses for business owners and CEOs over people in high-risk groups."
           ],
-          images: [
-            "assets/images/projeto6.jpg",
+          gradeImage: "assets/images/projeto6.jpg",
+          carouselImages: [
             "assets/images/projeto6_1.jpg",
             "assets/images/projeto6_2.jpg",
             "assets/images/projeto6_3.jpg"
@@ -461,8 +537,8 @@
             "Evandro and Jaque Lemos are two fantastic YouTubers from my hometown, Gravatá, in the state of Pernambuco, Brazil.",
             "Together, they create a variety of sketch videos, always in the most comedic way possible, with many references from Brazilian Northeastern culture!"
           ],
-          images: [
-            "assets/images/projeto7.jpg",
+          gradeImage: "assets/images/projeto7.jpg",
+          carouselImages: [
             "assets/images/projeto7_1.jpg",
             "assets/images/projeto7_2.jpg",
             "assets/images/projeto7_3.jpg"
@@ -477,8 +553,8 @@
             "These are some of the best commissions created for a group of RPG players.",
             "Ranging from D&D to Vampire: The Masquerade."
           ],
-          images: [
-            "assets/images/projeto8.jpg",
+          gradeImage: "assets/images/projeto8.jpg",
+          carouselImages: [
             "assets/images/projeto8_1.jpg",
             "assets/images/projeto8_2.jpg",
             "assets/images/projeto8_3.jpg"
@@ -492,8 +568,8 @@
           description: [
             "A personal project in which I created a fan art illustration based on the character Sardonyx from the animated series Steven Universe."
           ],
-          images: [
-            "assets/images/projeto9.jpg",
+          gradeImage: "assets/images/projeto9.jpg",
+          carouselImages: [
             "assets/images/projeto9_1.jpg",
             "assets/images/projeto9_2.jpg",
             "assets/images/projeto9_3.jpg"
@@ -523,14 +599,13 @@
     let currentImageIndex = 0;
 
     // ========================================
-    // RENDERIZA O PORTFÓLIO (USA A PRIMEIRA IMAGEM)
+    // RENDERIZA O PORTFÓLIO (USA gradeImage)
     // ========================================
     function renderPortfolio() {
       const grid = document.getElementById('portfolio-grid');
       grid.innerHTML = '';
       siteData.portfolio.forEach((project, index) => {
-        // Usa a PRIMEIRA imagem do array (imagem da grade)
-        const thumbImage = project.images[0] || 'https://via.placeholder.com/800x800/cccccc/666666?text=Sem+imagem';
+        const thumbImage = project.gradeImage || 'https://via.placeholder.com/800x800/cccccc/666666?text=Sem+imagem';
         grid.innerHTML += `
           <div class="portfolio-item" onclick="openProjectModal(${index})">
             <img loading="lazy" src="${thumbImage}" alt="${project.title}" onerror="this.src='https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada'">
@@ -550,7 +625,6 @@
       document.getElementById('profile-name').textContent = profile.name;
       document.getElementById('profile-subtitle').textContent = profile.subtitle;
       
-      // Força o carregamento da foto de perfil com timestamp para evitar cache
       const profilePhoto = document.getElementById('profile-photo');
       profilePhoto.src = profile.photo + '?t=' + new Date().getTime();
       profilePhoto.onerror = function() {
@@ -590,14 +664,7 @@
     // ========================================
     function openProjectModal(index) {
       currentProjectIndex = index;
-      currentImageIndex = 1; // COMEÇA NA PRIMEIRA IMAGEM DO CARROSSEL (índice 1)
-      
-      // Se não houver imagem extra, volta para a primeira
-      const project = siteData.portfolio[index];
-      if (project.images.length <= 1) {
-        currentImageIndex = 0;
-      }
-      
+      currentImageIndex = 0;
       updateModalContent();
       const modal = document.getElementById('projectModal');
       modal.classList.remove('opacity-0', 'pointer-events-none');
@@ -614,58 +681,61 @@
 
     function prevModalImage() {
       const project = siteData.portfolio[currentProjectIndex];
-      // Pula a imagem 0 (que é da grade) se houver mais imagens
-      const startIndex = project.images.length > 1 ? 1 : 0;
-      const totalImages = project.images.length - startIndex;
+      if (!project.carouselImages || project.carouselImages.length === 0) return;
       
-      if (totalImages <= 0) {
-        currentImageIndex = 0;
-        return;
-      }
-      
-      currentImageIndex = currentImageIndex - 1;
-      if (currentImageIndex < startIndex) {
-        currentImageIndex = project.images.length - 1;
-      }
+      currentImageIndex = (currentImageIndex - 1 + project.carouselImages.length) % project.carouselImages.length;
       updateModalContent();
     }
 
     function nextModalImage() {
       const project = siteData.portfolio[currentProjectIndex];
-      const startIndex = project.images.length > 1 ? 1 : 0;
+      if (!project.carouselImages || project.carouselImages.length === 0) return;
       
-      currentImageIndex = currentImageIndex + 1;
-      if (currentImageIndex >= project.images.length) {
-        currentImageIndex = startIndex;
-      }
+      currentImageIndex = (currentImageIndex + 1) % project.carouselImages.length;
       updateModalContent();
     }
 
     function updateModalContent() {
       const project = siteData.portfolio[currentProjectIndex];
-      const image = project.images[currentImageIndex] || project.images[0];
+      const images = project.carouselImages || [];
       
-      document.getElementById('modalImage').src = image;
+      // Se não houver imagens no carrossel, usar a imagem da grade
+      if (images.length === 0) {
+        document.getElementById('modalImage').src = project.gradeImage;
+      } else {
+        const imageIndex = currentImageIndex % images.length;
+        document.getElementById('modalImage').src = images[imageIndex];
+      }
+      
       document.getElementById('modalImage').onerror = function() {
         this.src = 'https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada';
       };
+      
       document.getElementById('modalTitle').textContent = project.title;
       document.getElementById('modalClient').textContent = `${project.category} · ${project.year}`;
       
-      // Renderiza múltiplos parágrafos
       const descContainer = document.getElementById('modalDescription');
       descContainer.innerHTML = '';
-      project.description.forEach(text => {
-        descContainer.innerHTML += `<p>${text}</p>`;
-      });
+      if (project.description && project.description.length > 0) {
+        project.description.forEach(text => {
+          descContainer.innerHTML += `<p>${text}</p>`;
+        });
+      } else {
+        descContainer.innerHTML = `<p>${project.description || 'Sem descrição disponível.'}</p>`;
+      }
       
-      // Renderiza thumbnails (todas as imagens)
-      renderThumbnails(project.images);
+      renderThumbnails(images);
     }
 
     function renderThumbnails(images) {
       const container = document.getElementById('modal-thumbnails');
       container.innerHTML = '';
+      
+      if (!images || images.length === 0) {
+        container.innerHTML = '<p class="text-xs text-gray-400 p-2">Sem imagens adicionais</p>';
+        return;
+      }
+      
       images.forEach((img, index) => {
         const thumb = document.createElement('img');
         thumb.src = img;
