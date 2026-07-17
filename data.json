@@ -1,4 +1,4 @@
- {
+{
   "site": {
     "title": "Yanne Vicente - Portfolio & Contact",
     "footer": "© 2026 Yanne Vicente. All Rights Reserved."
@@ -41,7 +41,7 @@
       "title": "Webcomic Travelers",
       "category": "Comic art",
       "year": 2025,
-      "description": " Anne always felt like an ordinary girl, with ordinary aspirations livin her ordinary life. Nothing really special happened during the first 20 years of her existence, but bumping a strange grumpy woman wearing a lab coat, everything changes.  Timeless Journey is a webcomic I'm creating as the continuation of my undergraduate thesis project "TRAVELERS". It is being updated on Tapas. ",
+      "description": "Anne always felt like an ordinary girl, with ordinary aspirations livin her ordinary life. Nothing really special happened during the first 20 years of her existence, but bumping a strange grumpy woman wearing a lab coat, everything changes. Timeless Journey is a webcomic I'm creating as the continuation of my undergraduate thesis project 'TRAVELERS'. It is being updated on Tapas.",
       "image": "assets/images/projeto5.jpg"
     },
     {
@@ -51,7 +51,7 @@
       "year": 2024,
       "description": "Some illustrations and comic strips I created, including 'CAMAROTE DA VACINA NÃO' ('No Vaccine VIP Box')—a strip that criticized a proposed bill prioritizing early COVID-19 vaccine doses for business owners and CEOs over people in high-risk groups.",
       "image": "assets/images/projeto6.jpg"
-      },
+    },
     {
       "id": 7,
       "title": "Youtube Illustration Pack",
@@ -59,15 +59,15 @@
       "year": 2022,
       "description": "Evandro and Jaque Lemos are two fantastic YouTubers from my hometown, Gravatá, in the state of Pernambuco, Brazil. Together, they create a variety of sketch videos, always in the most comedic way possible, with many references from Brazilian Northeastern culture!",
       "image": "assets/images/projeto7.jpg"
-      },
+    },
     {
       "id": 8,
-      "title": "RGP Character's Comission",
+      "title": "RPG Character's Commission",
       "category": "Character Design & Concept Art",
       "year": 2025,
       "description": "These are some of the best commissions created for a group of RPG players, ranging from D&D to Vampire: The Masquerade.",
       "image": "assets/images/projeto8.jpg"
-      },
+    },
     {
       "id": 9,
       "title": "Steven Universe's Fanart",

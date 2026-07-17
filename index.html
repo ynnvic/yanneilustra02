@@ -206,12 +206,20 @@
   </footer>
 
   <script>
-    // CARREGA OS DADOS
+    // ========================================
+    // CARREGA OS DADOS DO data.json
+    // ========================================
     let siteData = {};
     let currentProjectIndex = 0;
 
+    // Tenta carregar o data.json
     fetch('data.json')
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Arquivo data.json não encontrado!');
+        }
+        return response.json();
+      })
       .then(data => {
         siteData = data;
         renderPortfolio(data.portfolio);
@@ -223,16 +231,26 @@
       })
       .catch(error => {
         console.error('Erro:', error);
-        alert('Erro ao carregar dados. Verifique o arquivo data.json');
+        // Mostra uma mensagem mais amigável
+        document.getElementById('portfolio-grid').innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <p class="text-red-500 font-bold">Erro ao carregar os dados do portfólio.</p>
+            <p class="text-gray-500 text-sm mt-2">Verifique se o arquivo data.json está na mesma pasta do index.html</p>
+            <p class="text-gray-400 text-xs mt-1">Erro: ${error.message}</p>
+          </div>
+        `;
       });
 
+    // ========================================
+    // FUNÇÕES DE RENDERIZAÇÃO
+    // ========================================
     function renderPortfolio(projects) {
       const grid = document.getElementById('portfolio-grid');
       grid.innerHTML = '';
       projects.forEach((project, index) => {
         grid.innerHTML += `
           <div class="portfolio-item" onclick="openProjectModal(${index})">
-            <img loading="lazy" src="${project.image}" alt="${project.title}">
+            <img loading="lazy" src="${project.image}" alt="${project.title}" onerror="this.src='https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada'">
             <div class="overlay">
               <p class="font-bold text-sm" style="color: white;">${project.title}</p>
               <p class="text-xs opacity-80" style="color: rgba(255,255,255,0.8);">${project.category} · ${project.year}</p>
@@ -246,6 +264,9 @@
       document.getElementById('profile-name').textContent = profile.name;
       document.getElementById('profile-subtitle').textContent = profile.subtitle;
       document.getElementById('profile-photo').src = profile.photo;
+      document.getElementById('profile-photo').onerror = function() {
+        this.src = 'https://via.placeholder.com/800x800/cccccc/666666?text=Foto';
+      };
       const bioContainer = document.getElementById('profile-bio');
       bioContainer.innerHTML = '';
       profile.bio.forEach(text => {
@@ -275,10 +296,16 @@
       document.getElementById('footer-text').textContent = site.footer;
     }
 
+    // ========================================
+    // FUNÇÕES DO MODAL
+    // ========================================
     function openProjectModal(index) {
       currentProjectIndex = index;
       const project = siteData.portfolio[index];
       document.getElementById('modalImage').src = project.image;
+      document.getElementById('modalImage').onerror = function() {
+        this.src = 'https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada';
+      };
       document.getElementById('modalTitle').textContent = project.title;
       document.getElementById('modalClient').textContent = `${project.category} · ${project.year}`;
       document.getElementById('modalDescription').textContent = project.description;
@@ -326,13 +353,18 @@
       });
     }
 
+    // ========================================
+    // NAVEGAÇÃO
+    // ========================================
     function switchPage(page) {
       const homeSection = document.getElementById('home-section');
       const contactSection = document.getElementById('contact-section');
       const navHome = document.getElementById('nav-home');
       const navContact = document.getElementById('nav-contact');
+      
       navHome.classList.remove('active');
       navContact.classList.remove('active');
+      
       if (page === 'contact') {
         homeSection.classList.add('page-hidden');
         contactSection.classList.remove('page-hidden');
@@ -347,39 +379,54 @@
       window.scrollTo(0, 0);
     }
 
-    function setupNavigation() {
-      window.addEventListener('load', () => {
-        if (window.location.hash === '#contact') switchPage('contact');
-        else switchPage('home');
-      });
-      window.addEventListener('popstate', () => {
-        if (window.location.hash === '#contact') switchPage('contact');
-        else switchPage('home');
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeProjectModal();
-      });
-    }
-
+    // ========================================
+    // CARROSSEL
+    // ========================================
     function setupCarousel() {
       const slides = document.querySelectorAll('.carousel-slide');
       const dotsContainer = document.getElementById('carousel-dots');
       let currentSlide = 0;
+
       slides.forEach((_, index) => {
         const dot = document.createElement('div');
         dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
         dot.addEventListener('click', () => goToSlide(index));
         dotsContainer.appendChild(dot);
       });
+
       function goToSlide(index) {
         slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
         document.querySelectorAll('.carousel-dot').forEach((dot, i) => dot.classList.toggle('active', i === index));
         currentSlide = index;
       }
+
       setInterval(() => {
         currentSlide = (currentSlide + 1) % slides.length;
         goToSlide(currentSlide);
       }, 6000);
+    }
+
+    // ========================================
+    // INICIALIZAÇÃO
+    // ========================================
+    function setupNavigation() {
+      if (window.location.hash === '#contact') {
+        switchPage('contact');
+      } else {
+        switchPage('home');
+      }
+      
+      window.addEventListener('popstate', () => {
+        if (window.location.hash === '#contact') {
+          switchPage('contact');
+        } else {
+          switchPage('home');
+        }
+      });
+      
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeProjectModal();
+      });
     }
   </script>
 </body>
