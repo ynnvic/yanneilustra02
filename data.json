@@ -1,0 +1,97 @@
+ {
+  "site": {
+    "title": "Yanne Vicente - Portfolio & Contact",
+    "footer": "© 2026 Yanne Vicente. All Rights Reserved."
+  },
+  "portfolio": [
+    {
+      "id": 1,
+      "title": "Winnie's Flying Guide",
+      "category": "Children's picture book",
+      "year": 2024,
+      "description": "Winnie's Flying Guide is a poetry picture book for children ages 4 to 6 explores themes of belinging and friendship. It is most about the flying lessons of Winnie Pendragon, the good witch of East Winds, privately published for family and friends.",
+      "image": "assets/images/projeto1.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Squid Captain & Sailorboy's Adventures",
+      "category": "Children's Book Cover",
+      "year": 2023,
+      "description": "A children's cover book illustration concept I made for Escolinha São José (St. Joseph Elementary School).",
+      "image": "assets/images/projeto2.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Safari Wallpaper",
+      "category": "Children's Illustration",
+      "year": 2024,
+      "description": "In January 2024, I worked with Fino Toque, an interior design company based in Recife, Brazil, which asked me to illustrate a bunch of children's wallpapers for a sale catalogue. I spent a short time there to create a few illustrations in three themes: Safari, Teddy Bears, and Kitten Patterns.",
+      "image": "assets/images/projeto3.jpg"
+    },
+    {
+      "id": 4,
+      "title": "School Children's Decoration",
+      "category": "Children's Illustration",
+      "year": 2025,
+      "description": "A series of illustrations created to decorate the elementary school corridors across all seven GGE school campuses, located in the states of Pernambuco and Paraíba in Northeastern Brazil. Conceived as a tribute to the region's greatest artists, this series of 84 illustrations was produced between June and November 2025.",
+      "image": "assets/images/projeto4.jpg"
+    },
+    {
+      "id": 5,
+      "title": "Webcomic Travelers",
+      "category": "Comic art",
+      "year": 2025,
+      "description": " Anne always felt like an ordinary girl, with ordinary aspirations livin her ordinary life. Nothing really special happened during the first 20 years of her existence, but bumping a strange grumpy woman wearing a lab coat, everything changes.  Timeless Journey is a webcomic I'm creating as the continuation of my undergraduate thesis project "TRAVELERS". It is being updated on Tapas. ",
+      "image": "assets/images/projeto5.jpg"
+    },
+    {
+      "id": 6,
+      "title": "Sketching Comics",
+      "category": "DigiComic Art",
+      "year": 2024,
+      "description": "Some illustrations and comic strips I created, including 'CAMAROTE DA VACINA NÃO' ('No Vaccine VIP Box')—a strip that criticized a proposed bill prioritizing early COVID-19 vaccine doses for business owners and CEOs over people in high-risk groups.",
+      "image": "assets/images/projeto6.jpg"
+      },
+    {
+      "id": 7,
+      "title": "Youtube Illustration Pack",
+      "category": "Character Design",
+      "year": 2022,
+      "description": "Evandro and Jaque Lemos are two fantastic YouTubers from my hometown, Gravatá, in the state of Pernambuco, Brazil. Together, they create a variety of sketch videos, always in the most comedic way possible, with many references from Brazilian Northeastern culture!",
+      "image": "assets/images/projeto7.jpg"
+      },
+    {
+      "id": 8,
+      "title": "RGP Character's Comission",
+      "category": "Character Design & Concept Art",
+      "year": 2025,
+      "description": "These are some of the best commissions created for a group of RPG players, ranging from D&D to Vampire: The Masquerade.",
+      "image": "assets/images/projeto8.jpg"
+      },
+    {
+      "id": 9,
+      "title": "Steven Universe's Fanart",
+      "category": "Digital Cartoon Art",
+      "year": 2019,
+      "description": "A personal project in which I created a fan art illustration based on the character Sardonyx from the animated series Steven Universe.",
+      "image": "assets/images/projeto9.jpg"
+    }
+  ],
+  "profile": {
+    "name": "MEET YANNE",
+    "subtitle": "\\\\\\THE ARTIST BEHIND THE LAYOUT",
+    "bio": [
+      "I'm a non-binary illustrator who believes the world looks way better when we draw on it.",
+      "With a degree in Design from UFPE (Brazil), I've focused my craft on children's illustration and character design, mixing communication and art in a playful style.",
+      "Whether I'm bringing whimsical flying guides to life or layouting books full of adventure, my focus is always on fun and representation. Let's have a talk and put your idea into a drawing?"
+    ],
+    "photo": "assets/images/perfil.jpg",
+    "email": "yanne.vicentepaz@gmail.com"
+  },
+  "social": {
+    "instagram": "https://instagram.com/yanne.vicente",
+    "linkedin": "https://linkedin.com/in/yannevicente",
+    "bluesky": "https://bsky.app/profile/yannevicente.bsky.social",
+    "twitter": "https://x.com/yannetheartist"
+  }
+}
