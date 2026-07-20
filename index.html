@@ -382,12 +382,12 @@
       right: 0;
       z-index: 15;
       opacity: 0;
-  transition: opacity 0.3s ease;
-}
+      transition: opacity 0.3s ease;
+    }
 
-.modal-image-side:hover .modal-thumbnails {
-  opacity: 1;
-}
+    .modal-image-side:hover .modal-thumbnails {
+      opacity: 1;
+    }
     .modal-thumbnails::-webkit-scrollbar {
       height: 4px;
     }
@@ -459,6 +459,22 @@
       transition: color 0.3s ease;
     }
     .modal-footer-icons a:hover {
+      color: #fec643;
+    }
+    
+    /* Estilo específico para o botão de compartilhar */
+    .share-btn {
+      color: #c5c9d6;
+      transition: color 0.3s ease;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .share-btn:hover {
       color: #fec643;
     }
     
@@ -657,6 +673,29 @@
         padding: 2rem 1.5rem;
       }
     }
+
+    /* Toast de notificação */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #4a4a4a;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 500;
+      font-size: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: all 0.4s ease;
+      z-index: 100;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 
@@ -794,10 +833,23 @@
               <path d="M22 7h-7v2h7V7zm1.72 6.88c0-3.64-2.22-5.96-5.85-5.96-3.48 0-6.15 2.5-6.15 6.06 0 3.75 2.59 6.2 6.27 6.2 2.65 0 4.88-1.27 5.76-3.75h-2.17c-.4.86-1.55 1.58-3.45 1.58-2.15 0-3.65-1.1-3.9-3.23h9.45c.03-.26.04-.57.04-.9zM14.07 12c.24-1.6 1.4-2.73 3.52-2.73 2.1 0 3.32 1.13 3.48 2.73h-7zM6.54 19.88H0V3.82h6.58c3.08 0 5.4 1.34 5.4 4.3 0 1.83-1.22 3.16-2.8 3.75 1.94.46 3.4 1.94 3.4 4.14 0 3.12-2.6 3.87-6.04 3.87zM2.85 9.77h3.18c1.37 0 2.22-.65 2.22-1.92 0-1.34-.94-1.87-2.3-1.87H2.85v3.79zm0 7.82h3.5c1.57 0 2.63-.64 2.63-2.15 0-1.5-1.06-2.07-2.58-2.07H2.85v4.22z"></path>
             </svg>
           </a>
+          <!-- Botão de Compartilhar -->
+          <button onclick="shareProject()" class="share-btn" title="Compartilhar este projeto">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+          </button>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Toast de notificação -->
+  <div id="toast" class="toast">Link copiado! ✨</div>
 
   <!-- FOOTER -->
   <footer class="border-t border-gray-200 mt-12 footer-yellow">
@@ -857,8 +909,7 @@
           carouselImages: [
             "assets/images/projeto3_1.jpg",
             "assets/images/projeto3_2.jpg",
-            "assets/images/projeto3_3.jpg",
-            "assets/images/projeto3_4.jpg"
+            "assets/images/projeto3_3.jpg"
           ]
         },
         {
@@ -1055,7 +1106,74 @@
     }
 
     // ========================================
-    // FUNÇÕES DO MODAL - ATUALIZADAS
+    // FUNÇÃO DE COMPARTILHAR
+    // ========================================
+    function shareProject() {
+      const project = siteData.portfolio[currentProjectIndex];
+      // Codifica o nome do projeto para usar na URL
+      const projectSlug = encodeURIComponent(project.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+      // Constrói a URL com hash para o projeto específico
+      const shareUrl = window.location.origin + window.location.pathname + '?project=' + projectSlug + '#work';
+      
+      // Verifica se a API de compartilhamento nativa está disponível (dispositivos móveis)
+      if (navigator.share) {
+        navigator.share({
+          title: project.title,
+          text: `Confira o projeto "${project.title}" por Yanne Vicente!`,
+          url: shareUrl
+        }).catch(err => {
+          // Se o usuário cancelar, não faz nada
+          if (err.name !== 'AbortError') {
+            copyToClipboard(shareUrl);
+          }
+        });
+      } else {
+        // Fallback: copia o link para a área de transferência
+        copyToClipboard(shareUrl);
+      }
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('Link copiado! ✨');
+        }).catch(() => {
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.top = '-9999px';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast('Link copiado! ✨');
+      } catch (e) {
+        showToast('Copie o link manualmente: ' + text);
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    // ========================================
+    // FUNÇÕES DO MODAL
     // ========================================
     function openProjectModal(index) {
       currentProjectIndex = index;
@@ -1107,7 +1225,7 @@
         this.src = 'https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada';
       };
       
-      // Atualiza título (cor #8d9bc7 aplicada via CSS)
+      // Atualiza título
       document.getElementById('modalTitle').textContent = project.title;
       document.getElementById('modalClient').textContent = `${project.category} · ${project.year}`;
       
@@ -1190,6 +1308,27 @@
     }
 
     // ========================================
+    // LER PARÂMETRO DE PROJETO NA URL
+    // ========================================
+    function loadProjectFromUrl() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const projectParam = urlParams.get('project');
+      if (projectParam) {
+        // Procura o projeto pelo título (case insensitive)
+        const normalizedParam = decodeURIComponent(projectParam).toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        const projectIndex = siteData.portfolio.findIndex(p => 
+          p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-') === normalizedParam
+        );
+        if (projectIndex !== -1) {
+          // Aguarda o DOM carregar e abre o modal
+          setTimeout(() => {
+            openProjectModal(projectIndex);
+          }, 300);
+        }
+      }
+    }
+
+    // ========================================
     // FORMULÁRIO DE CONTATO
     // ========================================
     document.addEventListener('DOMContentLoaded', function() {
@@ -1236,6 +1375,9 @@
       } else {
         switchPage('work');
       }
+      
+      // Carrega projeto específico se houver parâmetro
+      loadProjectFromUrl();
       
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeProjectModal();
