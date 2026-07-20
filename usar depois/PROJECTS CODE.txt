@@ -1,0 +1,155 @@
+          id: 1,
+          title: "Winnie's Flying Guide",
+          category: "Children's picture book",
+          year: 2024,
+          description: [
+            "Winnie's Flying Guide is a poetry picture book for children ages 4 to 6 explores themes of belonging and friendship.",
+            "It is most about the flying lessons of Winnie Pendragon, the good witch of East Winds, privately published for family and friends."
+          ],
+          gradeImage: "assets/images/projeto1.jpg",
+          carouselImages: [
+            "assets/images/projeto1_1.jpg",
+            "assets/images/projeto1_2.jpg",
+            "assets/images/projeto1_3.jpg",
+            "assets/images/projeto1_4.jpg",
+            "assets/images/projeto1_5.jpg"
+          ]
+        },
+        {
+          id: 2,
+          title: "Captain Octopus & Sailorboy's Adventures",
+          category: "Children's Book Cover",
+          year: 2022,
+          description: [
+            "A children's cover book illustration concept I made for Escolinha São José (St. Joseph Elementary School)."
+          ],
+          gradeImage: "assets/images/projeto2.jpg",
+          carouselImages: [
+            "assets/images/projeto2_1.jpg"
+          ]
+        },
+        {
+          id: 3,
+          title: "Safari Wallpaper",
+          category: "Children's Illustration",
+          year: 2024,
+          description: [
+            "In January 2024, I worked with Fino Toque, an interior design company based in Recife, Brazil.",
+            "They asked me to illustrate a bunch of children's wallpapers for a sale catalogue.",
+            "I spent a short time there to create a few illustrations in three themes: Safari, Teddy Bears, and Kitten Patterns."
+          ],
+          gradeImage: "assets/images/projeto3.jpg",
+          carouselImages: [
+            "assets/images/projeto3_1.jpg",
+            "assets/images/projeto3_2.jpg",
+            "assets/images/projeto3_3.jpg"
+          ]
+        },
+        {
+          id: 4,
+          title: "Children's School Illustration",
+          category: "Children's Illustration",
+          year: 2025,
+          description: [
+            "A series of illustrations created to decorate the elementary school corridors across all seven GGE school campuses.",
+            "Located in the states of Pernambuco and Paraíba in Northeastern Brazil.",
+            "Conceived as a tribute to the region's greatest artists, this series of 84 illustrations was produced between June and November 2025."
+          ],
+          gradeImage: "assets/images/projeto4.jpg",
+          carouselImages: [
+            "assets/images/projeto4_1.jpg",
+            "assets/images/projeto4_2.jpg",
+            "assets/images/projeto4_3.jpg",
+            "assets/images/projeto4_4.jpg",
+            "assets/images/projeto4_5.jpg",
+            "assets/images/projeto4_6.jpg",
+            "assets/images/projeto4_7.jpg",
+            "assets/images/projeto4_8.jpg",
+            "assets/images/projeto4_9.jpg",
+            "assets/images/projeto4_10.jpg",
+            "assets/images/projeto4_11.jpg",
+            "assets/images/projeto4_12.jpg",
+            "assets/images/projeto4_13.jpg",
+            "assets/images/projeto4_14.jpg"
+          ]
+        },
+        {
+          id: 5,
+          title: "Webcomic Travelers",
+          category: "Comic art",
+          year: 2025,
+          description: [
+            "Anne always felt like an ordinary girl, with ordinary aspirations living her ordinary life.",
+            "Nothing really special happened during the first 20 years of her existence, but bumping a strange grumpy woman wearing a lab coat, everything changes.",
+            "Timeless Journey is a webcomic I'm creating as the continuation of my undergraduate thesis project 'TRAVELERS'. It is being updated on Tapas."
+          ],
+          gradeImage: "assets/images/projeto5.jpg",
+          carouselImages: [
+            "assets/images/projeto5_1.jpg",
+            "assets/images/projeto5_2.jpg",
+            "assets/images/projeto5_3.jpg",
+            "assets/images/projeto5_4.jpg"
+          ]
+        },
+        {
+          id: 6,
+          title: "Comissions and Comics",
+          category: "Digital Comissions and Sketching Art",
+          year: 2024,
+          description: [
+            "Some illustrations and comic strips I created.",
+            "Including 'CAMAROTE DA VACINA NÃO' ('No Vaccine VIP Box')—a strip that criticized a proposed bill prioritizing early COVID-19 vaccine doses for business owners and CEOs over people in high-risk groups."
+          ],
+          gradeImage: "assets/images/projeto6.jpg",
+          carouselImages: [
+            "assets/images/projeto6_1.jpg",
+            "assets/images/projeto6_2.jpg",
+            "assets/images/projeto6_3.jpg"
+          ]
+        },
+        {
+          id: 7,
+          title: "Youtube Illustration Pack",
+          category: "Character Design",
+          year: 2022,
+          description: [
+            "Evandro and Jaque Lemos are two fantastic YouTubers from my hometown, Gravatá, in the state of Pernambuco, Brazil.",
+            "Together, they create a variety of sketch videos, always in the most comedic way possible, with many references from Brazilian Northeastern culture!"
+          ],
+          gradeImage: "assets/images/projeto7.jpg",
+          carouselImages: [
+            "assets/images/projeto7_1.jpg",
+            "assets/images/projeto7_2.jpg",
+            "assets/images/projeto7_3.jpg",
+            "assets/images/projeto7_4.jpg",
+            "assets/images/projeto7_5.jpg"
+          ]
+        },
+        {
+          id: 8,
+          title: "RPG Character's Commission",
+          category: "Character Design & Concept Art",
+          year: 2025,
+          description: [
+            "These are some of the best commissions created for a group of RPG players.",
+            "Ranging from D&D to Vampire: The Masquerade."
+          ],
+          gradeImage: "assets/images/projeto8.jpg",
+          carouselImages: [
+            "assets/images/projeto8_1.jpg",
+            "assets/images/projeto8_2.jpg",
+            "assets/images/projeto8_3.jpg"
+          ]
+        },
+        {
+          id: 9,
+          title: "Steven Universe's Fanart",
+          category: "Digital Cartoon Art",
+          year: 2019,
+          description: [
+            "A personal project in which I created a fan art illustration based on the character Sardonyx from the animated series Steven Universe."
+          ],
+          gradeImage: "assets/images/projeto9.jpg",
+          carouselImages: [
+            "assets/images/projeto9_1.jpg",
+            "assets/images/projeto9_2.jpg"
