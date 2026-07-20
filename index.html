@@ -723,7 +723,7 @@
   <!-- WORK -->
   <main id="work-section" class="w-full flex-1">
     <div class="banner-container">
-      <img src="assets/images/banner1.jpg" alt="Banner" loading="lazy" decoding="async">
+      <img src="assets/images/banner1.jpg" alt="Banner" loading="lazy" decoding="async" onerror="this.style.display='none'">
     </div>
     
     <section class="portfolio-wrapper">
@@ -946,10 +946,11 @@
           category: "Webcomic Art",
           year: 2022,
           description: [
-            "Synopsis: How would Milo react upon realizing that his long-awaited perfect night with Juca was turning into an intergalactic"
+            "Synopsis: How would Milo react upon realizing that his long-awaited perfect night with Juca was turning into an intergalactic",
             "frenzy of abyssal creatures, fugitives from justice, and a space emperor with a god complex?",
-            "Stellar Cafe (Café Estelar) is an LGBTQIAP+ sci-fi romance webcomic I began conceptualizing during the 2020 lockdown."
-            "Updates for the story are published on my <a href='https://tapas.io/series/cafe-estelar' target='_blank' rel='noopener'><b>Tapas</b></a> page."          ],
+            "Stellar Cafe (Café Estelar) is an LGBTQIAP+ sci-fi romance webcomic I began conceptualizing during the 2020 lockdown.",
+            "Updates for the story are published on my <a href='https://tapas.io/series/cafe-estelar' target='_blank' rel='noopener'><b>Tapas</b></a> page."
+          ],
           gradeImage: "assets/images/projeto5.jpg",
           carouselImages: [
             "assets/images/projeto5_1.jpg",
@@ -1222,7 +1223,7 @@
       
       // Atualiza imagem principal
       if (images.length === 0) {
-        document.getElementById('modalImage').src = project.gradeImage;
+        document.getElementById('modalImage').src = project.gradeImage || 'https://via.placeholder.com/800x800/cccccc/666666?text=Sem+imagem';
       } else {
         const imageIndex = currentImageIndex % images.length;
         document.getElementById('modalImage').src = images[imageIndex];
