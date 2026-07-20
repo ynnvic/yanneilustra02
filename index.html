@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-  <!-- Otimização de carregamento -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   
@@ -27,7 +26,7 @@
     .nav-link.active { color: #fec643 !important; }
     .page-hidden { display: none !important; }
 
-    /* NAVEGAÇÃO - LOGO À ESQUERDA, MENU À DIREITA */
+    /* NAVEGAÇÃO */
     .navbar {
       display: flex;
       align-items: center;
@@ -130,7 +129,7 @@
     }
     .portfolio-item:hover .overlay { opacity: 1; }
     
-    /* BANNER ÚNICO - RESPONSIVO */
+    /* BANNER */
     .banner-container {
       width: 100%;
       overflow: hidden;
@@ -200,7 +199,6 @@
       }
     }
     
-    /* BIO COM LARGURA FIXA IGUAL AO SUBTÍTULO */
     .bio-wrapper {
       max-width: 550px;
       width: 100%;
@@ -249,29 +247,140 @@
       }
     }
 
-    /* Estilos do Modal */
-    .modal-image-wrapper {
-      border-radius: 1rem;
+    /* ======================================== */
+    /* ESTILOS DO MODAL - OTIMIZADOS */
+    /* ======================================== */
+    
+    /* Fundo do modal */
+    .modal-overlay {
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+    }
+    
+    /* Container principal do modal */
+    .modal-content-wrapper {
+      display: flex;
+      flex-direction: row;
+      max-height: 92vh;
+      max-width: 1200px;
+      width: 100%;
+      background: white;
+      border-radius: 20px;
       overflow: hidden;
-      border: 5px solid white;
-      width: 100%;
-      height: 100%;
+      position: relative;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+      border: 5px solid #ffffff;
+    }
+    
+    /* Lado esquerdo - imagem */
+    .modal-image-side {
+      flex: 0 0 60%;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
       min-height: 500px;
-      max-height: 70vh;
+      overflow: hidden;
     }
-    .modal-image-wrapper img {
+    .modal-image-side img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
     }
+    
+    /* Lado direito - informações */
+    .modal-info-side {
+      flex: 0 0 40%;
+      padding: 2rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: white;
+      overflow-y: auto;
+    }
+    
+    /* Botão fechar - SEMPRE VISÍVEL */
+    .modal-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 30;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(4px);
+      color: #4a4a4a;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .modal-close-btn:hover {
+      background: #ffffff;
+      transform: scale(1.08);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+    .modal-close-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2.5;
+    }
+    
+    /* Botões de navegação - só aparecem se houver mais de 1 imagem */
+    .modal-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(4px);
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 20;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      color: #4a4a4a;
+    }
+    .modal-nav-btn:hover {
+      background: #ffffff;
+      transform: translateY(-50%) scale(1.08);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+    .modal-nav-btn.hidden {
+      display: none !important;
+    }
+    .modal-nav-btn.prev { left: 16px; }
+    .modal-nav-btn.next { right: 16px; }
+    .modal-nav-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2.5;
+    }
+    
+    /* Miniaturas */
     .modal-thumbnails {
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding: 12px 0;
+      padding: 12px 16px;
       scrollbar-width: thin;
-      background: white;
-      border-radius: 0 0 1rem 1rem;
+      background: rgba(0,0,0,0.05);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 15;
     }
     .modal-thumbnails::-webkit-scrollbar {
       height: 4px;
@@ -281,8 +390,8 @@
       border-radius: 4px;
     }
     .modal-thumbnails img {
-      width: 60px;
-      height: 60px;
+      width: 56px;
+      height: 56px;
       object-fit: cover;
       border-radius: 8px;
       cursor: pointer;
@@ -299,15 +408,105 @@
       border-color: #fec643;
       box-shadow: 0 0 0 2px #fec643;
     }
-
-    .modal-carousel-wrapper {
-      background: white;
-      border-radius: 1rem;
-      overflow: hidden;
-      width: 100%;
-      height: 100%;
+    
+    /* Títulos do modal - cor #8d9bc7 */
+    .modal-title {
+      color: #8d9bc7 !important;
+      font-weight: 800;
+      font-size: 28px;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .modal-client {
+      color: #aab0c4;
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .modal-divider {
+      border: none;
+      border-top: 2px solid #f0f0f5;
+      margin-bottom: 20px;
+    }
+    .modal-description {
+      color: #4a4a4a;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .modal-description p {
+      margin-bottom: 12px;
+    }
+    .modal-description p:last-child {
+      margin-bottom: 0;
+    }
+    
+    /* Rodapé do modal com ícones sociais */
+    .modal-footer-icons {
       display: flex;
-      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid #f0f0f5;
+    }
+    .modal-footer-icons a {
+      color: #c5c9d6;
+      transition: color 0.3s ease;
+    }
+    .modal-footer-icons a:hover {
+      color: #fec643;
+    }
+    
+    @media (max-width: 768px) {
+      .modal-content-wrapper {
+        flex-direction: column;
+        max-height: 95vh;
+        border-radius: 16px;
+      }
+      .modal-image-side {
+        flex: 0 0 55%;
+        min-height: 300px;
+      }
+      .modal-info-side {
+        flex: 0 0 45%;
+        padding: 1.5rem;
+      }
+      .modal-title {
+        font-size: 22px;
+      }
+      .modal-close-btn {
+        top: 12px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+      }
+      .modal-nav-btn {
+        width: 36px;
+        height: 36px;
+      }
+      .modal-nav-btn.prev { left: 8px; }
+      .modal-nav-btn.next { right: 8px; }
+      .modal-thumbnails img {
+        width: 44px;
+        height: 44px;
+      }
+    }
+    @media (max-width: 480px) {
+      .modal-image-side {
+        flex: 0 0 45%;
+        min-height: 220px;
+      }
+      .modal-info-side {
+        padding: 1rem 1.25rem;
+      }
+      .modal-title {
+        font-size: 18px;
+      }
+      .modal-client {
+        font-size: 12px;
+      }
+      .modal-description {
+        font-size: 13px;
+      }
     }
 
     .footer-yellow {
@@ -332,71 +531,6 @@
       display: block;
     }
 
-    .modal-nav-btn {
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255,255,255,0.8);
-      border: none;
-      border-radius: 50%;
-      padding: 12px;
-      cursor: pointer;
-      z-index: 20;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      transition: all 0.3s ease;
-    }
-    .modal-nav-btn:hover {
-      background: white;
-      transform: translateY(-50%) scale(1.1);
-    }
-    .modal-image-container:hover .modal-nav-btn {
-      opacity: 1;
-    }
-    .modal-nav-btn.prev { left: 10px; }
-    .modal-nav-btn.next { right: 10px; }
-
-    .modal-image-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f5f5f5;
-      border-radius: 1rem 1rem 0 0;
-      min-height: 500px;
-    }
-
-    .logo-img {
-      height: 40px;
-      width: auto;
-      cursor: pointer;
-    }
-
-    .modal-content-wrapper {
-      display: flex;
-      flex-direction: row;
-      max-height: 90vh;
-      max-width: 1200px;
-      width: 100%;
-      background: white;
-      border-radius: 1.5rem;
-      overflow: hidden;
-    }
-    @media (max-width: 768px) {
-      .modal-content-wrapper {
-        flex-direction: column;
-        max-height: 95vh;
-      }
-      .modal-image-wrapper {
-        min-height: 300px;
-        max-height: 50vh;
-      }
-    }
-
-    /* TÍTULO DA SEÇÃO WORK */
     .section-header {
       margin-bottom: 28px;
     }
@@ -486,7 +620,6 @@
       }
     }
 
-    /* Ajustes para a imagem ocupar toda a altura */
     .contact-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -523,15 +656,13 @@
 
 <body class="w-full min-h-screen flex flex-col" style="background: rgb(250, 249, 247);">
   
-  <!-- NAVEGAÇÃO - LOGO À ESQUERDA, MENU À DIREITA -->
+  <!-- NAVEGAÇÃO -->
   <nav class="navbar">
-    <!-- LOGO - EXTREMO ESQUERDO -->
     <div class="navbar-logo">
       <img src="assets/images/logo.png" alt="Yanne Vicente Logo" class="logo-img" onclick="switchPage('work')" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';">
       <span id="logo-fallback" class="text-2xl font-bold cursor-pointer" style="color: #fec643; display: none;" onclick="switchPage('work')">YV</span>
     </div>
     
-    <!-- MENU - EXTREMO DIREITO -->
     <div class="navbar-menu">
       <a href="https://wa.me/+5581996385618" target="_blank" rel="noopener" class="menu-icon-link" title="WhatsApp">
         <i class="fa-brands fa-whatsapp"></i>
@@ -544,20 +675,16 @@
     </div>
   </nav>
 
-  <!-- WORK (antiga HOME) -->
+  <!-- WORK -->
   <main id="work-section" class="w-full flex-1">
-    <!-- BANNER ÚNICO - RESPONSIVO -->
     <div class="banner-container">
       <img src="assets/images/banner1.jpg" alt="Banner" loading="lazy" decoding="async">
     </div>
     
-    <!-- GRADE DE PROJETOS -->
     <section class="portfolio-wrapper">
-      <!-- TÍTULO DA SEÇÃO: apenas "WORK" -->
       <div class="section-header">
         <h2>Professional doodler for tiny humans    :) ✨</h2>
       </div>
-      
       <div class="portfolio-grid" id="portfolio-grid"></div>
     </section>
   </main>
@@ -573,7 +700,6 @@
         <h1 id="profile-name" class="leading-none tracking-tight" style="color: rgb(255, 189, 89); font-weight: 900; font-size: 57px; line-height: 0.9;"></h1>
         <p id="profile-subtitle" class="mt-2 tracking-widest uppercase" style="color: rgb(131, 147, 195); font-weight: 600; font-size: 23px;"></p>
         
-        <!-- BIO COM LARGURA IGUAL AO SUBTÍTULO -->
         <div class="bio-wrapper" id="profile-bio"></div>
         
         <div class="social-buttons" id="social-buttons"></div>
@@ -584,9 +710,9 @@
         </div>
       </div>
       
-      <!-- FORMULÁRIO COM BG #8393c3 -->
       <section class="form-section">
         <h2 style="color: rgb(253, 254, 255); font-weight: 800; font-size: 32px;">OR KINDLY SEND<br>ME A MESSAGE!✨</h2>
+
         
         <div id="form-success-message" class="form-success mt-4">
           Your message was successfully sent! :) ✨
@@ -609,55 +735,56 @@
     </div>
   </main>
 
-  <!-- MODAL -->
+  <!-- MODAL - NOVO LAYOUT -->
   <div id="projectModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300">
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeProjectModal()"></div>
-    <div class="modal-content-wrapper relative">
-      <button onclick="closeProjectModal()" class="absolute top-4 right-4 z-30 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 shadow-md transition-all duration-300 opacity-0 group-hover:opacity-100">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+    <div class="absolute inset-0 modal-overlay" onclick="closeProjectModal()"></div>
+    
+    <div class="modal-content-wrapper">
+      <!-- Botão Fechar - SEMPRE VISÍVEL -->
+      <button onclick="closeProjectModal()" class="modal-close-btn" aria-label="Fechar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
       
-      <div class="relative w-full md:w-3/5 bg-gray-100 flex flex-col items-center justify-center overflow-hidden p-4">
-        <div class="modal-carousel-wrapper w-full h-full">
-          <div class="modal-image-container">
-            <img id="modalImage" class="w-full h-full object-contain" src="" alt="Projeto" loading="lazy" decoding="async">
-            
-            <button onclick="prevModalImage()" class="modal-nav-btn prev">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </button>
-            <button onclick="nextModalImage()" class="modal-nav-btn next">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
-          </div>
-          
-          <div class="modal-thumbnails w-full px-2" id="modal-thumbnails"></div>
-        </div>
+      <!-- Lado da Imagem -->
+      <div class="modal-image-side" id="modalImageSide">
+        <img id="modalImage" src="" alt="Projeto" loading="lazy" decoding="async">
+        
+        <!-- Botões de navegação - escondidos por padrão, JS controla visibilidade -->
+        <button onclick="prevModalImage()" class="modal-nav-btn prev" id="modalPrevBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button onclick="nextModalImage()" class="modal-nav-btn next" id="modalNextBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+        
+        <!-- Miniaturas -->
+        <div class="modal-thumbnails" id="modal-thumbnails"></div>
       </div>
       
-      <div class="w-full md:w-2/5 p-6 md:p-8 flex flex-col bg-white overflow-y-auto">
-        <div class="flex-grow flex flex-col justify-center">
-          <h2 id="modalTitle" class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-1 leading-tight"></h2>
-          <p id="modalClient" class="text-sm md:text-base text-gray-500 font-medium mb-6"></p>
-          <hr class="border-gray-100 mb-6">
-          <div id="modalDescription" class="text-sm md:text-base text-gray-600 leading-relaxed space-y-3"></div>
-        </div>
+      <!-- Lado das Informações -->
+      <div class="modal-info-side">
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <p class="modal-client" id="modalClient"></p>
+        <hr class="modal-divider">
+        <div class="modal-description" id="modalDescription"></div>
         
-        <div class="flex items-center gap-4 mt-8 pt-4 border-t border-gray-50">
-          <a href="https://instagram.com/yanne.vicente" target="_blank" rel="noopener" class="text-gray-400 hover:text-[#fec643] transition-colors" title="Instagram">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <div class="modal-footer-icons">
+          <a href="https://instagram.com/yanne.vicente" target="_blank" rel="noopener" title="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
               <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
               <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
             </svg>
           </a>
-          <a href="https://be.net/yannevicenteart" target="_blank" rel="noopener" class="text-gray-400 hover:text-[#fec643] transition-colors" title="Behance">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <a href="https://be.net/yannevicenteart" target="_blank" rel="noopener" title="Behance">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
               <path d="M22 7h-7v2h7V7zm1.72 6.88c0-3.64-2.22-5.96-5.85-5.96-3.48 0-6.15 2.5-6.15 6.06 0 3.75 2.59 6.2 6.27 6.2 2.65 0 4.88-1.27 5.76-3.75h-2.17c-.4.86-1.55 1.58-3.45 1.58-2.15 0-3.65-1.1-3.9-3.23h9.45c.03-.26.04-.57.04-.9zM14.07 12c.24-1.6 1.4-2.73 3.52-2.73 2.1 0 3.32 1.13 3.48 2.73h-7zM6.54 19.88H0V3.82h6.58c3.08 0 5.4 1.34 5.4 4.3 0 1.83-1.22 3.16-2.8 3.75 1.94.46 3.4 1.94 3.4 4.14 0 3.12-2.6 3.87-6.04 3.87zM2.85 9.77h3.18c1.37 0 2.22-.65 2.22-1.92 0-1.34-.94-1.87-2.3-1.87H2.85v3.79zm0 7.82h3.5c1.57 0 2.63-.64 2.63-2.15 0-1.5-1.06-2.07-2.58-2.07H2.85v4.22z"></path>
             </svg>
           </a>
@@ -666,7 +793,7 @@
     </div>
   </div>
 
-  <!-- FOOTER - 1x maior (padding aumentado) -->
+  <!-- FOOTER -->
   <footer class="border-t border-gray-200 mt-12 footer-yellow">
     <div class="max-w-6xl mx-auto px-6 py-8 text-center">
       <p class="text-sm" style="color: rgb(74, 74, 74); font-weight: 700; font-size: 16px;">© 2026 Yanne Vicente. All Rights Reserved.</p>
@@ -922,7 +1049,7 @@
     }
 
     // ========================================
-    // FUNÇÕES DO MODAL
+    // FUNÇÕES DO MODAL - ATUALIZADAS
     // ========================================
     function openProjectModal(index) {
       currentProjectIndex = index;
@@ -943,7 +1070,7 @@
 
     function prevModalImage() {
       const project = siteData.portfolio[currentProjectIndex];
-      if (!project.carouselImages || project.carouselImages.length === 0) return;
+      if (!project.carouselImages || project.carouselImages.length <= 1) return;
       
       currentImageIndex = (currentImageIndex - 1 + project.carouselImages.length) % project.carouselImages.length;
       updateModalContent();
@@ -951,7 +1078,7 @@
 
     function nextModalImage() {
       const project = siteData.portfolio[currentProjectIndex];
-      if (!project.carouselImages || project.carouselImages.length === 0) return;
+      if (!project.carouselImages || project.carouselImages.length <= 1) return;
       
       currentImageIndex = (currentImageIndex + 1) % project.carouselImages.length;
       updateModalContent();
@@ -960,7 +1087,9 @@
     function updateModalContent() {
       const project = siteData.portfolio[currentProjectIndex];
       const images = project.carouselImages || [];
+      const hasMultipleImages = images.length > 1;
       
+      // Atualiza imagem principal
       if (images.length === 0) {
         document.getElementById('modalImage').src = project.gradeImage;
       } else {
@@ -972,9 +1101,11 @@
         this.src = 'https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada';
       };
       
+      // Atualiza título (cor #8d9bc7 aplicada via CSS)
       document.getElementById('modalTitle').textContent = project.title;
       document.getElementById('modalClient').textContent = `${project.category} · ${project.year}`;
       
+      // Atualiza descrição
       const descContainer = document.getElementById('modalDescription');
       descContainer.innerHTML = '';
       if (project.description && project.description.length > 0) {
@@ -985,6 +1116,19 @@
         descContainer.innerHTML = `<p>${project.description || 'Sem descrição disponível.'}</p>`;
       }
       
+      // Controla visibilidade dos botões de navegação
+      const prevBtn = document.getElementById('modalPrevBtn');
+      const nextBtn = document.getElementById('modalNextBtn');
+      
+      if (hasMultipleImages) {
+        prevBtn.classList.remove('hidden');
+        nextBtn.classList.remove('hidden');
+      } else {
+        prevBtn.classList.add('hidden');
+        nextBtn.classList.add('hidden');
+      }
+      
+      // Renderiza miniaturas
       renderThumbnails(images);
     }
 
@@ -993,7 +1137,7 @@
       container.innerHTML = '';
       
       if (!images || images.length === 0) {
-        container.innerHTML = '<p class="text-xs text-gray-400 p-2">Sem imagens adicionais</p>';
+        container.innerHTML = '<span style="color: rgba(255,255,255,0.5); font-size: 12px; padding: 4px 8px;">Sem imagens adicionais</span>';
         return;
       }
       
