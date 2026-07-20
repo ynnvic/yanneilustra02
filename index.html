@@ -849,7 +849,7 @@
   </div>
 
   <!-- Toast de notificação -->
-  <div id="toast" class="toast">Link copiado! ✨</div>
+  <div id="toast" class="toast">The link has been copied! ✨</div>
 
   <!-- FOOTER -->
   <footer class="border-t border-gray-200 mt-12 footer-yellow">
@@ -1136,7 +1136,7 @@
     function copyToClipboard(text) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(() => {
-          showToast('Link copiado! ✨');
+          showToast('The link has been copied! ✨');
         }).catch(() => {
           fallbackCopy(text);
         });
@@ -1155,7 +1155,7 @@
       textarea.select();
       try {
         document.execCommand('copy');
-        showToast('Link copiado! ✨');
+        showToast('The link has been copied! ✨');
       } catch (e) {
         showToast('Copie o link manualmente: ' + text);
       }
