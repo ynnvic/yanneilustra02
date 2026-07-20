@@ -9,6 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
+  <!-- Otimização de carregamento -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
   <style>
     body { font-family: 'Poppins', sans-serif; }
     .nav-link { 
@@ -76,7 +80,7 @@
       }
     }
 
-    /* GRADE DE PROJETOS - COM RESPIR0 VISUAL */
+    /* GRADE DE PROJETOS */
     .portfolio-wrapper {
       width: 100%;
       max-width: 100%;
@@ -98,10 +102,10 @@
       aspect-ratio: 1/1;
       border-radius: 16px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+      transition: box-shadow 0.4s ease;
+      background: #e8e6e4;
     }
     .portfolio-item:hover { 
-      transform: translateY(-8px);
       box-shadow: 0 16px 48px rgba(0,0,0,0.15);
     }
     .portfolio-item img {
@@ -131,6 +135,8 @@
       width: 100%;
       overflow: hidden;
       position: relative;
+      background: #e8e6e4;
+      min-height: 100px;
     }
     .banner-container img {
       width: 100%;
@@ -160,6 +166,7 @@
       top: 0; 
       height: 100vh; 
       overflow: hidden; 
+      background: #e8e6e4;
     }
     .image-col img { 
       width: 100%; 
@@ -181,6 +188,9 @@
       overflow-y: auto;
       height: 100vh;
       padding: 2rem 3rem 2rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
     }
     @media (max-width: 768px) {
       .contact-content {
@@ -190,7 +200,19 @@
       }
     }
     
-    .social-buttons { display: flex; gap: 20px; margin-top: 50px; }
+    /* BIO COM LARGURA FIXA IGUAL AO SUBTÍTULO */
+    .bio-wrapper {
+      max-width: 550px;
+      width: 100%;
+    }
+    .bio-wrapper p {
+      color: rgb(74, 74, 74);
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+    
+    .social-buttons { display: flex; gap: 20px; margin-top: 40px; }
     .icon-link {
         font-size: 35px; color: #ffbd59; text-decoration: none;
         transition: transform 0.3s ease, color 0.3s ease;
@@ -221,6 +243,9 @@
       }
       .portfolio-item {
         border-radius: 12px;
+      }
+      .bio-wrapper {
+        max-width: 100%;
       }
     }
 
@@ -264,6 +289,7 @@
       border: 2px solid transparent;
       transition: all 0.3s ease;
       flex-shrink: 0;
+      background: #f0efed;
     }
     .modal-thumbnails img:hover {
       border-color: #fec643;
@@ -286,13 +312,10 @@
 
     .footer-yellow {
       background-color: #fec643 !important;
+      padding: 1.5rem 0 !important;
     }
     .footer-yellow p {
       color: #4a4a4a !important;
-    }
-
-    .menu-separator {
-      display: none;
     }
 
     .form-success {
@@ -379,22 +402,120 @@
     }
     .section-header h2 {
       color: rgb(131, 147, 195);
-      font-weight: 800;
-      font-size: 32px;
+      font-weight: 700;
+      font-size: 38px;
       letter-spacing: -0.5px;
-    }
-    .section-header p {
-      color: rgb(160, 170, 190);
-      font-size: 14px;
-      margin-top: 4px;
-      font-weight: 400;
     }
     @media (max-width: 640px) {
       .section-header h2 {
-        font-size: 24px;
+        font-size: 28px;
       }
-      .section-header p {
-        font-size: 12px;
+    }
+
+    /* FORMULÁRIO COM BG #8393c3 */
+    .form-section {
+      background-color: #8393c3;
+      border-radius: 20px;
+      padding: 30px 32px;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 550px;
+    }
+    .form-section h2 {
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 24px;
+      letter-spacing: -0.3px;
+    }
+    .form-section .form-label {
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-section input,
+    .form-section textarea {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      border-bottom: 2px solid rgba(255,255,255,0.3);
+      color: #ffffff;
+      padding: 10px 0;
+      width: 100%;
+      transition: border-color 0.3s ease;
+      font-size: 14px;
+    }
+    .form-section input:focus,
+    .form-section textarea:focus {
+      outline: none;
+      border-bottom-color: #ffffff;
+      background: rgba(255,255,255,0.1);
+    }
+    .form-section input::placeholder,
+    .form-section textarea::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
+    .form-section .submit-btn {
+      background: #fec643;
+      color: #4a4a4a;
+      padding: 12px 40px;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-section .submit-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .form-section .form-success {
+      background: rgba(255,255,255,0.2);
+      color: #ffffff;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    @media (max-width: 640px) {
+      .form-section {
+        padding: 20px;
+        border-radius: 16px;
+      }
+      .form-section h2 {
+        font-size: 20px;
+      }
+    }
+
+    /* Ajustes para a imagem ocupar toda a altura */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+      height: 100%;
+    }
+    .contact-grid .image-col {
+      height: 100vh;
+      position: sticky;
+      top: 0;
+    }
+    .contact-grid .contact-content {
+      height: 100vh;
+      overflow-y: auto;
+      padding: 2rem 3rem;
+    }
+    @media (max-width: 768px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .contact-grid .image-col {
+        height: 50vh;
+        position: relative;
+      }
+      .contact-grid .contact-content {
+        height: auto;
+        overflow-y: visible;
+        padding: 2rem 1.5rem;
       }
     }
   </style>
@@ -427,15 +548,14 @@
   <main id="work-section" class="w-full flex-1">
     <!-- BANNER ÚNICO - RESPONSIVO -->
     <div class="banner-container">
-      <img src="assets/images/banner1.jpg" alt="Banner" loading="lazy">
+      <img src="assets/images/banner1.jpg" alt="Banner" loading="lazy" decoding="async">
     </div>
     
-    <!-- GRADE DE PROJETOS - COM RESPIR0 VISUAL -->
+    <!-- GRADE DE PROJETOS -->
     <section class="portfolio-wrapper">
-      <!-- TÍTULO DA SEÇÃO -->
+      <!-- TÍTULO DA SEÇÃO: apenas "WORK" -->
       <div class="section-header">
-        <h2>Portfólio</h2>
-        <p>Clique em um projeto para ver mais detalhes</p>
+        <h2>Professional doodler for tiny humans    :)</h2>
       </div>
       
       <div class="portfolio-grid" id="portfolio-grid"></div>
@@ -443,16 +563,18 @@
   </main>
 
   <!-- CONTACT -->
-  <main id="contact-section" class="split-layout page-hidden flex-1">
+  <main id="contact-section" class="contact-grid page-hidden flex-1">
     <div class="image-col">
-      <img id="profile-photo" class="w-full h-full object-cover" loading="lazy" src="assets/images/profile.jpg" alt="Yanne Vicente" onerror="this.src='https://via.placeholder.com/800x800/cccccc/666666?text=Foto+de+Perfil'">
+      <img id="profile-photo" class="w-full h-full object-cover" loading="lazy" decoding="async" src="assets/images/profile.jpg" alt="Yanne Vicente" onerror="this.src='https://via.placeholder.com/800x800/cccccc/666666?text=Foto+de+Perfil'">
     </div>
     
     <div class="contact-content">
       <div>
         <h1 id="profile-name" class="leading-none tracking-tight" style="color: rgb(255, 189, 89); font-weight: 900; font-size: 57px; line-height: 0.9;"></h1>
         <p id="profile-subtitle" class="mt-2 tracking-widest uppercase" style="color: rgb(131, 147, 195); font-weight: 600; font-size: 23px;"></p>
-        <div id="profile-bio" class="mt-8 space-y-4"></div>
+        
+        <!-- BIO COM LARGURA IGUAL AO SUBTÍTULO -->
+        <div class="bio-wrapper" id="profile-bio"></div>
         
         <div class="social-buttons" id="social-buttons"></div>
         
@@ -462,25 +584,26 @@
         </div>
       </div>
       
-      <section class="mt-16 pt-10 border-t border-gray-200">
-        <h2 style="color: rgb(131, 147, 195); font-weight: 800; font-size: 32px;">OR SEND ME<br>A KIND MESSAGE!</h2>
+      <!-- FORMULÁRIO COM BG #8393c3 -->
+      <section class="form-section">
+        <h2 style="color: rgb(253, 254, 255); font-weight: 800; font-size: 32px;">OR KINDLY SEND<br>ME A MESSAGE!✨</h2>
         
-        <div id="form-success-message" class="form-success">
+        <div id="form-success-message" class="form-success mt-4">
           Your message was successfully sent! :) ✨
         </div>
         
-        <div data-fs-error class="mt-6 p-4 bg-red-50 text-red-600 rounded-lg hidden font-medium text-sm">Something went wrong... Try it once more! :)</div>
+        <div data-fs-error class="mt-4 p-3 bg-red-500/20 text-white rounded-lg hidden font-medium text-sm">Something went wrong... Try it once more! :)</div>
 
-        <form id="contact-form" class="mt-6 space-y-4" action="https://formspree.io/f/mgogvbke" method="POST">
+        <form id="contact-form" class="mt-4 space-y-4" action="https://formspree.io/f/mgogvbke" method="POST">
           <div>
-            <label class="text-xs block mb-1 uppercase tracking-wider" style="color: rgb(131, 147, 195); font-weight: 600;">E-mail*</label> 
-            <input type="email" name="email" required class="w-full border-b-2 border-gray-300 bg-transparent px-0 py-2 focus:outline-none focus:border-[#8393c3] transition-colors" placeholder="your@email.com">
+            <label class="form-label block mb-1">E-mail*</label> 
+            <input type="email" name="email" required placeholder="your@email.com">
           </div>
           <div>
-            <label class="text-xs block mb-1 uppercase tracking-wider" style="color: rgb(131, 147, 195); font-weight: 600;">Message*</label> 
-            <textarea name="message" required rows="3" class="w-full border-b-2 border-gray-300 bg-transparent px-0 py-2 focus:outline-none focus:border-[#8393c3] transition-colors resize-none" placeholder="Your message here..."></textarea>
+            <label class="form-label block mb-1">Message*</label> 
+            <textarea name="message" required rows="3" placeholder="Your message here..."></textarea>
           </div>
-          <button type="submit" class="px-10 py-3 rounded-full font-bold text-sm tracking-widest hover:scale-105 transition-transform" style="background: rgb(255, 189, 89); color: rgb(74, 74, 74);">SEND</button>
+          <button type="submit" class="submit-btn">SEND</button>
         </form>
       </section>
     </div>
@@ -499,7 +622,7 @@
       <div class="relative w-full md:w-3/5 bg-gray-100 flex flex-col items-center justify-center overflow-hidden p-4">
         <div class="modal-carousel-wrapper w-full h-full">
           <div class="modal-image-container">
-            <img id="modalImage" class="w-full h-full object-contain" src="" alt="Projeto">
+            <img id="modalImage" class="w-full h-full object-contain" src="" alt="Projeto" loading="lazy" decoding="async">
             
             <button onclick="prevModalImage()" class="modal-nav-btn prev">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -543,9 +666,9 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
+  <!-- FOOTER - 1x maior (padding aumentado) -->
   <footer class="border-t border-gray-200 mt-12 footer-yellow">
-    <div class="max-w-6xl mx-auto px-6 py-6 text-center">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center">
       <p class="text-sm" style="color: rgb(74, 74, 74); font-weight: 700; font-size: 16px;">© 2026 Yanne Vicente. All Rights Reserved.</p>
     </div>
   </footer>
@@ -569,14 +692,16 @@
           carouselImages: [
             "assets/images/projeto1_1.jpg",
             "assets/images/projeto1_2.jpg",
-            "assets/images/projeto1_3.jpg"
+            "assets/images/projeto1_3.jpg",
+            "assets/images/projeto1_4.jpg",
+            "assets/images/projeto1_5.jpg"
           ]
         },
         {
           id: 2,
-          title: "Squid Captain & Sailorboy's Adventures",
+          title: "Captain Octopus & Sailorboy's Adventures",
           category: "Children's Book Cover",
-          year: 2023,
+          year: 2022,
           description: [
             "A children's cover book illustration concept I made for Escolinha São José (St. Joseph Elementary School)."
           ],
@@ -599,12 +724,13 @@
           carouselImages: [
             "assets/images/projeto3_1.jpg",
             "assets/images/projeto3_2.jpg",
-            "assets/images/projeto3_3.jpg"
+            "assets/images/projeto3_3.jpg",
+            "assets/images/projeto3_4.jpg"
           ]
         },
         {
           id: 4,
-          title: "School Children's Decoration",
+          title: "Children's School Illustration",
           category: "Children's Illustration",
           year: 2025,
           description: [
@@ -649,8 +775,8 @@
         },
         {
           id: 6,
-          title: "Sketching Comics",
-          category: "DigiComic Art",
+          title: "Comissions and Comics",
+          category: "Digital Comissions and Sketching Art",
           year: 2024,
           description: [
             "Some illustrations and comic strips I created.",
@@ -676,7 +802,9 @@
           carouselImages: [
             "assets/images/projeto7_1.jpg",
             "assets/images/projeto7_2.jpg",
-            "assets/images/projeto7_3.jpg"
+            "assets/images/projeto7_3.jpg",
+            "assets/images/projeto7_4.jpg",
+            "assets/images/projeto7_5.jpg"
           ]
         },
         {
@@ -706,8 +834,7 @@
           gradeImage: "assets/images/projeto9.jpg",
           carouselImages: [
             "assets/images/projeto9_1.jpg",
-            "assets/images/projeto9_2.jpg",
-            "assets/images/projeto9_3.jpg"
+            "assets/images/projeto9_2.jpg"
           ]
         }
       ],
@@ -743,7 +870,7 @@
         const thumbImage = project.gradeImage || 'https://via.placeholder.com/800x800/cccccc/666666?text=Sem+imagem';
         grid.innerHTML += `
           <div class="portfolio-item" onclick="openProjectModal(${index})">
-            <img loading="lazy" src="${thumbImage}" alt="${project.title}" onerror="this.src='https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada'">
+            <img loading="lazy" decoding="async" src="${thumbImage}" alt="${project.title}" onerror="this.src='https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada'">
             <div class="overlay">
               <p class="font-bold text-base" style="color: white;">${project.title}</p>
               <p class="text-xs opacity-80 mt-1" style="color: rgba(255,255,255,0.8);">${project.category} · ${project.year}</p>
@@ -769,7 +896,7 @@
       const bioContainer = document.getElementById('profile-bio');
       bioContainer.innerHTML = '';
       profile.bio.forEach(text => {
-        bioContainer.innerHTML += `<p class="leading-relaxed" style="color: rgb(74, 74, 74); font-size: 14px;">${text}</p>`;
+        bioContainer.innerHTML += `<p>${text}</p>`;
       });
       document.getElementById('email-link').href = `mailto:${profile.email}`;
       document.getElementById('email-link').textContent = profile.email;
