@@ -61,11 +61,13 @@
       .nav-link { font-size: 13px; }
     }
 
-    /* PÁGINA DE PROJETO - NOVO DESIGN */
+    /* PÁGINA DE PROJETO */
     .project-section {
       background: #ffffff;
       min-height: calc(100vh - 80px);
       padding: 0;
+      display: flex;
+      flex-direction: column;
     }
     
     .project-section .back-btn {
@@ -80,6 +82,7 @@
       border: none;
       font-size: 16px;
       padding: 20px 30px 10px 30px;
+      flex-shrink: 0;
     }
     .project-section .back-btn:hover { color: #fec643; }
     
@@ -87,8 +90,10 @@
       display: grid;
       grid-template-columns: 2fr 1fr;
       gap: 0;
-      min-height: calc(100vh - 130px);
+      flex: 1;
+      min-height: 0;
       background: #ffffff;
+      height: calc(100vh - 80px - 70px);
     }
     
     /* Lado esquerdo - Carrossel (2/3) */
@@ -100,12 +105,14 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
-      min-height: 500px;
+      min-height: 400px;
+      height: 100%;
+      overflow: hidden;
     }
     
     .project-carousel .main-image-container {
       width: 100%;
-      max-height: 70vh;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -114,11 +121,12 @@
       background: #ffffff;
       border-radius: 12px;
       overflow: hidden;
+      max-height: calc(100vh - 200px);
     }
     
     .project-carousel .main-image-container img {
       max-width: 100%;
-      max-height: 70vh;
+      max-height: 100%;
       width: auto;
       height: auto;
       object-fit: contain;
@@ -179,6 +187,7 @@
       scrollbar-width: thin;
       justify-content: center;
       flex-wrap: wrap;
+      flex-shrink: 0;
     }
     .carousel-thumbnails::-webkit-scrollbar { height: 4px; }
     .carousel-thumbnails::-webkit-scrollbar-thumb { background: #fec643; border-radius: 4px; }
@@ -212,7 +221,7 @@
       justify-content: flex-start;
       border-left: 1px solid #f0f0f5;
       overflow-y: auto;
-      max-height: calc(100vh - 130px);
+      height: 100%;
     }
     
     .project-info .title {
@@ -238,6 +247,7 @@
       font-size: 14px;
       line-height: 1.8;
       flex: 1;
+      overflow-y: auto;
     }
     .project-info .description p { margin-bottom: 12px; }
     .project-info .description p:last-child { margin-bottom: 0; }
@@ -248,6 +258,7 @@
       margin-top: 24px;
       padding-top: 20px;
       border-top: 1px solid #f0f0f5;
+      flex-shrink: 0;
     }
     .project-info .footer-icons a,
     .project-info .footer-icons button {
@@ -269,26 +280,33 @@
     @media (max-width: 1024px) {
       .project-layout {
         grid-template-columns: 1fr 1fr;
+        height: auto;
+        min-height: calc(100vh - 80px - 70px);
       }
       .project-info .title { font-size: 24px; }
       .project-info { padding: 30px 25px; }
       .carousel-thumbnails img { width: 60px; height: 60px; }
+      .project-carousel { min-height: 400px; }
     }
     
     @media (max-width: 768px) {
+      .project-section { min-height: auto; }
       .project-layout {
         grid-template-columns: 1fr;
         min-height: auto;
+        height: auto;
       }
       .project-carousel {
         min-height: 300px;
+        height: 50vh;
         padding: 15px;
       }
       .project-carousel .main-image-container {
-        max-height: 50vh;
+        max-height: 100%;
+        height: 100%;
       }
       .project-carousel .main-image-container img {
-        max-height: 50vh;
+        max-height: 100%;
       }
       .project-info {
         border-left: none;
@@ -296,16 +314,19 @@
         padding: 25px 20px 30px;
         max-height: none;
         overflow-y: visible;
+        height: auto;
       }
       .project-info .title { font-size: 22px; }
+      .project-info .description { overflow-y: visible; }
       .carousel-thumbnails img { width: 50px; height: 50px; }
       .carousel-controls button { width: 36px; height: 36px; }
       .project-section .back-btn { padding: 15px 20px 5px 20px; }
+      .project-layout { height: auto; }
     }
     
     @media (max-width: 480px) {
-      .project-carousel .main-image-container { max-height: 40vh; }
-      .project-carousel .main-image-container img { max-height: 40vh; }
+      .project-carousel { height: 40vh; min-height: 250px; }
+      .project-carousel .main-image-container { max-height: 100%; }
       .project-info { padding: 20px 15px 25px; }
       .project-info .title { font-size: 18px; }
       .carousel-thumbnails img { width: 44px; height: 44px; }
@@ -571,6 +592,7 @@
     .footer-yellow {
       background-color: #fec643 !important;
       padding: 1.5rem 0 !important;
+      flex-shrink: 0;
     }
     .footer-yellow p { color: #4a4a4a !important; }
 
@@ -611,6 +633,17 @@
       justify-content: center;
       align-items: center;
       min-height: 300px;
+      flex: 1;
+    }
+
+    /* Ajustes para garantir que o footer fique no final */
+    .project-wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .project-wrapper .project-section {
+      flex: 1;
     }
   </style>
 </head>
@@ -635,6 +668,29 @@
     </div>
   </nav>
 
+  <!-- WRAPPER PARA PROJETOS (permite footer no final) -->
+  <div id="project-wrapper" class="project-wrapper page-hidden" style="display:none;">
+    <!-- PÁGINA DE PROJETO -->
+    <div id="project-section" class="project-section">
+      <button class="back-btn" onclick="navigateTo('work')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Back to Work
+      </button>
+      
+      <div id="project-content" style="flex:1;display:flex;flex-direction:column;">
+        <div class="loader-container"><div class="loader"></div></div>
+      </div>
+    </div>
+    <!-- FOOTER (aparece apenas em projetos) -->
+    <footer class="border-t border-gray-200 footer-yellow" style="margin-top:0;">
+      <div class="max-w-6xl mx-auto px-6 py-8 text-center">
+        <p class="text-sm" style="color: rgb(74, 74, 74); font-weight: 700; font-size: 16px;">© 2026 Yanne Vicente. All Rights Reserved.</p>
+      </div>
+    </footer>
+  </div>
+
   <!-- PÁGINA PRINCIPAL (WORK) -->
   <main id="work-section" class="w-full flex-1">
     <div class="banner-container">
@@ -647,20 +703,6 @@
       <div class="portfolio-grid" id="portfolio-grid"></div>
     </section>
   </main>
-
-  <!-- PÁGINA DE PROJETO -->
-  <div id="project-section" class="project-section page-hidden" style="display:none;">
-    <button class="back-btn" onclick="navigateTo('work')">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
-      Back to Work
-    </button>
-    
-    <div id="project-content">
-      <div class="loader-container"><div class="loader"></div></div>
-    </div>
-  </div>
 
   <!-- CONTACT -->
   <main id="contact-section" class="contact-grid page-hidden flex-1" style="display:none;">
@@ -707,8 +749,8 @@
   <!-- TOAST -->
   <div id="toast" class="toast">Link copiado! ✨</div>
 
-  <!-- FOOTER -->
-  <footer class="border-t border-gray-200 mt-12 footer-yellow">
+  <!-- FOOTER GLOBAL (aparece apenas em Work e Contact) -->
+  <footer id="global-footer" class="border-t border-gray-200 mt-12 footer-yellow">
     <div class="max-w-6xl mx-auto px-6 py-8 text-center">
       <p class="text-sm" style="color: rgb(74, 74, 74); font-weight: 700; font-size: 16px;">© 2026 Yanne Vicente. All Rights Reserved.</p>
     </div>
@@ -730,8 +772,10 @@
             "Winnie's Flying Guide is a poetry picture book for children ages 4 to 6 explores themes of belonging and friendship.",
             "It is most about the flying lessons of Winnie Pendragon, the good witch of East Winds, privately published for family and friends."
           ],
+          // IMAGEM DE CAPA (usada na grade)
           coverImage: "assets/images/projeto1.jpg",
-          images: [
+          // IMAGENS DO CARROSSEL (NÃO INCLUI A COVER)
+          carouselImages: [
             "assets/images/projeto1_1.jpg",
             "assets/images/projeto1_2.jpg",
             "assets/images/projeto1_3.jpg",
@@ -749,7 +793,7 @@
             "A children's cover book illustration concept I made for Escolinha São José (St. Joseph Elementary School)."
           ],
           coverImage: "assets/images/projeto2.jpg",
-          images: ["assets/images/projeto2_1.jpg"]
+          carouselImages: ["assets/images/projeto2_1.jpg"]
         },
         {
           id: 3,
@@ -763,7 +807,7 @@
             "I spent a short time there to create a few illustrations in three themes: Safari, Teddy Bears, and Kitten Patterns."
           ],
           coverImage: "assets/images/projeto3.jpg",
-          images: [
+          carouselImages: [
             "assets/images/projeto3_1.jpg",
             "assets/images/projeto3_2.jpg",
             "assets/images/projeto3_3.jpg"
@@ -781,7 +825,7 @@
             "Conceived as a tribute to the region's greatest artists, this series of 84 illustrations was produced between June and November 2025."
           ],
           coverImage: "assets/images/projeto4.jpg",
-          images: [
+          carouselImages: [
             "assets/images/projeto4_1.jpg",
             "assets/images/projeto4_2.jpg",
             "assets/images/projeto4_3.jpg",
@@ -811,7 +855,7 @@
             'Updates for the story are published on my <a href="https://tapas.io/series/cafe-estelar" target="_blank" rel="noopener"><b>Tapas</b></a> page.'
           ],
           coverImage: "assets/images/projeto5.jpg",
-          images: [
+          carouselImages: [
             "assets/images/projeto5_1.jpg",
             "assets/images/projeto5_2.jpg",
             "assets/images/projeto5_3.jpg",
@@ -832,7 +876,7 @@
             "Together, they create a variety of sketch videos, always in the most comedic way possible, with many references from Brazilian Northeastern culture!"
           ],
           coverImage: "assets/images/projeto6.jpg",
-          images: [
+          carouselImages: [
             "assets/images/projeto6_1.jpg",
             "assets/images/projeto6_2.jpg",
             "assets/images/projeto6_3.jpg",
@@ -852,7 +896,7 @@
             "Timeless Journey is a webcomic I'm creating as the continuation of my undergraduate thesis project 'TRAVELERS'. It is being updated on Tapas."
           ],
           coverImage: "assets/images/projeto7.jpg",
-          images: [
+          carouselImages: [
             "assets/images/projeto7_1.jpg",
             "assets/images/projeto7_2.jpg",
             "assets/images/projeto7_3.jpg",
@@ -870,7 +914,7 @@
             "Ranging from D&D to Vampire: The Masquerade."
           ],
           coverImage: "assets/images/projeto8.jpg",
-          images: [
+          carouselImages: [
             "assets/images/projeto8_1.jpg",
             "assets/images/projeto8_2.jpg",
             "assets/images/projeto8_3.jpg",
@@ -887,7 +931,7 @@
             "A personal project in which I created a fan art illustration based on the character Sardonyx from the animated series Steven Universe."
           ],
           coverImage: "assets/images/projeto9.jpg",
-          images: [
+          carouselImages: [
             "assets/images/projeto9_1.jpg",
             "assets/images/projeto9_2.jpg"
           ]
@@ -921,34 +965,41 @@
     // ========================================
     function navigateTo(page, projectSlug) {
       const workSection = document.getElementById('work-section');
-      const projectSection = document.getElementById('project-section');
+      const projectWrapper = document.getElementById('project-wrapper');
       const contactSection = document.getElementById('contact-section');
+      const globalFooter = document.getElementById('global-footer');
       const navWork = document.getElementById('nav-work');
       const navContact = document.getElementById('nav-contact');
 
       workSection.classList.add('page-hidden');
-      projectSection.classList.add('page-hidden');
-      projectSection.style.display = 'none';
+      projectWrapper.classList.add('page-hidden');
+      projectWrapper.style.display = 'none';
       contactSection.classList.add('page-hidden');
       contactSection.style.display = 'none';
+      globalFooter.style.display = 'none';
       
       navWork.classList.remove('active');
       navContact.classList.remove('active');
 
       if (page === 'project' && projectSlug) {
-        projectSection.style.display = 'block';
-        projectSection.classList.remove('page-hidden');
+        projectWrapper.style.display = 'flex';
+        projectWrapper.classList.remove('page-hidden');
+        globalFooter.style.display = 'none';
         loadProject(projectSlug);
-        history.pushState(null, '', `?project=${projectSlug}`);
+        // URL amigável: /slug-do-projeto
+        const newUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/' + projectSlug;
+        history.pushState(null, '', '/' + projectSlug);
         document.title = `Yanne Vicente - ${getProjectTitle(projectSlug)}`;
       } else if (page === 'contact') {
         contactSection.style.display = 'grid';
         contactSection.classList.remove('page-hidden');
+        globalFooter.style.display = 'block';
         navContact.classList.add('active');
         history.pushState(null, '', '#contact');
         document.title = 'Yanne Vicente - Contact';
       } else {
         workSection.classList.remove('page-hidden');
+        globalFooter.style.display = 'block';
         navWork.classList.add('active');
         history.pushState(null, '', '#work');
         document.title = 'Yanne Vicente - Illustration';
@@ -973,14 +1024,16 @@
       const container = document.getElementById('project-content');
       container.innerHTML = `<div class="loader-container"><div class="loader"></div></div>`;
 
-      const hasMultiple = project.images && project.images.length > 1;
-      const firstImage = project.coverImage || (project.images && project.images[0]) || '';
+      // USA APENAS carouselImages (NÃO a cover)
+      const images = project.carouselImages || [];
+      const hasMultiple = images.length > 1;
+      const firstImage = images.length > 0 ? images[0] : '';
 
       let thumbnailsHtml = '';
       if (hasMultiple) {
         thumbnailsHtml = `
           <div class="carousel-thumbnails" id="carousel-thumbnails">
-            ${project.images.map((img, idx) => `
+            ${images.map((img, idx) => `
               <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect fill='%23f5f5f5' width='80' height='80'/%3E%3C/svg%3E" 
                    data-src="${img}" 
                    alt="Thumbnail ${idx+1}" 
@@ -1051,7 +1104,7 @@
         </div>
       `;
 
-      // Carrega imagem principal
+      // Carrega imagem principal (primeira do carrossel)
       const mainImg = document.getElementById('project-main-image');
       if (mainImg && mainImg.dataset.src) {
         loadImage(mainImg.dataset.src, (url) => {
@@ -1105,11 +1158,11 @@
     // ========================================
     function changeProjectImage(slug, index) {
       const project = siteData.portfolio.find(p => p.slug === slug);
-      if (!project || !project.images || index >= project.images.length) return;
+      if (!project || !project.carouselImages || index >= project.carouselImages.length) return;
 
       currentImageIndex = index;
       const mainImg = document.getElementById('project-main-image');
-      const src = project.images[index];
+      const src = project.carouselImages[index];
       
       mainImg.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"%3E%3Crect fill="%23ffffff" width="800" height="800"/%3E%3C/svg%3E';
       loadImage(src, (url) => { mainImg.src = url; });
@@ -1120,15 +1173,15 @@
 
     function prevProjectImage(slug) {
       const project = siteData.portfolio.find(p => p.slug === slug);
-      if (!project || !project.images || project.images.length <= 1) return;
-      const idx = (currentImageIndex - 1 + project.images.length) % project.images.length;
+      if (!project || !project.carouselImages || project.carouselImages.length <= 1) return;
+      const idx = (currentImageIndex - 1 + project.carouselImages.length) % project.carouselImages.length;
       changeProjectImage(slug, idx);
     }
 
     function nextProjectImage(slug) {
       const project = siteData.portfolio.find(p => p.slug === slug);
-      if (!project || !project.images || project.images.length <= 1) return;
-      const idx = (currentImageIndex + 1) % project.images.length;
+      if (!project || !project.carouselImages || project.carouselImages.length <= 1) return;
+      const idx = (currentImageIndex + 1) % project.carouselImages.length;
       changeProjectImage(slug, idx);
     }
 
@@ -1158,7 +1211,7 @@
       const project = siteData.portfolio.find(p => p.slug === slug);
       if (!project) return;
       
-      const shareUrl = window.location.origin + window.location.pathname + '?project=' + slug;
+      const shareUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/' + slug;
       
       if (navigator.share) {
         navigator.share({ title: project.title, text: `Confira o projeto "${project.title}" por Yanne Vicente!`, url: shareUrl })
@@ -1313,11 +1366,21 @@
       renderProfile();
       renderSocial();
 
+      // Detecta URL amigável: /slug-do-projeto
+      const path = window.location.pathname;
+      const pathSegments = path.split('/').filter(s => s.length > 0);
+      const lastSegment = pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : '';
+      
+      // Verifica se o último segmento é um slug válido
+      const isValidSlug = siteData.portfolio.some(p => p.slug === lastSegment);
+      
       const hash = window.location.hash;
       const params = new URLSearchParams(window.location.search);
       const projectParam = params.get('project');
 
-      if (projectParam) {
+      if (isValidSlug) {
+        navigateTo('project', lastSegment);
+      } else if (projectParam) {
         navigateTo('project', projectParam);
       } else if (hash === '#contact') {
         navigateTo('contact');
@@ -1329,25 +1392,32 @@
         if (e.key === 'Escape') {
           if (document.getElementById('zoomModal').classList.contains('active')) {
             closeZoom();
-          } else if (document.getElementById('project-section').style.display !== 'none') {
+          } else if (document.getElementById('project-wrapper').style.display !== 'none') {
             navigateTo('work');
           }
         }
-        if (e.key === 'ArrowLeft' && document.getElementById('project-section').style.display !== 'none') {
-          const slug = new URLSearchParams(window.location.search).get('project');
-          if (slug) prevProjectImage(slug);
+        if (e.key === 'ArrowLeft' && document.getElementById('project-wrapper').style.display !== 'none') {
+          const slug = window.location.pathname.split('/').filter(s => s.length > 0).pop();
+          if (slug && siteData.portfolio.some(p => p.slug === slug)) prevProjectImage(slug);
         }
-        if (e.key === 'ArrowRight' && document.getElementById('project-section').style.display !== 'none') {
-          const slug = new URLSearchParams(window.location.search).get('project');
-          if (slug) nextProjectImage(slug);
+        if (e.key === 'ArrowRight' && document.getElementById('project-wrapper').style.display !== 'none') {
+          const slug = window.location.pathname.split('/').filter(s => s.length > 0).pop();
+          if (slug && siteData.portfolio.some(p => p.slug === slug)) nextProjectImage(slug);
         }
       });
 
       window.addEventListener('popstate', () => {
-        const p = new URLSearchParams(window.location.search).get('project');
-        if (p) { navigateTo('project', p); }
-        else if (window.location.hash === '#contact') { navigateTo('contact'); }
-        else { navigateTo('work'); }
+        const newPath = window.location.pathname;
+        const segments = newPath.split('/').filter(s => s.length > 0);
+        const slug = segments.length > 0 ? segments[segments.length - 1] : '';
+        
+        if (slug && siteData.portfolio.some(p => p.slug === slug)) {
+          navigateTo('project', slug);
+        } else if (window.location.hash === '#contact') {
+          navigateTo('contact');
+        } else {
+          navigateTo('work');
+        }
       });
     });
   </script>
