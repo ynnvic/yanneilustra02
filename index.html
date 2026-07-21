@@ -61,7 +61,7 @@
       .nav-link { font-size: 13px; }
     }
 
-    /* PÁGINA DE PROJETO */
+    /* PÁGINA DE PROJETO - NOVO LAYOUT BASEADO NO ESBOÇO */
     .project-section {
       background: #ffffff;
       min-height: calc(100vh - 80px);
@@ -86,6 +86,26 @@
     }
     .project-section .back-btn:hover { color: #fec643; }
     
+    /* TÍTULO DO PROJETO ACIMA DO CARROSSEL */
+    .project-header-title {
+      padding: 0 30px 10px 30px;
+      flex-shrink: 0;
+    }
+    .project-header-title h1 {
+      color: #8d9bc7;
+      font-weight: 800;
+      font-size: 32px;
+      line-height: 1.2;
+      margin: 0;
+    }
+    @media (max-width: 768px) {
+      .project-header-title { padding: 0 20px 8px 20px; }
+      .project-header-title h1 { font-size: 24px; }
+    }
+    @media (max-width: 480px) {
+      .project-header-title h1 { font-size: 20px; }
+    }
+    
     .project-layout {
       display: grid;
       grid-template-columns: 2fr 1fr;
@@ -93,7 +113,7 @@
       flex: 1;
       min-height: 0;
       background: #ffffff;
-      height: calc(100vh - 80px - 70px);
+      height: calc(100vh - 80px - 70px - 60px);
     }
     
     /* Lado esquerdo - Carrossel (2/3) */
@@ -121,7 +141,7 @@
       background: #ffffff;
       border-radius: 12px;
       overflow: hidden;
-      max-height: calc(100vh - 200px);
+      max-height: calc(100vh - 240px);
     }
     
     .project-carousel .main-image-container img {
@@ -212,10 +232,10 @@
       box-shadow: 0 0 0 2px #fec643;
     }
     
-    /* Lado direito - Info (1/3) */
+    /* Lado direito - Info (1/3) - CONFORME ESBOÇO */
     .project-info {
       background: #ffffff;
-      padding: 40px 35px 30px 30px;
+      padding: 30px 35px 30px 30px;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -252,11 +272,12 @@
     .project-info .description p { margin-bottom: 12px; }
     .project-info .description p:last-child { margin-bottom: 0; }
     
+    /* ÍCONES SOCIAIS - SEMPRE NO FINAL, COM LINHA SEPARADORA */
     .project-info .footer-icons {
       display: flex;
       gap: 16px;
       padding-top: 20px;
-      border-top: 1px solid #f0f0f5;
+      border-top: 2px solid #f0f0f5;
       flex-shrink: 0;
       margin-top: 16px;
     }
@@ -281,12 +302,12 @@
       .project-layout {
         grid-template-columns: 1fr 1fr;
         height: auto;
-        min-height: calc(100vh - 80px - 70px);
+        min-height: calc(100vh - 80px - 70px - 60px);
       }
       .project-info .title { font-size: 24px; }
-      .project-info { padding: 30px 25px; }
+      .project-info { padding: 25px 25px; }
       .carousel-thumbnails img { width: 60px; height: 60px; }
-      .project-carousel { min-height: 400px; }
+      .project-carousel { min-height: 350px; }
     }
     
     @media (max-width: 768px) {
@@ -311,7 +332,7 @@
       .project-info {
         border-left: none;
         border-top: 1px solid #f0f0f5;
-        padding: 25px 20px 30px;
+        padding: 20px 20px 25px;
         max-height: none;
         overflow-y: visible;
         height: auto;
@@ -321,20 +342,23 @@
       .carousel-thumbnails img { width: 50px; height: 50px; }
       .carousel-controls button { width: 36px; height: 36px; }
       .project-section .back-btn { padding: 15px 20px 5px 20px; }
+      .project-header-title { padding: 0 20px 5px 20px; }
+      .project-header-title h1 { font-size: 22px; }
       .project-layout { height: auto; }
     }
     
     @media (max-width: 480px) {
       .project-carousel { height: 40vh; min-height: 250px; }
       .project-carousel .main-image-container { max-height: 100%; }
-      .project-info { padding: 20px 15px 25px; }
+      .project-info { padding: 16px 15px 20px; }
       .project-info .title { font-size: 18px; }
       .carousel-thumbnails img { width: 44px; height: 44px; }
       .carousel-thumbnails { gap: 6px; padding: 12px 10px 8px 10px; }
+      .project-header-title h1 { font-size: 18px; }
       .project-info .footer-icons { margin-top: 12px; padding-top: 16px; }
     }
 
-    /* MODAL DE ZOOM - AGORA COM NAVEGAÇÃO */
+    /* MODAL DE ZOOM COM NAVEGAÇÃO */
     .zoom-modal {
       position: fixed;
       inset: 0;
@@ -696,7 +720,6 @@
       flex: 1;
     }
 
-    /* Ajustes para garantir que o footer fique no final */
     .project-wrapper {
       display: flex;
       flex-direction: column;
@@ -728,9 +751,8 @@
     </div>
   </nav>
 
-  <!-- WRAPPER PARA PROJETOS (permite footer no final) -->
+  <!-- WRAPPER PARA PROJETOS -->
   <div id="project-wrapper" class="project-wrapper page-hidden" style="display:none;">
-    <!-- PÁGINA DE PROJETO -->
     <div id="project-section" class="project-section">
       <button class="back-btn" onclick="navigateTo('work')">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -739,11 +761,15 @@
         Back to Work
       </button>
       
+      <!-- TÍTULO DO PROJETO ACIMA DO CARROSSEL -->
+      <div class="project-header-title" id="project-header-title">
+        <h1></h1>
+      </div>
+      
       <div id="project-content" style="flex:1;display:flex;flex-direction:column;">
         <div class="loader-container"><div class="loader"></div></div>
       </div>
     </div>
-    <!-- FOOTER (aparece apenas em projetos) -->
     <footer class="border-t border-gray-200 footer-yellow" style="margin-top:0;">
       <div class="max-w-6xl mx-auto px-6 py-8 text-center">
         <p class="text-sm" style="color: rgb(74, 74, 74); font-weight: 700; font-size: 16px;">© 2026 Yanne Vicente. All Rights Reserved.</p>
@@ -822,7 +848,7 @@
   <!-- TOAST -->
   <div id="toast" class="toast">Link copiado! ✨</div>
 
-  <!-- FOOTER GLOBAL (aparece apenas em Work e Contact) -->
+  <!-- FOOTER GLOBAL -->
   <footer id="global-footer" class="border-t border-gray-200 mt-12 footer-yellow">
     <div class="max-w-6xl mx-auto px-6 py-8 text-center">
       <p class="text-sm" style="color: rgb(74, 74, 74); font-weight: 700; font-size: 16px;">© 2026 Yanne Vicente. All Rights Reserved.</p>
@@ -1094,6 +1120,9 @@
       const container = document.getElementById('project-content');
       container.innerHTML = `<div class="loader-container"><div class="loader"></div></div>`;
 
+      // Atualiza o título do cabeçalho
+      document.getElementById('project-header-title').querySelector('h1').textContent = project.title;
+
       const images = project.carouselImages || [];
       const hasMultiple = images.length > 1;
       const firstImage = images.length > 0 ? images[0] : '';
@@ -1237,7 +1266,6 @@
       const thumbs = document.querySelectorAll('#carousel-thumbnails img');
       thumbs.forEach((t, i) => t.classList.toggle('active-thumb', i === index));
       
-      // Atualiza também o zoom se estiver aberto
       updateZoomCounter();
     }
 
@@ -1264,7 +1292,6 @@
       
       const project = getCurrentProject();
       if (!project || !project.carouselImages || project.carouselImages.length <= 1) {
-        // Apenas zoom simples
         const zoomModal = document.getElementById('zoomModal');
         const zoomImg = document.getElementById('zoomImage');
         zoomImg.src = mainImg.src;
@@ -1276,7 +1303,6 @@
         return;
       }
       
-      // Zoom com navegação
       const zoomModal = document.getElementById('zoomModal');
       const zoomImg = document.getElementById('zoomImage');
       zoomImg.src = mainImg.src;
@@ -1306,10 +1332,8 @@
       if (!project || !project.carouselImages || project.carouselImages.length <= 1) return;
       const idx = (currentImageIndex - 1 + project.carouselImages.length) % project.carouselImages.length;
       
-      // Atualiza a imagem principal do carrossel
       changeProjectImage(project.slug, idx);
       
-      // Atualiza a imagem do zoom
       const zoomImg = document.getElementById('zoomImage');
       const src = project.carouselImages[idx];
       zoomImg.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"%3E%3Crect fill="%23ffffff" width="800" height="800"/%3E%3C/svg%3E';
