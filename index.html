@@ -5,12 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg" href="assets/images/favicon.svg">
   <title>Yanne Vicente - Illustration</title>
-    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
+  
+  <!-- PRÉ-CONEXÕES PARA CDNs -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   
   <style>
     body { font-family: 'Poppins', sans-serif; }
@@ -704,7 +708,7 @@
   <!-- NAVEGAÇÃO -->
   <nav class="navbar">
     <div class="navbar-logo">
-      <img src="assets/images/logo.svg" alt="Yanne Vicente Logo" class="logo-img" onclick="switchPage('work')" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';">
+      <img src="assets/images/logo.svg" alt="Yanne Vicente Logo" class="logo-img" onclick="switchPage('work')" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" width="40" height="40">
       <span id="logo-fallback" class="text-2xl font-bold cursor-pointer" style="color: #fec643; display: none;" onclick="switchPage('work')">YV</span>
     </div>
     
@@ -723,7 +727,7 @@
   <!-- WORK -->
   <main id="work-section" class="w-full flex-1">
     <div class="banner-container">
-      <img src="assets/images/banner1.jpg" alt="Banner" loading="lazy" decoding="async" onerror="this.style.display='none'">
+      <img src="assets/images/banner1.jpg" alt="Banner" loading="lazy" decoding="async" onerror="this.style.display='none'" width="1200" height="400">
     </div>
     
     <section class="portfolio-wrapper">
@@ -737,7 +741,7 @@
   <!-- CONTACT -->
   <main id="contact-section" class="contact-grid page-hidden flex-1">
     <div class="image-col">
-      <img id="profile-photo" class="w-full h-full object-cover" loading="lazy" decoding="async" src="assets/images/profile.jpg" alt="Yanne Vicente" onerror="this.src='https://via.placeholder.com/800x800/cccccc/666666?text=Foto+de+Perfil'">
+      <img id="profile-photo" class="w-full h-full object-cover" loading="lazy" decoding="async" src="assets/images/profile.jpg" alt="Yanne Vicente" onerror="this.src='https://via.placeholder.com/800x800/cccccc/666666?text=Foto+de+Perfil'" width="800" height="800">
     </div>
     
     <div class="contact-content">
@@ -795,7 +799,7 @@
       
       <!-- Lado da Imagem -->
       <div class="modal-image-side" id="modalImageSide">
-        <img id="modalImage" src="" alt="Projeto" loading="lazy" decoding="async">
+        <img id="modalImage" src="" alt="Projeto" loading="lazy" decoding="async" width="800" height="800">
         
         <!-- Botões de navegação - escondidos por padrão, JS controla visibilidade -->
         <button onclick="prevModalImage()" class="modal-nav-btn prev" id="modalPrevBtn">
@@ -1062,7 +1066,7 @@
         const thumbImage = project.gradeImage || 'https://via.placeholder.com/800x800/cccccc/666666?text=Sem+imagem';
         grid.innerHTML += `
           <div class="portfolio-item" onclick="openProjectModal(${index})">
-            <img loading="lazy" decoding="async" src="${thumbImage}" alt="${project.title}" onerror="this.src='https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada'">
+            <img loading="lazy" decoding="async" src="${thumbImage}" alt="${project.title}" onerror="this.src='https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada'" width="400" height="400">
             <div class="overlay">
               <p class="font-bold text-base" style="color: white;">${project.title}</p>
               <p class="text-xs opacity-80 mt-1" style="color: rgba(255,255,255,0.8);">${project.category} · ${project.year}</p>
@@ -1216,6 +1220,9 @@
       updateModalContent();
     }
 
+    // Cache para imagens do modal
+    const imageCache = {};
+
     function updateModalContent() {
       const project = siteData.portfolio[currentProjectIndex];
       const images = project.carouselImages || [];
@@ -1226,12 +1233,39 @@
         document.getElementById('modalImage').src = project.gradeImage || 'https://via.placeholder.com/800x800/cccccc/666666?text=Sem+imagem';
       } else {
         const imageIndex = currentImageIndex % images.length;
-        document.getElementById('modalImage').src = images[imageIndex];
+        const imgSrc = images[imageIndex];
+        
+        // Verifica se a imagem já está em cache
+        if (imageCache[imgSrc]) {
+          document.getElementById('modalImage').src = imageCache[imgSrc];
+        } else {
+          // Pré-carrega a imagem
+          const img = new Image();
+          img.onload = function() {
+            imageCache[imgSrc] = imgSrc;
+            document.getElementById('modalImage').src = imgSrc;
+          };
+          img.onerror = function() {
+            document.getElementById('modalImage').src = 'https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada';
+          };
+          img.src = imgSrc;
+        }
       }
       
       document.getElementById('modalImage').onerror = function() {
         this.src = 'https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada';
       };
+      
+      // Pré-carrega as próximas imagens em background
+      if (images.length > 1) {
+        const nextIndex = (currentImageIndex + 1) % images.length;
+        const nextImg = new Image();
+        nextImg.src = images[nextIndex];
+        
+        const prevIndex = (currentImageIndex - 1 + images.length) % images.length;
+        const prevImg = new Image();
+        prevImg.src = images[prevIndex];
+      }
       
       // Atualiza título
       document.getElementById('modalTitle').textContent = project.title;
