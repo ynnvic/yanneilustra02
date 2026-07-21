@@ -212,7 +212,7 @@
       box-shadow: 0 0 0 2px #fec643;
     }
     
-    /* Lado direito - Info (1/3) - CAIXA TERMINA EXATAMENTE NO FINAL DO TEXTO */
+    /* Lado direito - Info (1/3) */
     .project-info {
       background: #ffffff;
       padding: 30px 35px 20px 30px;
@@ -251,7 +251,6 @@
     .project-info .description p { margin-bottom: 12px; }
     .project-info .description p:last-child { margin-bottom: 0; }
     
-    /* ÍCONES SOCIAIS - COLADOS EXATAMENTE NO FINAL DO TEXTO */
     .project-info .footer-icons {
       display: flex;
       gap: 16px;
@@ -818,7 +817,7 @@
   </div>
 
   <!-- TOAST -->
-  <div id="toast" class="toast">Your link is copied! ✨</div>
+  <div id="toast" class="toast">Link copiado! ✨</div>
 
   <!-- FOOTER GLOBAL -->
   <footer id="global-footer" class="border-t border-gray-200 mt-12 footer-yellow">
@@ -1030,7 +1029,7 @@
     const imageCache = {};
 
     // ========================================
-    // NAVEGAÇÃO PRINCIPAL
+    // NAVEGAÇÃO PRINCIPAL - USANDO HASH (#)
     // ========================================
     function navigateTo(page, projectSlug) {
       const workSection = document.getElementById('work-section');
@@ -1055,8 +1054,8 @@
         projectWrapper.classList.remove('page-hidden');
         globalFooter.style.display = 'none';
         loadProject(projectSlug);
-        const newUrl = window.location.origin + window.location.pathname + '#project/' + projectSlug;
-        history.pushState(null, '', '/' + projectSlug);
+        // USANDO HASH - FUNCIONA EM QUALQUER SERVIDOR!
+        history.pushState(null, '', '#project/' + projectSlug);
         document.title = `Yanne Vicente - ${getProjectTitle(projectSlug)}`;
       } else if (page === 'contact') {
         contactSection.style.display = 'grid';
@@ -1285,7 +1284,10 @@
     }
 
     function getCurrentProject() {
-      const slug = window.location.pathname.split('/').filter(s => s.length > 0).pop();
+      // Pega o slug do hash: #project/winnies-flying-guide
+      const hash = window.location.hash;
+      const match = hash.match(/^#project\/(.+)$/);
+      const slug = match ? match[1] : null;
       return siteData.portfolio.find(p => p.slug === slug);
     }
 
@@ -1332,13 +1334,13 @@
     }
 
     // ========================================
-    // COMPARTILHAR
+    // COMPARTILHAR - COMPARTILHA O LINK COM HASH
     // ========================================
     function shareProject(slug) {
       const project = siteData.portfolio.find(p => p.slug === slug);
       if (!project) return;
       
-      const shareUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/' + slug;
+      const shareUrl = window.location.origin + window.location.pathname + '#project/' + slug;
       
       if (navigator.share) {
         navigator.share({ title: project.title, text: `Confira o projeto "${project.title}" por Yanne Vicente!`, url: shareUrl })
@@ -1350,7 +1352,7 @@
 
     function copyToClipboard(text) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(() => showToast('Your link is copied ✨'))
+        navigator.clipboard.writeText(text).then(() => showToast('Link copiado! ✨'))
           .catch(() => fallbackCopy(text));
       } else {
         fallbackCopy(text);
@@ -1363,7 +1365,7 @@
       ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;';
       document.body.appendChild(ta);
       ta.select();
-      try { document.execCommand('copy'); showToast('Your link is copied ✨'); } 
+      try { document.execCommand('copy'); showToast('Link copiado! ✨'); } 
       catch(e) { showToast('Copie manualmente: ' + text); }
       document.body.removeChild(ta);
     }
@@ -1486,27 +1488,23 @@
     });
 
     // ========================================
-    // ROTEAMENTO INICIAL
+    // ROTEAMENTO INICIAL - LÊ O HASH
     // ========================================
     document.addEventListener('DOMContentLoaded', function() {
       renderPortfolio();
       renderProfile();
       renderSocial();
 
-      const path = window.location.pathname;
-      const pathSegments = path.split('/').filter(s => s.length > 0);
-      const lastSegment = pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : '';
-      
-      const isValidSlug = siteData.portfolio.some(p => p.slug === lastSegment);
-      
+      // Lê o hash da URL: #project/winnies-flying-guide ou #contact ou #work
       const hash = window.location.hash;
-      const params = new URLSearchParams(window.location.search);
-      const projectParam = params.get('project');
-
-      if (isValidSlug) {
-        navigateTo('project', lastSegment);
-      } else if (projectParam) {
-        navigateTo('project', projectParam);
+      
+      if (hash.startsWith('#project/')) {
+        const slug = hash.replace('#project/', '');
+        if (siteData.portfolio.some(p => p.slug === slug)) {
+          navigateTo('project', slug);
+        } else {
+          navigateTo('work');
+        }
       } else if (hash === '#contact') {
         navigateTo('contact');
       } else {
@@ -1525,28 +1523,30 @@
           if (document.getElementById('zoomModal').classList.contains('active')) {
             zoomPrevImage();
           } else if (document.getElementById('project-wrapper').style.display !== 'none') {
-            const slug = window.location.pathname.split('/').filter(s => s.length > 0).pop();
-            if (slug && siteData.portfolio.some(p => p.slug === slug)) prevProjectImage(slug);
+            const project = getCurrentProject();
+            if (project) prevProjectImage(project.slug);
           }
         }
         if (e.key === 'ArrowRight') {
           if (document.getElementById('zoomModal').classList.contains('active')) {
             zoomNextImage();
           } else if (document.getElementById('project-wrapper').style.display !== 'none') {
-            const slug = window.location.pathname.split('/').filter(s => s.length > 0).pop();
-            if (slug && siteData.portfolio.some(p => p.slug === slug)) nextProjectImage(slug);
+            const project = getCurrentProject();
+            if (project) nextProjectImage(project.slug);
           }
         }
       });
 
       window.addEventListener('popstate', () => {
-        const newPath = window.location.pathname;
-        const segments = newPath.split('/').filter(s => s.length > 0);
-        const slug = segments.length > 0 ? segments[segments.length - 1] : '';
-        
-        if (slug && siteData.portfolio.some(p => p.slug === slug)) {
-          navigateTo('project', slug);
-        } else if (window.location.hash === '#contact') {
+        const newHash = window.location.hash;
+        if (newHash.startsWith('#project/')) {
+          const slug = newHash.replace('#project/', '');
+          if (siteData.portfolio.some(p => p.slug === slug)) {
+            navigateTo('project', slug);
+          } else {
+            navigateTo('work');
+          }
+        } else if (newHash === '#contact') {
           navigateTo('contact');
         } else {
           navigateTo('work');
