@@ -482,6 +482,28 @@
       color: #fec643;
     }
     
+    /* Spinner de carregamento do modal */
+    .modal-loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255,255,255,0.1);
+      border-top: 4px solid #fec643;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    .modal-loader.hidden {
+      display: none;
+    }
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    
     @media (max-width: 768px) {
       .modal-content-wrapper {
         flex-direction: column;
@@ -700,6 +722,17 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+
+    /* Placeholder shimmer para imagens carregando */
+    .image-placeholder {
+      background: linear-gradient(90deg, #e8e6e4 25%, #f0efed 50%, #e8e6e4 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
   </style>
 </head>
 
@@ -784,7 +817,7 @@
     </div>
   </main>
 
-  <!-- MODAL - NOVO LAYOUT -->
+  <!-- MODAL - NOVO LAYOUT OTIMIZADO -->
   <div id="projectModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 opacity-0 pointer-events-none transition-opacity duration-300">
     <div class="absolute inset-0 modal-overlay" onclick="closeProjectModal()"></div>
     
@@ -799,6 +832,8 @@
       
       <!-- Lado da Imagem -->
       <div class="modal-image-side" id="modalImageSide">
+        <!-- Spinner de carregamento -->
+        <div class="modal-loader" id="modalLoader"></div>
         <img id="modalImage" src="" alt="Projeto" loading="lazy" decoding="async" width="800" height="800">
         
         <!-- Botões de navegação - escondidos por padrão, JS controla visibilidade -->
@@ -1055,18 +1090,29 @@
 
     let currentProjectIndex = 0;
     let currentImageIndex = 0;
+    const imageCache = {};
 
     // ========================================
-    // RENDERIZA O PORTFÓLIO
+    // RENDERIZA O PORTFÓLIO COM LAZY LOADING
     // ========================================
     function renderPortfolio() {
       const grid = document.getElementById('portfolio-grid');
       grid.innerHTML = '';
+      
       siteData.portfolio.forEach((project, index) => {
         const thumbImage = project.gradeImage || 'https://via.placeholder.com/800x800/cccccc/666666?text=Sem+imagem';
+        // Placeholder SVG para lazy loading
+        const placeholder = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"%3E%3Crect fill="%23e8e6e4" width="400" height="400"/%3E%3C/svg%3E';
+        
         grid.innerHTML += `
-          <div class="portfolio-item" onclick="openProjectModal(${index})">
-            <img loading="lazy" decoding="async" src="${thumbImage}" alt="${project.title}" onerror="this.src='https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada'" width="400" height="400">
+          <div class="portfolio-item" onclick="openProjectModal(${index})" data-index="${index}">
+            <img loading="lazy" decoding="async" 
+                 src="${placeholder}" 
+                 data-src="${thumbImage}" 
+                 alt="${project.title}" 
+                 class="lazy-image"
+                 onerror="this.src='https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada'" 
+                 width="400" height="400">
             <div class="overlay">
               <p class="font-bold text-base" style="color: white;">${project.title}</p>
               <p class="text-xs opacity-80 mt-1" style="color: rgba(255,255,255,0.8);">${project.category} · ${project.year}</p>
@@ -1074,6 +1120,52 @@
           </div>
         `;
       });
+
+      // Configura o Intersection Observer para lazy loading
+      setupLazyLoading();
+    }
+
+    // ========================================
+    // LAZY LOADING COM INTERSECTION OBSERVER
+    // ========================================
+    function setupLazyLoading() {
+      const lazyImages = document.querySelectorAll('.lazy-image');
+      
+      if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              const src = img.dataset.src;
+              if (src) {
+                img.src = src;
+                img.removeAttribute('data-src');
+                img.classList.remove('lazy-image');
+                // Adiciona classe para fade-in
+                img.style.transition = 'opacity 0.5s ease';
+                img.style.opacity = '0';
+                setTimeout(() => {
+                  img.style.opacity = '1';
+                }, 50);
+              }
+              observer.unobserve(img);
+            }
+          });
+        }, {
+          rootMargin: '100px 0px',
+          threshold: 0.01
+        });
+
+        lazyImages.forEach(img => imageObserver.observe(img));
+      } else {
+        // Fallback para navegadores antigos
+        lazyImages.forEach(img => {
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+          }
+        });
+      }
     }
 
     // ========================================
@@ -1122,25 +1214,20 @@
     // ========================================
     function shareProject() {
       const project = siteData.portfolio[currentProjectIndex];
-      // Codifica o nome do projeto para usar na URL
       const projectSlug = encodeURIComponent(project.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
-      // Constrói a URL com hash para o projeto específico
       const shareUrl = window.location.origin + window.location.pathname + '?project=' + projectSlug + '#work';
       
-      // Verifica se a API de compartilhamento nativa está disponível (dispositivos móveis)
       if (navigator.share) {
         navigator.share({
           title: project.title,
           text: `Confira o projeto "${project.title}" por Yanne Vicente!`,
           url: shareUrl
         }).catch(err => {
-          // Se o usuário cancelar, não faz nada
           if (err.name !== 'AbortError') {
             copyToClipboard(shareUrl);
           }
         });
       } else {
-        // Fallback: copia o link para a área de transferência
         copyToClipboard(shareUrl);
       }
     }
@@ -1185,12 +1272,29 @@
     }
 
     // ========================================
-    // FUNÇÕES DO MODAL
+    // FUNÇÕES DO MODAL - OTIMIZADAS
     // ========================================
     function openProjectModal(index) {
       currentProjectIndex = index;
       currentImageIndex = 0;
-      updateModalContent();
+      
+      // Mostra o loader
+      const loader = document.getElementById('modalLoader');
+      loader.classList.remove('hidden');
+      
+      // Esconde a imagem enquanto carrega
+      const modalImg = document.getElementById('modalImage');
+      modalImg.style.opacity = '0';
+      
+      // Atualiza informações (título, descrição) imediatamente
+      updateModalInfo();
+      
+      // Carrega a primeira imagem
+      loadModalImage(currentImageIndex, () => {
+        loader.classList.add('hidden');
+        modalImg.style.opacity = '1';
+      });
+      
       const modal = document.getElementById('projectModal');
       modal.classList.remove('opacity-0', 'pointer-events-none');
       modal.classList.add('opacity-100', 'pointer-events-auto');
@@ -1209,7 +1313,20 @@
       if (!project.carouselImages || project.carouselImages.length <= 1) return;
       
       currentImageIndex = (currentImageIndex - 1 + project.carouselImages.length) % project.carouselImages.length;
-      updateModalContent();
+      
+      // Mostra loader
+      const loader = document.getElementById('modalLoader');
+      loader.classList.remove('hidden');
+      
+      const modalImg = document.getElementById('modalImage');
+      modalImg.style.opacity = '0';
+      
+      loadModalImage(currentImageIndex, () => {
+        loader.classList.add('hidden');
+        modalImg.style.opacity = '1';
+      });
+      
+      updateThumbnails();
     }
 
     function nextModalImage() {
@@ -1217,61 +1334,64 @@
       if (!project.carouselImages || project.carouselImages.length <= 1) return;
       
       currentImageIndex = (currentImageIndex + 1) % project.carouselImages.length;
-      updateModalContent();
+      
+      const loader = document.getElementById('modalLoader');
+      loader.classList.remove('hidden');
+      
+      const modalImg = document.getElementById('modalImage');
+      modalImg.style.opacity = '0';
+      
+      loadModalImage(currentImageIndex, () => {
+        loader.classList.add('hidden');
+        modalImg.style.opacity = '1';
+      });
+      
+      updateThumbnails();
     }
 
-    // Cache para imagens do modal
-    const imageCache = {};
+    function loadModalImage(index, callback) {
+      const project = siteData.portfolio[currentProjectIndex];
+      const images = project.carouselImages || [];
+      
+      if (images.length === 0) {
+        const fallback = project.gradeImage || 'https://via.placeholder.com/800x800/cccccc/666666?text=Sem+imagem';
+        document.getElementById('modalImage').src = fallback;
+        if (callback) callback();
+        return;
+      }
+      
+      const imgSrc = images[index % images.length];
+      const modalImg = document.getElementById('modalImage');
+      
+      // Verifica se está em cache
+      if (imageCache[imgSrc]) {
+        modalImg.src = imageCache[imgSrc];
+        if (callback) callback();
+        return;
+      }
+      
+      // Carrega a imagem
+      const img = new Image();
+      img.onload = function() {
+        imageCache[imgSrc] = imgSrc;
+        modalImg.src = imgSrc;
+        if (callback) callback();
+      };
+      img.onerror = function() {
+        modalImg.src = 'https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada';
+        if (callback) callback();
+      };
+      img.src = imgSrc;
+    }
 
-    function updateModalContent() {
+    function updateModalInfo() {
       const project = siteData.portfolio[currentProjectIndex];
       const images = project.carouselImages || [];
       const hasMultipleImages = images.length > 1;
       
-      // Atualiza imagem principal
-      if (images.length === 0) {
-        document.getElementById('modalImage').src = project.gradeImage || 'https://via.placeholder.com/800x800/cccccc/666666?text=Sem+imagem';
-      } else {
-        const imageIndex = currentImageIndex % images.length;
-        const imgSrc = images[imageIndex];
-        
-        // Verifica se a imagem já está em cache
-        if (imageCache[imgSrc]) {
-          document.getElementById('modalImage').src = imageCache[imgSrc];
-        } else {
-          // Pré-carrega a imagem
-          const img = new Image();
-          img.onload = function() {
-            imageCache[imgSrc] = imgSrc;
-            document.getElementById('modalImage').src = imgSrc;
-          };
-          img.onerror = function() {
-            document.getElementById('modalImage').src = 'https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada';
-          };
-          img.src = imgSrc;
-        }
-      }
-      
-      document.getElementById('modalImage').onerror = function() {
-        this.src = 'https://via.placeholder.com/800x800/cccccc/666666?text=Imagem+não+encontrada';
-      };
-      
-      // Pré-carrega as próximas imagens em background
-      if (images.length > 1) {
-        const nextIndex = (currentImageIndex + 1) % images.length;
-        const nextImg = new Image();
-        nextImg.src = images[nextIndex];
-        
-        const prevIndex = (currentImageIndex - 1 + images.length) % images.length;
-        const prevImg = new Image();
-        prevImg.src = images[prevIndex];
-      }
-      
-      // Atualiza título
       document.getElementById('modalTitle').textContent = project.title;
       document.getElementById('modalClient').textContent = `${project.category} · ${project.year}`;
       
-      // Atualiza descrição
       const descContainer = document.getElementById('modalDescription');
       descContainer.innerHTML = '';
       if (project.description && project.description.length > 0) {
@@ -1298,6 +1418,11 @@
       renderThumbnails(images);
     }
 
+    function updateModalContent() {
+      updateModalInfo();
+      // A imagem é carregada separadamente via loadModalImage
+    }
+
     function renderThumbnails(images) {
       const container = document.getElementById('modal-thumbnails');
       container.innerHTML = '';
@@ -1309,7 +1434,9 @@
       
       images.forEach((img, index) => {
         const thumb = document.createElement('img');
-        thumb.src = img;
+        // Usa placeholder para miniaturas também
+        thumb.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"%3E%3Crect fill="%23e8e6e4" width="60" height="60"/%3E%3C/svg%3E';
+        thumb.dataset.src = img;
         thumb.alt = `Thumbnail ${index + 1}`;
         thumb.className = index === currentImageIndex ? 'active-thumb' : '';
         thumb.onerror = function() {
@@ -1317,9 +1444,46 @@
         };
         thumb.onclick = () => {
           currentImageIndex = index;
-          updateModalContent();
+          const loader = document.getElementById('modalLoader');
+          loader.classList.remove('hidden');
+          const modalImg = document.getElementById('modalImage');
+          modalImg.style.opacity = '0';
+          loadModalImage(currentImageIndex, () => {
+            loader.classList.add('hidden');
+            modalImg.style.opacity = '1';
+          });
+          updateThumbnails();
         };
+        
+        // Carrega a miniatura quando visível
+        if ('IntersectionObserver' in window) {
+          const thumbObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const t = entry.target;
+                if (t.dataset.src) {
+                  t.src = t.dataset.src;
+                  t.removeAttribute('data-src');
+                }
+                thumbObserver.unobserve(t);
+              }
+            });
+          });
+          thumbObserver.observe(thumb);
+        } else {
+          // Fallback
+          thumb.src = img;
+        }
+        
         container.appendChild(thumb);
+      });
+    }
+
+    function updateThumbnails() {
+      const container = document.getElementById('modal-thumbnails');
+      const thumbs = container.querySelectorAll('img');
+      thumbs.forEach((thumb, index) => {
+        thumb.classList.toggle('active-thumb', index === currentImageIndex);
       });
     }
 
@@ -1356,13 +1520,11 @@
       const urlParams = new URLSearchParams(window.location.search);
       const projectParam = urlParams.get('project');
       if (projectParam) {
-        // Procura o projeto pelo título (case insensitive)
         const normalizedParam = decodeURIComponent(projectParam).toLowerCase().replace(/[^a-z0-9]+/g, '-');
         const projectIndex = siteData.portfolio.findIndex(p => 
           p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-') === normalizedParam
         );
         if (projectIndex !== -1) {
-          // Aguarda o DOM carregar e abre o modal
           setTimeout(() => {
             openProjectModal(projectIndex);
           }, 300);
@@ -1418,7 +1580,6 @@
         switchPage('work');
       }
       
-      // Carrega projeto específico se houver parâmetro
       loadProjectFromUrl();
       
       document.addEventListener('keydown', (e) => {
