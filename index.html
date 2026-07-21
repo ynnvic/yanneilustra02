@@ -215,7 +215,7 @@
     /* Lado direito - Info (1/3) */
     .project-info {
       background: #ffffff;
-      padding: 40px 35px 40px 30px;
+      padding: 40px 35px 30px 30px;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -255,10 +255,10 @@
     .project-info .footer-icons {
       display: flex;
       gap: 16px;
-      margin-top: 24px;
       padding-top: 20px;
       border-top: 1px solid #f0f0f5;
       flex-shrink: 0;
+      margin-top: 16px;
     }
     .project-info .footer-icons a,
     .project-info .footer-icons button {
@@ -331,9 +331,10 @@
       .project-info .title { font-size: 18px; }
       .carousel-thumbnails img { width: 44px; height: 44px; }
       .carousel-thumbnails { gap: 6px; padding: 12px 10px 8px 10px; }
+      .project-info .footer-icons { margin-top: 12px; padding-top: 16px; }
     }
 
-    /* MODAL DE ZOOM */
+    /* MODAL DE ZOOM - AGORA COM NAVEGAÇÃO */
     .zoom-modal {
       position: fixed;
       inset: 0;
@@ -352,12 +353,23 @@
       opacity: 1;
       pointer-events: auto;
     }
-    .zoom-modal img {
+    .zoom-modal .zoom-content {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .zoom-modal .zoom-content img {
       max-width: 90vw;
       max-height: 85vh;
       object-fit: contain;
       border-radius: 12px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      cursor: default;
     }
     .zoom-modal .close-zoom {
       position: fixed;
@@ -376,14 +388,62 @@
       transition: all 0.3s ease;
       color: #4a4a4a;
       font-size: 24px;
+      z-index: 61;
     }
     .zoom-modal .close-zoom:hover {
       transform: scale(1.08);
       box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     }
+    .zoom-modal .zoom-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.9);
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+      transition: all 0.3s ease;
+      color: #4a4a4a;
+      z-index: 61;
+      font-size: 20px;
+    }
+    .zoom-modal .zoom-nav:hover {
+      background: #ffffff;
+      transform: translateY(-50%) scale(1.08);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .zoom-modal .zoom-nav.hidden { display: none !important; }
+    .zoom-modal .zoom-nav.prev { left: 20px; }
+    .zoom-modal .zoom-nav.next { right: 20px; }
+    
+    .zoom-modal .zoom-counter {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 61;
+      backdrop-filter: blur(4px);
+    }
+    
     @media (max-width: 640px) {
       .zoom-modal { padding: 20px; }
-      .zoom-modal img { max-width: 95vw; max-height: 80vh; }
+      .zoom-modal .zoom-content img { max-width: 95vw; max-height: 75vh; }
+      .zoom-modal .zoom-nav { width: 40px; height: 40px; font-size: 16px; }
+      .zoom-modal .zoom-nav.prev { left: 10px; }
+      .zoom-modal .zoom-nav.next { right: 10px; }
+      .zoom-modal .close-zoom { width: 36px; height: 36px; font-size: 20px; top: 12px; right: 12px; }
     }
 
     /* PÁGINA INICIAL (WORK) */
@@ -740,10 +800,23 @@
     </div>
   </main>
 
-  <!-- MODAL DE ZOOM -->
+  <!-- MODAL DE ZOOM COM NAVEGAÇÃO -->
   <div id="zoomModal" class="zoom-modal" onclick="closeZoom()">
-    <button class="close-zoom" onclick="closeZoom()">✕</button>
-    <img id="zoomImage" src="" alt="Zoom" onclick="event.stopPropagation();">
+    <button class="close-zoom" onclick="event.stopPropagation(); closeZoom();">✕</button>
+    <div class="zoom-content" onclick="event.stopPropagation();">
+      <img id="zoomImage" src="" alt="Zoom">
+    </div>
+    <button class="zoom-nav prev" id="zoomPrev" onclick="event.stopPropagation(); zoomPrevImage();">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+    <button class="zoom-nav next" id="zoomNext" onclick="event.stopPropagation(); zoomNextImage();">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+    <div class="zoom-counter" id="zoomCounter">1 / 1</div>
   </div>
 
   <!-- TOAST -->
@@ -772,9 +845,7 @@
             "Winnie's Flying Guide is a poetry picture book for children ages 4 to 6 explores themes of belonging and friendship.",
             "It is most about the flying lessons of Winnie Pendragon, the good witch of East Winds, privately published for family and friends."
           ],
-          // IMAGEM DE CAPA (usada na grade)
           coverImage: "assets/images/projeto1.jpg",
-          // IMAGENS DO CARROSSEL (NÃO INCLUI A COVER)
           carouselImages: [
             "assets/images/projeto1_1.jpg",
             "assets/images/projeto1_2.jpg",
@@ -986,7 +1057,6 @@
         projectWrapper.classList.remove('page-hidden');
         globalFooter.style.display = 'none';
         loadProject(projectSlug);
-        // URL amigável: /slug-do-projeto
         const newUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/' + projectSlug;
         history.pushState(null, '', '/' + projectSlug);
         document.title = `Yanne Vicente - ${getProjectTitle(projectSlug)}`;
@@ -1024,7 +1094,6 @@
       const container = document.getElementById('project-content');
       container.innerHTML = `<div class="loader-container"><div class="loader"></div></div>`;
 
-      // USA APENAS carouselImages (NÃO a cover)
       const images = project.carouselImages || [];
       const hasMultiple = images.length > 1;
       const firstImage = images.length > 0 ? images[0] : '';
@@ -1104,7 +1173,6 @@
         </div>
       `;
 
-      // Carrega imagem principal (primeira do carrossel)
       const mainImg = document.getElementById('project-main-image');
       if (mainImg && mainImg.dataset.src) {
         loadImage(mainImg.dataset.src, (url) => {
@@ -1113,7 +1181,6 @@
         });
       }
 
-      // Lazy loading das miniaturas
       if (hasMultiple) {
         const thumbs = document.querySelectorAll('#carousel-thumbnails img');
         if ('IntersectionObserver' in window) {
@@ -1169,6 +1236,9 @@
 
       const thumbs = document.querySelectorAll('#carousel-thumbnails img');
       thumbs.forEach((t, i) => t.classList.toggle('active-thumb', i === index));
+      
+      // Atualiza também o zoom se estiver aberto
+      updateZoomCounter();
     }
 
     function prevProjectImage(slug) {
@@ -1186,17 +1256,81 @@
     }
 
     // ========================================
-    // ZOOM DA IMAGEM
+    // ZOOM DA IMAGEM COM NAVEGAÇÃO
     // ========================================
     function openZoom() {
       const mainImg = document.getElementById('project-main-image');
       if (!mainImg || !mainImg.src || mainImg.src.includes('placeholder')) return;
       
+      const project = getCurrentProject();
+      if (!project || !project.carouselImages || project.carouselImages.length <= 1) {
+        // Apenas zoom simples
+        const zoomModal = document.getElementById('zoomModal');
+        const zoomImg = document.getElementById('zoomImage');
+        zoomImg.src = mainImg.src;
+        document.getElementById('zoomPrev').classList.add('hidden');
+        document.getElementById('zoomNext').classList.add('hidden');
+        document.getElementById('zoomCounter').textContent = '1 / 1';
+        zoomModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        return;
+      }
+      
+      // Zoom com navegação
       const zoomModal = document.getElementById('zoomModal');
       const zoomImg = document.getElementById('zoomImage');
       zoomImg.src = mainImg.src;
+      
+      document.getElementById('zoomPrev').classList.remove('hidden');
+      document.getElementById('zoomNext').classList.remove('hidden');
+      
+      updateZoomCounter();
       zoomModal.classList.add('active');
       document.body.style.overflow = 'hidden';
+    }
+
+    function getCurrentProject() {
+      const slug = window.location.pathname.split('/').filter(s => s.length > 0).pop();
+      return siteData.portfolio.find(p => p.slug === slug);
+    }
+
+    function updateZoomCounter() {
+      const project = getCurrentProject();
+      if (!project || !project.carouselImages) return;
+      const total = project.carouselImages.length;
+      document.getElementById('zoomCounter').textContent = `${currentImageIndex + 1} / ${total}`;
+    }
+
+    function zoomPrevImage() {
+      const project = getCurrentProject();
+      if (!project || !project.carouselImages || project.carouselImages.length <= 1) return;
+      const idx = (currentImageIndex - 1 + project.carouselImages.length) % project.carouselImages.length;
+      
+      // Atualiza a imagem principal do carrossel
+      changeProjectImage(project.slug, idx);
+      
+      // Atualiza a imagem do zoom
+      const zoomImg = document.getElementById('zoomImage');
+      const src = project.carouselImages[idx];
+      zoomImg.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"%3E%3Crect fill="%23ffffff" width="800" height="800"/%3E%3C/svg%3E';
+      loadImage(src, (url) => { zoomImg.src = url; });
+      
+      updateZoomCounter();
+    }
+
+    function zoomNextImage() {
+      const project = getCurrentProject();
+      if (!project || !project.carouselImages || project.carouselImages.length <= 1) return;
+      const idx = (currentImageIndex + 1) % project.carouselImages.length;
+      
+      changeProjectImage(project.slug, idx);
+      
+      const zoomImg = document.getElementById('zoomImage');
+      const src = project.carouselImages[idx];
+      zoomImg.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"%3E%3Crect fill="%23ffffff" width="800" height="800"/%3E%3C/svg%3E';
+      loadImage(src, (url) => { zoomImg.src = url; });
+      
+      updateZoomCounter();
     }
 
     function closeZoom() {
@@ -1366,12 +1500,10 @@
       renderProfile();
       renderSocial();
 
-      // Detecta URL amigável: /slug-do-projeto
       const path = window.location.pathname;
       const pathSegments = path.split('/').filter(s => s.length > 0);
       const lastSegment = pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : '';
       
-      // Verifica se o último segmento é um slug válido
       const isValidSlug = siteData.portfolio.some(p => p.slug === lastSegment);
       
       const hash = window.location.hash;
@@ -1396,13 +1528,21 @@
             navigateTo('work');
           }
         }
-        if (e.key === 'ArrowLeft' && document.getElementById('project-wrapper').style.display !== 'none') {
-          const slug = window.location.pathname.split('/').filter(s => s.length > 0).pop();
-          if (slug && siteData.portfolio.some(p => p.slug === slug)) prevProjectImage(slug);
+        if (e.key === 'ArrowLeft') {
+          if (document.getElementById('zoomModal').classList.contains('active')) {
+            zoomPrevImage();
+          } else if (document.getElementById('project-wrapper').style.display !== 'none') {
+            const slug = window.location.pathname.split('/').filter(s => s.length > 0).pop();
+            if (slug && siteData.portfolio.some(p => p.slug === slug)) prevProjectImage(slug);
+          }
         }
-        if (e.key === 'ArrowRight' && document.getElementById('project-wrapper').style.display !== 'none') {
-          const slug = window.location.pathname.split('/').filter(s => s.length > 0).pop();
-          if (slug && siteData.portfolio.some(p => p.slug === slug)) nextProjectImage(slug);
+        if (e.key === 'ArrowRight') {
+          if (document.getElementById('zoomModal').classList.contains('active')) {
+            zoomNextImage();
+          } else if (document.getElementById('project-wrapper').style.display !== 'none') {
+            const slug = window.location.pathname.split('/').filter(s => s.length > 0).pop();
+            if (slug && siteData.portfolio.some(p => p.slug === slug)) nextProjectImage(slug);
+          }
         }
       });
 
