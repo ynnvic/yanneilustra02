@@ -1055,7 +1055,7 @@
         projectWrapper.classList.remove('page-hidden');
         globalFooter.style.display = 'none';
         loadProject(projectSlug);
-        const newUrl = window.location.origin + window.location.pathname + '?project=' + projectSlug;
+        const newUrl = window.location.origin + window.location.pathname + '#project/' + projectSlug;
         history.pushState(null, '', '/' + projectSlug);
         document.title = `Yanne Vicente - ${getProjectTitle(projectSlug)}`;
       } else if (page === 'contact') {
