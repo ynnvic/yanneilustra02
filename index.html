@@ -818,7 +818,7 @@
   </div>
 
   <!-- TOAST -->
-  <div id="toast" class="toast">Link copiado! ✨</div>
+  <div id="toast" class="toast">Your link is copied! ✨</div>
 
   <!-- FOOTER GLOBAL -->
   <footer id="global-footer" class="border-t border-gray-200 mt-12 footer-yellow">
@@ -1055,7 +1055,7 @@
         projectWrapper.classList.remove('page-hidden');
         globalFooter.style.display = 'none';
         loadProject(projectSlug);
-        const newUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/' + projectSlug;
+        const newUrl = window.location.origin + window.location.pathname + '?project=' + projectSlug;
         history.pushState(null, '', '/' + projectSlug);
         document.title = `Yanne Vicente - ${getProjectTitle(projectSlug)}`;
       } else if (page === 'contact') {
@@ -1350,7 +1350,7 @@
 
     function copyToClipboard(text) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(() => showToast('Link copiado! ✨'))
+        navigator.clipboard.writeText(text).then(() => showToast('Your link is copied ✨'))
           .catch(() => fallbackCopy(text));
       } else {
         fallbackCopy(text);
@@ -1363,7 +1363,7 @@
       ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;';
       document.body.appendChild(ta);
       ta.select();
-      try { document.execCommand('copy'); showToast('Link copiado! ✨'); } 
+      try { document.execCommand('copy'); showToast('Your link is copied ✨'); } 
       catch(e) { showToast('Copie manualmente: ' + text); }
       document.body.removeChild(ta);
     }
