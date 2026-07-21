@@ -61,7 +61,7 @@
       .nav-link { font-size: 13px; }
     }
 
-    /* PÁGINA DE PROJETO - NOVO LAYOUT BASEADO NO ESBOÇO */
+    /* PÁGINA DE PROJETO */
     .project-section {
       background: #ffffff;
       min-height: calc(100vh - 80px);
@@ -86,26 +86,6 @@
     }
     .project-section .back-btn:hover { color: #fec643; }
     
-    /* TÍTULO DO PROJETO ACIMA DO CARROSSEL */
-    .project-header-title {
-      padding: 0 30px 10px 30px;
-      flex-shrink: 0;
-    }
-    .project-header-title h1 {
-      color: #8d9bc7;
-      font-weight: 800;
-      font-size: 32px;
-      line-height: 1.2;
-      margin: 0;
-    }
-    @media (max-width: 768px) {
-      .project-header-title { padding: 0 20px 8px 20px; }
-      .project-header-title h1 { font-size: 24px; }
-    }
-    @media (max-width: 480px) {
-      .project-header-title h1 { font-size: 20px; }
-    }
-    
     .project-layout {
       display: grid;
       grid-template-columns: 2fr 1fr;
@@ -113,7 +93,7 @@
       flex: 1;
       min-height: 0;
       background: #ffffff;
-      height: calc(100vh - 80px - 70px - 60px);
+      height: calc(100vh - 80px - 70px);
     }
     
     /* Lado esquerdo - Carrossel (2/3) */
@@ -141,7 +121,7 @@
       background: #ffffff;
       border-radius: 12px;
       overflow: hidden;
-      max-height: calc(100vh - 240px);
+      max-height: calc(100vh - 200px);
     }
     
     .project-carousel .main-image-container img {
@@ -232,10 +212,10 @@
       box-shadow: 0 0 0 2px #fec643;
     }
     
-    /* Lado direito - Info (1/3) - CONFORME ESBOÇO */
+    /* Lado direito - Info (1/3) - CAIXA TERMINA EXATAMENTE NO FINAL DO TEXTO */
     .project-info {
       background: #ffffff;
-      padding: 30px 35px 30px 30px;
+      padding: 30px 35px 20px 30px;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -266,20 +246,19 @@
       color: #4a4a4a;
       font-size: 14px;
       line-height: 1.8;
-      flex: 1;
-      overflow-y: auto;
+      flex: 0 1 auto;
     }
     .project-info .description p { margin-bottom: 12px; }
     .project-info .description p:last-child { margin-bottom: 0; }
     
-    /* ÍCONES SOCIAIS - SEMPRE NO FINAL, COM LINHA SEPARADORA */
+    /* ÍCONES SOCIAIS - COLADOS EXATAMENTE NO FINAL DO TEXTO */
     .project-info .footer-icons {
       display: flex;
       gap: 16px;
-      padding-top: 20px;
+      padding-top: 14px;
       border-top: 2px solid #f0f0f5;
       flex-shrink: 0;
-      margin-top: 16px;
+      margin-top: 4px;
     }
     .project-info .footer-icons a,
     .project-info .footer-icons button {
@@ -302,10 +281,10 @@
       .project-layout {
         grid-template-columns: 1fr 1fr;
         height: auto;
-        min-height: calc(100vh - 80px - 70px - 60px);
+        min-height: calc(100vh - 80px - 70px);
       }
       .project-info .title { font-size: 24px; }
-      .project-info { padding: 25px 25px; }
+      .project-info { padding: 25px 25px 18px; }
       .carousel-thumbnails img { width: 60px; height: 60px; }
       .project-carousel { min-height: 350px; }
     }
@@ -332,30 +311,28 @@
       .project-info {
         border-left: none;
         border-top: 1px solid #f0f0f5;
-        padding: 20px 20px 25px;
+        padding: 20px 20px 16px;
         max-height: none;
         overflow-y: visible;
         height: auto;
       }
       .project-info .title { font-size: 22px; }
-      .project-info .description { overflow-y: visible; }
+      .project-info .description { flex: 0 1 auto; }
       .carousel-thumbnails img { width: 50px; height: 50px; }
       .carousel-controls button { width: 36px; height: 36px; }
       .project-section .back-btn { padding: 15px 20px 5px 20px; }
-      .project-header-title { padding: 0 20px 5px 20px; }
-      .project-header-title h1 { font-size: 22px; }
       .project-layout { height: auto; }
+      .project-info .footer-icons { padding-top: 12px; margin-top: 2px; }
     }
     
     @media (max-width: 480px) {
       .project-carousel { height: 40vh; min-height: 250px; }
       .project-carousel .main-image-container { max-height: 100%; }
-      .project-info { padding: 16px 15px 20px; }
+      .project-info { padding: 16px 15px 14px; }
       .project-info .title { font-size: 18px; }
       .carousel-thumbnails img { width: 44px; height: 44px; }
       .carousel-thumbnails { gap: 6px; padding: 12px 10px 8px 10px; }
-      .project-header-title h1 { font-size: 18px; }
-      .project-info .footer-icons { margin-top: 12px; padding-top: 16px; }
+      .project-info .footer-icons { padding-top: 10px; margin-top: 2px; gap: 14px; }
     }
 
     /* MODAL DE ZOOM COM NAVEGAÇÃO */
@@ -761,11 +738,6 @@
         Back to Work
       </button>
       
-      <!-- TÍTULO DO PROJETO ACIMA DO CARROSSEL -->
-      <div class="project-header-title" id="project-header-title">
-        <h1></h1>
-      </div>
-      
       <div id="project-content" style="flex:1;display:flex;flex-direction:column;">
         <div class="loader-container"><div class="loader"></div></div>
       </div>
@@ -1119,9 +1091,6 @@
       currentImageIndex = 0;
       const container = document.getElementById('project-content');
       container.innerHTML = `<div class="loader-container"><div class="loader"></div></div>`;
-
-      // Atualiza o título do cabeçalho
-      document.getElementById('project-header-title').querySelector('h1').textContent = project.title;
 
       const images = project.carouselImages || [];
       const hasMultiple = images.length > 1;
