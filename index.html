@@ -96,7 +96,6 @@
       height: calc(100vh - 80px - 70px);
     }
     
-    /* Lado esquerdo - Carrossel (2/3) */
     .project-carousel {
       background: #ffffff;
       position: relative;
@@ -139,7 +138,6 @@
       transform: scale(1.02);
     }
     
-    /* Controles do carrossel */
     .carousel-controls {
       position: absolute;
       top: 50%;
@@ -176,7 +174,6 @@
     }
     .carousel-controls button.hidden { display: none !important; }
     
-    /* Miniaturas */
     .carousel-thumbnails {
       display: flex;
       gap: 10px;
@@ -212,7 +209,6 @@
       box-shadow: 0 0 0 2px #fec643;
     }
     
-    /* Lado direito - Info (1/3) */
     .project-info {
       background: #ffffff;
       padding: 30px 35px 20px 30px;
@@ -250,6 +246,34 @@
     }
     .project-info .description p { margin-bottom: 12px; }
     .project-info .description p:last-child { margin-bottom: 0; }
+    
+    .project-info .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 8px;
+      padding-top: 14px;
+      margin-top: 6px;
+      border-top: 2px solid #f0f0f5;
+      flex-shrink: 0;
+    }
+    .project-info .tags-container .tag {
+      color: #c5c9d6;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .project-info .tags-container .tag:hover {
+      color: #fec643;
+    }
+    .project-info .tags-container .tag .star {
+      color: #fec643;
+      margin: 0 3px;
+    }
     
     .project-info .footer-icons {
       display: flex;
@@ -322,6 +346,7 @@
       .project-section .back-btn { padding: 15px 20px 5px 20px; }
       .project-layout { height: auto; }
       .project-info .footer-icons { padding-top: 12px; margin-top: 2px; }
+      .project-info .tags-container { padding-top: 12px; margin-top: 4px; }
     }
     
     @media (max-width: 480px) {
@@ -332,9 +357,10 @@
       .carousel-thumbnails img { width: 44px; height: 44px; }
       .carousel-thumbnails { gap: 6px; padding: 12px 10px 8px 10px; }
       .project-info .footer-icons { padding-top: 10px; margin-top: 2px; gap: 14px; }
+      .project-info .tags-container { padding-top: 10px; }
+      .project-info .tags-container .tag { font-size: 10px; }
     }
 
-    /* MODAL DE ZOOM COM NAVEGAÇÃO */
     .zoom-modal {
       position: fixed;
       inset: 0;
@@ -446,7 +472,6 @@
       .zoom-modal .close-zoom { width: 36px; height: 36px; font-size: 20px; top: 12px; right: 12px; }
     }
 
-    /* PÁGINA INICIAL (WORK) */
     .portfolio-wrapper {
       width: 100%;
       max-width: 100%;
@@ -502,7 +527,6 @@
       .portfolio-item { border-radius: 12px; }
     }
 
-    /* BANNER */
     .banner-container {
       width: 100%;
       overflow: hidden;
@@ -512,16 +536,52 @@
     }
     .banner-container img { width: 100%; height: auto; display: block; object-fit: cover; }
     
-    .section-header { margin-bottom: 28px; }
+    .section-header { 
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
     .section-header h2 {
       color: rgb(131, 147, 195);
       font-weight: 700;
       font-size: 38px;
       letter-spacing: -0.5px;
     }
-    @media (max-width: 640px) { .section-header h2 { font-size: 28px; } }
+    .section-header .filter-clear {
+      color: #aab0c4;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      background: none;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      border: 1.5px solid #e0e2e8;
+      display: none;
+    }
+    .section-header .filter-clear:hover {
+      color: #fec643;
+      border-color: #fec643;
+    }
+    .section-header .filter-clear.show { display: inline-block; }
+    .section-header .filter-info {
+      color: #aab0c4;
+      font-size: 15px;
+      font-weight: 500;
+    }
+    .section-header .filter-info span {
+      color: #fec643;
+      font-weight: 700;
+    }
+    @media (max-width: 640px) { 
+      .section-header h2 { font-size: 28px; }
+      .section-header { flex-direction: column; align-items: flex-start; }
+    }
 
-    /* CONTACT */
     .contact-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -574,7 +634,6 @@
     .bluesky:hover { color: #0085ff; }
     .x-twitter:hover { color: #000000; }
 
-    /* FORMULÁRIO */
     .form-section {
       background-color: #8393c3;
       border-radius: 20px;
@@ -704,6 +763,145 @@
     .project-wrapper .project-section {
       flex: 1;
     }
+
+    /* PÁGINA DESIGN - LAYOUT COM 1/3 E 2/3 */
+    .design-page {
+      min-height: calc(100vh - 80px);
+      background: #ffffff;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+    }
+    
+    .design-page .design-left {
+      width: 33.333%;
+      padding: 60px 40px 40px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #ffffff;
+    }
+    
+    .design-page .design-left h1 {
+      color: #8d9bc7;
+      font-weight: 800;
+      font-size: 38px;
+      letter-spacing: -0.5px;
+      margin-bottom: 20px;
+      line-height: 1.1;
+    }
+    
+    .design-page .design-left .subtitle {
+      color: #4a4a4a;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.9;
+      max-width: 420px;
+      margin-bottom: 30px;
+    }
+    
+    .design-page .design-left .subtitle .emoji {
+      display: inline-block;
+      margin: 0 2px;
+    }
+    
+    .design-page .design-left .download-btn {
+      padding: 14px 40px;
+      background: #fec643;
+      color: #4a4a4a;
+      font-weight: 700;
+      font-size: 15px;
+      border: none;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      width: fit-content;
+    }
+    .design-page .design-left .download-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    
+    .design-page .design-left .footer-note {
+      margin-top: 40px;
+      color: #c5c9d6;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+    }
+    .design-page .design-left .footer-note span {
+      color: #fec643;
+      margin: 0 6px;
+    }
+    
+    .design-page .design-right {
+      width: 66.666%;
+      background: #f8f7f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+    
+    .design-page .design-right .pdf-wrapper {
+      width: 100%;
+      height: 85vh;
+      max-height: calc(100vh - 160px);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    }
+    
+    .design-page .design-right .pdf-wrapper object,
+    .design-page .design-right .pdf-wrapper embed {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #ffffff;
+    }
+    
+    @media (max-width: 1024px) {
+      .design-page .design-left { padding: 40px 30px 30px 40px; }
+      .design-page .design-left h1 { font-size: 32px; }
+      .design-page .design-left .subtitle { font-size: 14px; }
+      .design-page .design-right .pdf-wrapper { height: 70vh; }
+    }
+    
+    @media (max-width: 768px) {
+      .design-page {
+        flex-direction: column;
+        min-height: auto;
+      }
+      .design-page .design-left {
+        width: 100%;
+        padding: 40px 30px 30px;
+        align-items: center;
+        text-align: center;
+      }
+      .design-page .design-left .subtitle { max-width: 100%; }
+      .design-page .design-left .download-btn { align-self: center; }
+      .design-page .design-right {
+        width: 100%;
+        padding: 0 16px 30px;
+      }
+      .design-page .design-right .pdf-wrapper {
+        height: 60vh;
+        max-height: 60vh;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .design-page .design-left { padding: 30px 20px 20px; }
+      .design-page .design-left h1 { font-size: 26px; }
+      .design-page .design-left .subtitle { font-size: 13px; }
+      .design-page .design-left .download-btn { padding: 12px 28px; font-size: 13px; }
+      .design-page .design-right .pdf-wrapper { height: 45vh; max-height: 45vh; }
+    }
   </style>
 </head>
 
@@ -722,7 +920,8 @@
       <a href="https://instagram.com/yanne.vicente" target="_blank" rel="noopener" class="menu-icon-link" title="Instagram">
         <i class="fa-brands fa-instagram"></i>
       </a>
-      <a onclick="navigateTo('work')" class="nav-link" id="nav-work">WORK</a>
+      <a onclick="navigateTo('work')" class="nav-link" id="nav-work">ILLUSTRATION</a>
+      <a onclick="navigateTo('design')" class="nav-link" id="nav-design">DESIGN</a>
       <a onclick="navigateTo('contact')" class="nav-link" id="nav-contact">CONTACT</a>
     </div>
   </nav>
@@ -748,7 +947,7 @@
     </footer>
   </div>
 
-  <!-- PÁGINA PRINCIPAL (WORK) -->
+  <!-- PÁGINA PRINCIPAL (ILLUSTRATION) -->
   <main id="work-section" class="w-full flex-1">
     <div class="banner-container">
       <img src="assets/images/banner1.jpg" alt="Banner" loading="lazy" decoding="async" onerror="this.style.display='none'" width="1200" height="400">
@@ -756,9 +955,53 @@
     <section class="portfolio-wrapper">
       <div class="section-header">
         <h2>Professional doodler for tiny humans :) ✨</h2>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <span class="filter-info" id="filter-info"></span>
+          <button class="filter-clear" id="filter-clear" onclick="clearFilter()">✕ Clear filter</button>
+        </div>
       </div>
       <div class="portfolio-grid" id="portfolio-grid"></div>
     </section>
+  </main>
+
+  <!-- PÁGINA DESIGN - LAYOUT 1/3 + 2/3 -->
+  <main id="design-section" class="design-page page-hidden" style="display:none;">
+    <!-- Lado esquerdo - 1/3 -->
+    <div class="design-left">
+      <h1>DESIGN<br>PORTFOLIO</h1>
+      
+      <div class="subtitle">
+        Take a look at this presentation<br>
+        with some of my design works while the proper<br>
+        portfolio page isn't yet ready!<br>
+      <br> 
+       </span> Oh, but don't worry, it will be<br>
+        launched soon! <span class="emoji">✨</span>
+      </div>
+      
+      <a href="https://drive.google.com/uc?export=download&id=1eYvq54MmXSfDOWNy1dDUyqETrDHI1OlX" target="_blank" rel="noopener" class="download-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Download PDF
+      </a>
+      
+      <p class="footer-note">
+        <span>✦</span> DESIGN <span>✦</span> PORTFOLIO <span>✦</span> Yanne Vicente <span>✦</span>
+      </p>
+    </div>
+    
+    <!-- Lado direito - 2/3 com visualização do PDF -->
+    <div class="design-right">
+      <div class="pdf-wrapper">
+        <object data="https://drive.google.com/file/d/1eYvq54MmXSfDOWNy1dDUyqETrDHI1OlX/preview" type="application/pdf" aria-label="Portfolio PDF">
+          <embed src="https://drive.google.com/file/d/1eYvq54MmXSfDOWNy1dDUyqETrDHI1OlX/preview" type="application/pdf" />
+          <p>Seu navegador não suporta visualização de PDF. <a href="https://drive.google.com/uc?export=download&id=1eYvq54MmXSfDOWNy1dDUyqETrDHI1OlX" target="_blank" rel="noopener">Clique aqui para baixar.</a></p>
+        </object>
+      </div>
+    </div>
   </main>
 
   <!-- CONTACT -->
@@ -797,7 +1040,7 @@
     </div>
   </main>
 
-  <!-- MODAL DE ZOOM COM NAVEGAÇÃO -->
+  <!-- MODAL DE ZOOM -->
   <div id="zoomModal" class="zoom-modal" onclick="closeZoom()">
     <button class="close-zoom" onclick="event.stopPropagation(); closeZoom();">✕</button>
     <div class="zoom-content" onclick="event.stopPropagation();">
@@ -838,6 +1081,7 @@
           title: "Winnie's Flying Guide",
           category: "Children's picture book",
           year: 2024,
+          tags: ["CHILDREN'S BOOK", "POETRY", "FRIENDSHIP"],
           description: [
             "Winnie's Flying Guide is a poetry picture book for children ages 4 to 6 explores themes of belonging and friendship.",
             "It is most about the flying lessons of Winnie Pendragon, the good witch of East Winds, privately published for family and friends."
@@ -857,6 +1101,7 @@
           title: "Captain Octopus & Sailorboy's Adventures",
           category: "Children's Book Cover",
           year: 2022,
+          tags: ["BOOK COVER", "CHILDREN'S BOOK", "SCHOOL"],
           description: [
             "A children's cover book illustration concept I made for Escolinha São José (St. Joseph Elementary School)."
           ],
@@ -869,6 +1114,7 @@
           title: "Safari Wallpaper",
           category: "Children's Illustration",
           year: 2024,
+          tags: ["WALLPAPER", "SAFARI", "PATTERN"],
           description: [
             "In January 2024, I worked with Fino Toque, an interior design company based in Recife, Brazil.",
             "They asked me to illustrate a bunch of children's wallpapers for a sale catalogue.",
@@ -887,6 +1133,7 @@
           title: "Children's School Illustration",
           category: "Children's Illustration",
           year: 2025,
+          tags: ["SCHOOL", "BRAZILIAN ARTISTS", "MURAL"],
           description: [
             "A series of illustrations created to decorate the elementary school corridors across all seven GGE school campuses.",
             "Located in the states of Pernambuco and Paraíba in Northeastern Brazil.",
@@ -916,6 +1163,7 @@
           title: "Stellar Cafe",
           category: "Webcomic Art",
           year: 2022,
+          tags: ["WEBCOMIC", "SCI-FI", "LGBTQIAP+"],
           description: [
             "Synopsis: How would Milo react upon realizing that his long-awaited perfect night with Juca was turning into an intergalactic",
             "frenzy of abyssal creatures, fugitives from justice, and a space emperor with a god complex?",
@@ -939,6 +1187,7 @@
           title: "Character's Illustration Pack",
           category: "Character Design",
           year: 2022,
+          tags: ["CHARACTER DESIGN", "YOUTUBE", "BRAZIL"],
           description: [
             "Evandro and Jaque Lemos are two fantastic YouTubers from my hometown, Gravatá, in the state of Pernambuco, Brazil.",
             "Together, they create a variety of sketch videos, always in the most comedic way possible, with many references from Brazilian Northeastern culture!"
@@ -958,6 +1207,7 @@
           title: "Webcomic Travelers",
           category: "Comic art",
           year: 2025,
+          tags: ["WEBCOMIC", "SCI-FI", "TIME TRAVEL"],
           description: [
             "Anne always felt like an ordinary girl, with ordinary aspirations living her ordinary life.",
             "Nothing really special happened during the first 20 years of her existence, but bumping a strange grumpy woman wearing a lab coat, everything changes.",
@@ -977,6 +1227,7 @@
           title: "RPG Character's Commission",
           category: "Character Design & Concept Art",
           year: 2025,
+          tags: ["RPG", "D&D", "CONCEPT ART"],
           description: [
             "These are some of the best commissions created for a group of RPG players.",
             "Ranging from D&D to Vampire: The Masquerade."
@@ -995,6 +1246,7 @@
           title: "Steven Universe's Fanart",
           category: "Digital Cartoon Art",
           year: 2019,
+          tags: ["FANART", "CARTOON", "STEVEN UNIVERSE"],
           description: [
             "A personal project in which I created a fan art illustration based on the character Sardonyx from the animated series Steven Universe."
           ],
@@ -1026,17 +1278,20 @@
 
     let currentProjectId = null;
     let currentImageIndex = 0;
+    let currentFilter = null;
     const imageCache = {};
 
     // ========================================
-    // NAVEGAÇÃO PRINCIPAL - USANDO HASH (#)
+    // NAVEGAÇÃO PRINCIPAL
     // ========================================
     function navigateTo(page, projectSlug) {
       const workSection = document.getElementById('work-section');
       const projectWrapper = document.getElementById('project-wrapper');
       const contactSection = document.getElementById('contact-section');
+      const designSection = document.getElementById('design-section');
       const globalFooter = document.getElementById('global-footer');
       const navWork = document.getElementById('nav-work');
+      const navDesign = document.getElementById('nav-design');
       const navContact = document.getElementById('nav-contact');
 
       workSection.classList.add('page-hidden');
@@ -1044,9 +1299,12 @@
       projectWrapper.style.display = 'none';
       contactSection.classList.add('page-hidden');
       contactSection.style.display = 'none';
+      designSection.classList.add('page-hidden');
+      designSection.style.display = 'none';
       globalFooter.style.display = 'none';
       
       navWork.classList.remove('active');
+      navDesign.classList.remove('active');
       navContact.classList.remove('active');
 
       if (page === 'project' && projectSlug) {
@@ -1054,9 +1312,15 @@
         projectWrapper.classList.remove('page-hidden');
         globalFooter.style.display = 'none';
         loadProject(projectSlug);
-        // USANDO HASH - FUNCIONA EM QUALQUER SERVIDOR!
         history.pushState(null, '', '#project/' + projectSlug);
         document.title = `Yanne Vicente - ${getProjectTitle(projectSlug)}`;
+      } else if (page === 'design') {
+        designSection.style.display = 'flex';
+        designSection.classList.remove('page-hidden');
+        globalFooter.style.display = 'none';
+        navDesign.classList.add('active');
+        history.pushState(null, '', '#design');
+        document.title = 'Yanne Vicente - Design';
       } else if (page === 'contact') {
         contactSection.style.display = 'grid';
         contactSection.classList.remove('page-hidden');
@@ -1070,6 +1334,8 @@
         navWork.classList.add('active');
         history.pushState(null, '', '#work');
         document.title = 'Yanne Vicente - Illustration';
+        // Se veio de um projeto com filtro, mantém
+        renderPortfolio(currentFilter);
       }
       window.scrollTo(0, 0);
     }
@@ -1077,6 +1343,47 @@
     function getProjectTitle(slug) {
       const project = siteData.portfolio.find(p => p.slug === slug);
       return project ? project.title : 'Project';
+    }
+
+    // ========================================
+    // FILTRO POR TAG
+    // ========================================
+    function filterByTag(tag) {
+      currentFilter = tag;
+      renderPortfolio(tag);
+      // Volta para a página de work e mostra o filtro
+      const workSection = document.getElementById('work-section');
+      const globalFooter = document.getElementById('global-footer');
+      const navWork = document.getElementById('nav-work');
+      
+      // Esconde outras páginas
+      document.getElementById('project-wrapper').style.display = 'none';
+      document.getElementById('project-wrapper').classList.add('page-hidden');
+      document.getElementById('contact-section').style.display = 'none';
+      document.getElementById('contact-section').classList.add('page-hidden');
+      document.getElementById('design-section').style.display = 'none';
+      document.getElementById('design-section').classList.add('page-hidden');
+      
+      workSection.classList.remove('page-hidden');
+      globalFooter.style.display = 'block';
+      navWork.classList.add('active');
+      
+      history.pushState(null, '', '#work');
+      document.title = `Yanne Vicente - Illustration - ${tag}`;
+      window.scrollTo(0, 0);
+      
+      // Mostra info do filtro
+      document.getElementById('filter-info').innerHTML = `Showing <span>${tag}</span> projects`;
+      document.getElementById('filter-clear').classList.add('show');
+    }
+
+    function clearFilter() {
+      currentFilter = null;
+      renderPortfolio(null);
+      document.getElementById('filter-info').innerHTML = '';
+      document.getElementById('filter-clear').classList.remove('show');
+      history.pushState(null, '', '#work');
+      document.title = 'Yanne Vicente - Illustration';
     }
 
     // ========================================
@@ -1105,6 +1412,20 @@
                    alt="Thumbnail ${idx+1}" 
                    class="${idx === 0 ? 'active-thumb' : ''}"
                    onclick="changeProjectImage('${slug}', ${idx})">
+            `).join('')}
+          </div>
+        `;
+      }
+
+      // Gerar tags HTML
+      let tagsHtml = '';
+      if (project.tags && project.tags.length > 0) {
+        tagsHtml = `
+          <div class="tags-container">
+            ${project.tags.map(tag => `
+              <button class="tag" onclick="filterByTag('${tag}')">
+                <span class="star">✦</span> ${tag} <span class="star">✦</span>
+              </button>
             `).join('')}
           </div>
         `;
@@ -1143,6 +1464,7 @@
             <div class="description">
               ${project.description.map(p => `<p>${p}</p>`).join('')}
             </div>
+            ${tagsHtml}
             <div class="footer-icons">
               <a href="https://instagram.com/yanne.vicente" target="_blank" rel="noopener" title="Instagram">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1252,7 +1574,7 @@
     }
 
     // ========================================
-    // ZOOM DA IMAGEM COM NAVEGAÇÃO
+    // ZOOM
     // ========================================
     function openZoom() {
       const mainImg = document.getElementById('project-main-image');
@@ -1284,7 +1606,6 @@
     }
 
     function getCurrentProject() {
-      // Pega o slug do hash: #project/winnies-flying-guide
       const hash = window.location.hash;
       const match = hash.match(/^#project\/(.+)$/);
       const slug = match ? match[1] : null;
@@ -1334,7 +1655,7 @@
     }
 
     // ========================================
-    // COMPARTILHAR - COMPARTILHA O LINK COM HASH
+    // COMPARTILHAR
     // ========================================
     function shareProject(slug) {
       const project = siteData.portfolio.find(p => p.slug === slug);
@@ -1381,12 +1702,28 @@
     // ========================================
     // RENDERIZAR PORTFÓLIO
     // ========================================
-    function renderPortfolio() {
+    function renderPortfolio(filterTag) {
       const grid = document.getElementById('portfolio-grid');
       grid.innerHTML = '';
+      
+      let projects = siteData.portfolio;
+      if (filterTag) {
+        projects = projects.filter(p => p.tags && p.tags.includes(filterTag));
+      }
+      
       const placeholder = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"%3E%3Crect fill="%23e8e6e4" width="400" height="400"/%3E%3C/svg%3E';
       
-      siteData.portfolio.forEach(p => {
+      if (projects.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#aab0c4;">
+            <p style="font-size:18px;font-weight:500;">No projects found with this tag</p>
+            <button onclick="clearFilter()" style="margin-top:16px;padding:10px 28px;background:#fec643;border:none;border-radius:9999px;font-weight:600;color:#4a4a4a;cursor:pointer;">View all projects</button>
+          </div>
+        `;
+        return;
+      }
+      
+      projects.forEach(p => {
         grid.innerHTML += `
           <div class="portfolio-item" onclick="navigateTo('project', '${p.slug}')">
             <img loading="lazy" decoding="async" 
@@ -1488,14 +1825,13 @@
     });
 
     // ========================================
-    // ROTEAMENTO INICIAL - LÊ O HASH
+    // ROTEAMENTO INICIAL
     // ========================================
     document.addEventListener('DOMContentLoaded', function() {
       renderPortfolio();
       renderProfile();
       renderSocial();
 
-      // Lê o hash da URL: #project/winnies-flying-guide ou #contact ou #work
       const hash = window.location.hash;
       
       if (hash.startsWith('#project/')) {
@@ -1505,6 +1841,8 @@
         } else {
           navigateTo('work');
         }
+      } else if (hash === '#design') {
+        navigateTo('design');
       } else if (hash === '#contact') {
         navigateTo('contact');
       } else {
@@ -1546,6 +1884,8 @@
           } else {
             navigateTo('work');
           }
+        } else if (newHash === '#design') {
+          navigateTo('design');
         } else if (newHash === '#contact') {
           navigateTo('contact');
         } else {
