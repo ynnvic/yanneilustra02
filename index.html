@@ -903,6 +903,43 @@
       .design-page .design-left .download-btn { padding: 12px 28px; font-size: 13px; }
       .design-page .design-right .pdf-wrapper { height: 45vh; max-height: 45vh; }
     }
+
+    /* PÁGINA DE FILTRO - DESTAQUE DA TAG */
+    .tag-highlight {
+      display: inline-block;
+      background: #fec643;
+      color: #4a4a4a;
+      padding: 4px 20px;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      margin-right: 8px;
+    }
+    
+    .back-to-project {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: rgb(131, 147, 195);
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      background: none;
+      border: none;
+      font-size: 14px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      border: 1.5px solid #e0e2e8;
+    }
+    .back-to-project:hover {
+      color: #fec643;
+      border-color: #fec643;
+    }
+    .back-to-project .arrow {
+      font-size: 18px;
+      line-height: 1;
+    }
   </style>
 </head>
 
@@ -930,11 +967,11 @@
   <!-- WRAPPER PARA PROJETOS -->
   <div id="project-wrapper" class="project-wrapper page-hidden" style="display:none;">
     <div id="project-section" class="project-section">
-      <button class="back-btn" onclick="navigateTo('work')">
+      <button class="back-btn" onclick="goBackFromProject()">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
-        Back to Work
+        Back
       </button>
       
       <div id="project-content" style="flex:1;display:flex;flex-direction:column;">
@@ -955,10 +992,16 @@
     </div>
     <section class="portfolio-wrapper">
       <div class="section-header">
-        <h2>Professional doodler for tiny humans :) ✨</h2>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <h2>Professional doodler for tiny humans :) ✨</h2>
+          <span id="active-tag-display"></span>
+        </div>
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
           <span class="filter-info" id="filter-info"></span>
           <button class="filter-clear" id="filter-clear" onclick="clearFilter()">✕ Clear filter</button>
+          <button class="back-to-project" id="back-to-project-btn" style="display:none;" onclick="goBackFromFilter()">
+            <span class="arrow">←</span> Back to project
+          </button>
         </div>
       </div>
       <div class="portfolio-grid" id="portfolio-grid"></div>
@@ -1082,7 +1125,7 @@
           title: "Winnie's Flying Guide",
           category: "Children's picture book",
           year: 2024,
-          tags: ["CHILDREN'S BOOK", "POETRY", "FRIENDSHIP"],
+          tags: ["CHILDREN'S BOOK", "CHILDREN'S ILLUSTRATION", "CARTOON ART"],
           description: [
             "Winnie's Flying Guide is a poetry picture book for children ages 4 to 6 explores themes of belonging and friendship.",
             "It is most about the flying lessons of Winnie Pendragon, the good witch of East Winds, privately published for family and friends."
@@ -1102,7 +1145,7 @@
           title: "Captain Octopus & Sailorboy's Adventures",
           category: "Children's Book Cover",
           year: 2022,
-          tags: ["BOOK COVER", "CHILDREN'S BOOK", "SCHOOL"],
+          tags: ["CHILDREN'S BOOK", "CARTOON ART", "CONCEPT ART"],
           description: [
             "A children's cover book illustration concept I made for Escolinha São José (St. Joseph Elementary School)."
           ],
@@ -1115,7 +1158,7 @@
           title: "Safari Wallpaper",
           category: "Children's Illustration",
           year: 2024,
-          tags: ["WALLPAPER", "SAFARI", "PATTERN"],
+          tags: ["CHILDREN'S WALLPAPER", "CHILDREN'S ILLUSTRATION", "SAFARI"],
           description: [
             "In January 2024, I worked with Fino Toque, an interior design company based in Recife, Brazil.",
             "They asked me to illustrate a bunch of children's wallpapers for a sale catalogue.",
@@ -1134,7 +1177,7 @@
           title: "Children's School Illustration",
           category: "Children's Illustration",
           year: 2025,
-          tags: ["SCHOOL", "BRAZILIAN ARTISTS", "MURAL"],
+          tags: ["CHILDREN'S ILLUSTRATION", "CARTOON ART", "SCHOOL WALL"],
           description: [
             "A series of illustrations created to decorate the elementary school corridors across all seven GGE school campuses.",
             "Located in the states of Pernambuco and Paraíba in Northeastern Brazil.",
@@ -1164,7 +1207,7 @@
           title: "Stellar Cafe",
           category: "Webcomic Art",
           year: 2022,
-          tags: ["WEBCOMIC", "SCI-FI", "LGBTQIAP+"],
+          tags: ["WEBCOMICS", "CARTOON ART+", "LGBTQIAP"],
           description: [
             "Synopsis: How would Milo react upon realizing that his long-awaited perfect night with Juca was turning into an intergalactic",
             "frenzy of abyssal creatures, fugitives from justice, and a space emperor with a god complex?",
@@ -1178,9 +1221,8 @@
             "assets/images/projeto5_3.jpg",
             "assets/images/projeto5_4.jpg",
             "assets/images/projeto5_5.jpg",
-            "assets/images/projeto5_6.jpg",
-            "assets/images/projeto5_7.jpg"
-          ]
+            "assets/images/projeto5_6.jpg"
+                    ]
         },
         {
           id: 6,
@@ -1188,7 +1230,7 @@
           title: "Character's Illustration Pack",
           category: "Character Design",
           year: 2022,
-          tags: ["CHARACTER DESIGN", "YOUTUBE", "BRAZIL"],
+          tags: ["CHARACTER DESIGN", "CHILDREN'S ILLUSTRATION", "CARTOON ART"],
           description: [
             "Evandro and Jaque Lemos are two fantastic YouTubers from my hometown, Gravatá, in the state of Pernambuco, Brazil.",
             "Together, they create a variety of sketch videos, always in the most comedic way possible, with many references from Brazilian Northeastern culture!"
@@ -1208,7 +1250,7 @@
           title: "Webcomic Travelers",
           category: "Comic art",
           year: 2025,
-          tags: ["WEBCOMIC", "SCI-FI", "TIME TRAVEL"],
+          tags: ["WEBCOMIC", "CARTOON ART"],
           description: [
             "Anne always felt like an ordinary girl, with ordinary aspirations living her ordinary life.",
             "Nothing really special happened during the first 20 years of her existence, but bumping a strange grumpy woman wearing a lab coat, everything changes.",
@@ -1228,7 +1270,7 @@
           title: "RPG Character's Commission",
           category: "Character Design & Concept Art",
           year: 2025,
-          tags: ["RPG", "D&D", "CONCEPT ART"],
+          tags: ["CONCEPT ART", "CARTOON ART", "RPG"],
           description: [
             "These are some of the best commissions created for a group of RPG players.",
             "Ranging from D&D to Vampire: The Masquerade."
@@ -1247,7 +1289,7 @@
           title: "Steven Universe's Fanart",
           category: "Digital Cartoon Art",
           year: 2019,
-          tags: ["FANART", "CARTOON", "STEVEN UNIVERSE"],
+          tags: ["FANART", "CARTOON ART", "CHARACTER DESIGN"],
           description: [
             "A personal project in which I created a fan art illustration based on the character Sardonyx from the animated series Steven Universe."
           ],
@@ -1280,6 +1322,7 @@
     let currentProjectId = null;
     let currentImageIndex = 0;
     let currentFilter = null;
+    let lastProjectSlug = null; // Para voltar do filtro
     const imageCache = {};
 
     // ========================================
@@ -1308,7 +1351,11 @@
       navDesign.classList.remove('active');
       navContact.classList.remove('active');
 
+      // Esconde botão "Back to project" ao sair do filtro
+      document.getElementById('back-to-project-btn').style.display = 'none';
+
       if (page === 'project' && projectSlug) {
+        lastProjectSlug = projectSlug;
         projectWrapper.style.display = 'flex';
         projectWrapper.classList.remove('page-hidden');
         globalFooter.style.display = 'none';
@@ -1335,7 +1382,6 @@
         navWork.classList.add('active');
         history.pushState(null, '', '#work');
         document.title = 'Yanne Vicente - Illustration';
-        // Se veio de um projeto com filtro, mantém
         renderPortfolio(currentFilter);
       }
       window.scrollTo(0, 0);
@@ -1347,17 +1393,46 @@
     }
 
     // ========================================
+    // VOLTAR DO PROJETO
+    // ========================================
+    function goBackFromProject() {
+      // Se veio de um filtro, volta para o filtro
+      if (currentFilter) {
+        navigateTo('work');
+        // Reaplica o filtro com destaque
+        renderPortfolio(currentFilter);
+        document.getElementById('filter-info').innerHTML = `Showing <span>${currentFilter}</span> projects`;
+        document.getElementById('filter-clear').classList.add('show');
+        document.getElementById('back-to-project-btn').style.display = 'inline-flex';
+        // Mostra a tag em destaque
+        document.getElementById('active-tag-display').innerHTML = `<span class="tag-highlight">✦ ${currentFilter} ✦</span>`;
+        return;
+      }
+      navigateTo('work');
+    }
+
+    // ========================================
+    // VOLTAR DO FILTRO PARA O PROJETO
+    // ========================================
+    function goBackFromFilter() {
+      if (lastProjectSlug) {
+        navigateTo('project', lastProjectSlug);
+      } else {
+        clearFilter();
+      }
+    }
+
+    // ========================================
     // FILTRO POR TAG
     // ========================================
     function filterByTag(tag) {
       currentFilter = tag;
       renderPortfolio(tag);
-      // Volta para a página de work e mostra o filtro
+      
       const workSection = document.getElementById('work-section');
       const globalFooter = document.getElementById('global-footer');
       const navWork = document.getElementById('nav-work');
       
-      // Esconde outras páginas
       document.getElementById('project-wrapper').style.display = 'none';
       document.getElementById('project-wrapper').classList.add('page-hidden');
       document.getElementById('contact-section').style.display = 'none';
@@ -1373,9 +1448,16 @@
       document.title = `Yanne Vicente - Illustration - ${tag}`;
       window.scrollTo(0, 0);
       
-      // Mostra info do filtro
       document.getElementById('filter-info').innerHTML = `Showing <span>${tag}</span> projects`;
       document.getElementById('filter-clear').classList.add('show');
+      
+      // Mostra a tag em destaque
+      document.getElementById('active-tag-display').innerHTML = `<span class="tag-highlight">✦ ${tag} ✦</span>`;
+      
+      // Mostra o botão de voltar ao projeto se houver um projeto anterior
+      if (lastProjectSlug) {
+        document.getElementById('back-to-project-btn').style.display = 'inline-flex';
+      }
     }
 
     function clearFilter() {
@@ -1383,6 +1465,8 @@
       renderPortfolio(null);
       document.getElementById('filter-info').innerHTML = '';
       document.getElementById('filter-clear').classList.remove('show');
+      document.getElementById('active-tag-display').innerHTML = '';
+      document.getElementById('back-to-project-btn').style.display = 'none';
       history.pushState(null, '', '#work');
       document.title = 'Yanne Vicente - Illustration';
     }
@@ -1418,7 +1502,6 @@
         `;
       }
 
-      // Gerar tags HTML
       let tagsHtml = '';
       if (project.tags && project.tags.length > 0) {
         tagsHtml = `
@@ -1855,7 +1938,7 @@
           if (document.getElementById('zoomModal').classList.contains('active')) {
             closeZoom();
           } else if (document.getElementById('project-wrapper').style.display !== 'none') {
-            navigateTo('work');
+            goBackFromProject();
           }
         }
         if (e.key === 'ArrowLeft') {
