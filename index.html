@@ -948,8 +948,8 @@
   <!-- NAVEGAÇÃO -->
   <nav class="navbar">
     <div class="navbar-logo">
-      <img src="assets/images/logo.svg" alt="Yanne Vicente Logo" onclick="navigateTo('work')" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" width="40" height="40">
-      <span id="logo-fallback" class="text-2xl font-bold cursor-pointer" style="color: #fec643; display: none;" onclick="navigateTo('work')">YV</span>
+      <img src="assets/images/logo.svg" alt="Yanne Vicente Logo" onclick="goToHome()" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" width="40" height="40">
+      <span id="logo-fallback" class="text-2xl font-bold cursor-pointer" style="color: #fec643; display: none;" onclick="goToHome()">YV</span>
     </div>
     <div class="navbar-menu">
       <a href="https://wa.me/+5581996385618" target="_blank" rel="noopener" class="menu-icon-link" title="WhatsApp">
@@ -958,7 +958,7 @@
       <a href="https://instagram.com/yanne.vicente" target="_blank" rel="noopener" class="menu-icon-link" title="Instagram">
         <i class="fa-brands fa-instagram"></i>
       </a>
-      <a onclick="navigateTo('work')" class="nav-link" id="nav-work">ILLUSTRATION</a>
+      <a onclick="goToHome()" class="nav-link" id="nav-work">ILLUSTRATION</a>
       <a onclick="navigateTo('design')" class="nav-link" id="nav-design">DESIGN</a>
       <a onclick="navigateTo('contact')" class="nav-link" id="nav-contact">CONTACT</a>
     </div>
@@ -1207,7 +1207,7 @@
           title: "Stellar Cafe",
           category: "Webcomic Art",
           year: 2022,
-          tags: ["WEBCOMICS", "CARTOON ART+", "LGBTQIAP"],
+          tags: ["WEBCOMICS", "CARTOON ART+", "LGBTQIAP+"],
           description: [
             "Synopsis: How would Milo react upon realizing that his long-awaited perfect night with Juca was turning into an intergalactic",
             "frenzy of abyssal creatures, fugitives from justice, and a space emperor with a god complex?",
@@ -1322,8 +1322,52 @@
     let currentProjectId = null;
     let currentImageIndex = 0;
     let currentFilter = null;
-    let lastProjectSlug = null; // Para voltar do filtro
+    let lastProjectSlug = null;
     const imageCache = {};
+
+    // ========================================
+    // FUNÇÃO PARA IR PARA HOME (LIMPA TUDO)
+    // ========================================
+    function goToHome() {
+      // Limpa o filtro
+      currentFilter = null;
+      lastProjectSlug = null;
+      
+      // Navega para work
+      const workSection = document.getElementById('work-section');
+      const projectWrapper = document.getElementById('project-wrapper');
+      const contactSection = document.getElementById('contact-section');
+      const designSection = document.getElementById('design-section');
+      const globalFooter = document.getElementById('global-footer');
+      const navWork = document.getElementById('nav-work');
+      const navDesign = document.getElementById('nav-design');
+      const navContact = document.getElementById('nav-contact');
+
+      workSection.classList.remove('page-hidden');
+      projectWrapper.classList.add('page-hidden');
+      projectWrapper.style.display = 'none';
+      contactSection.classList.add('page-hidden');
+      contactSection.style.display = 'none';
+      designSection.classList.add('page-hidden');
+      designSection.style.display = 'none';
+      globalFooter.style.display = 'block';
+      
+      navWork.classList.add('active');
+      navDesign.classList.remove('active');
+      navContact.classList.remove('active');
+
+      // Limpa os elementos de filtro
+      document.getElementById('filter-info').innerHTML = '';
+      document.getElementById('filter-clear').classList.remove('show');
+      document.getElementById('active-tag-display').innerHTML = '';
+      document.getElementById('back-to-project-btn').style.display = 'none';
+
+      history.pushState(null, '', '#work');
+      document.title = 'Yanne Vicente - Illustration';
+      
+      renderPortfolio(null);
+      window.scrollTo(0, 0);
+    }
 
     // ========================================
     // NAVEGAÇÃO PRINCIPAL
@@ -1351,7 +1395,6 @@
       navDesign.classList.remove('active');
       navContact.classList.remove('active');
 
-      // Esconde botão "Back to project" ao sair do filtro
       document.getElementById('back-to-project-btn').style.display = 'none';
 
       if (page === 'project' && projectSlug) {
@@ -1376,13 +1419,6 @@
         navContact.classList.add('active');
         history.pushState(null, '', '#contact');
         document.title = 'Yanne Vicente - Contact';
-      } else {
-        workSection.classList.remove('page-hidden');
-        globalFooter.style.display = 'block';
-        navWork.classList.add('active');
-        history.pushState(null, '', '#work');
-        document.title = 'Yanne Vicente - Illustration';
-        renderPortfolio(currentFilter);
       }
       window.scrollTo(0, 0);
     }
@@ -1396,19 +1432,16 @@
     // VOLTAR DO PROJETO
     // ========================================
     function goBackFromProject() {
-      // Se veio de um filtro, volta para o filtro
       if (currentFilter) {
         navigateTo('work');
-        // Reaplica o filtro com destaque
         renderPortfolio(currentFilter);
-        document.getElementById('filter-info').innerHTML = `Showing <span>${currentFilter}</span> projects`;
+        document.getElementById('filter-info').innerHTML = `Showing <span>${escapeHtml(currentFilter)}</span> projects`;
         document.getElementById('filter-clear').classList.add('show');
         document.getElementById('back-to-project-btn').style.display = 'inline-flex';
-        // Mostra a tag em destaque
-        document.getElementById('active-tag-display').innerHTML = `<span class="tag-highlight">✦ ${currentFilter} ✦</span>`;
+        document.getElementById('active-tag-display').innerHTML = `<span class="tag-highlight">✦ ${escapeHtml(currentFilter)} ✦</span>`;
         return;
       }
-      navigateTo('work');
+      goToHome();
     }
 
     // ========================================
@@ -1418,7 +1451,7 @@
       if (lastProjectSlug) {
         navigateTo('project', lastProjectSlug);
       } else {
-        clearFilter();
+        goToHome();
       }
     }
 
@@ -1426,6 +1459,12 @@
     // FILTRO POR TAG
     // ========================================
     function filterByTag(tag) {
+      const hasTag = siteData.portfolio.some(p => p.tags && p.tags.includes(tag));
+      if (!hasTag) {
+        showToast('Tag não encontrada');
+        return;
+      }
+      
       currentFilter = tag;
       renderPortfolio(tag);
       
@@ -1448,16 +1487,19 @@
       document.title = `Yanne Vicente - Illustration - ${tag}`;
       window.scrollTo(0, 0);
       
-      document.getElementById('filter-info').innerHTML = `Showing <span>${tag}</span> projects`;
+      document.getElementById('filter-info').innerHTML = `Showing <span>${escapeHtml(tag)}</span> projects`;
       document.getElementById('filter-clear').classList.add('show');
+      document.getElementById('active-tag-display').innerHTML = `<span class="tag-highlight">✦ ${escapeHtml(tag)} ✦</span>`;
       
-      // Mostra a tag em destaque
-      document.getElementById('active-tag-display').innerHTML = `<span class="tag-highlight">✦ ${tag} ✦</span>`;
-      
-      // Mostra o botão de voltar ao projeto se houver um projeto anterior
       if (lastProjectSlug) {
         document.getElementById('back-to-project-btn').style.display = 'inline-flex';
       }
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
     }
 
     function clearFilter() {
@@ -1476,7 +1518,7 @@
     // ========================================
     function loadProject(slug) {
       const project = siteData.portfolio.find(p => p.slug === slug);
-      if (!project) { navigateTo('work'); return; }
+      if (!project) { goToHome(); return; }
 
       currentProjectId = project.id;
       currentImageIndex = 0;
@@ -1507,8 +1549,8 @@
         tagsHtml = `
           <div class="tags-container">
             ${project.tags.map(tag => `
-              <button class="tag" onclick="filterByTag('${tag}')">
-                <span class="star">✦</span> ${tag} <span class="star">✦</span>
+              <button class="tag" onclick="filterByTag('${tag.replace(/'/g, "\\'")}')">
+                <span class="star">✦</span> ${escapeHtml(tag)} <span class="star">✦</span>
               </button>
             `).join('')}
           </div>
@@ -1923,14 +1965,14 @@
         if (siteData.portfolio.some(p => p.slug === slug)) {
           navigateTo('project', slug);
         } else {
-          navigateTo('work');
+          goToHome();
         }
       } else if (hash === '#design') {
         navigateTo('design');
       } else if (hash === '#contact') {
         navigateTo('contact');
       } else {
-        navigateTo('work');
+        goToHome();
       }
 
       document.addEventListener('keydown', (e) => {
@@ -1966,14 +2008,14 @@
           if (siteData.portfolio.some(p => p.slug === slug)) {
             navigateTo('project', slug);
           } else {
-            navigateTo('work');
+            goToHome();
           }
         } else if (newHash === '#design') {
           navigateTo('design');
         } else if (newHash === '#contact') {
           navigateTo('contact');
         } else {
-          navigateTo('work');
+          goToHome();
         }
       });
     });
