@@ -1362,7 +1362,7 @@
       document.getElementById('active-tag-display').innerHTML = '';
       document.getElementById('back-to-project-btn').style.display = 'none';
 
-      history.pushState(null, '', '#work');
+      history.pushState(null, '', '/');
       document.title = 'Yanne Vicente - Illustration';
       
       renderPortfolio(null);
@@ -1403,21 +1403,21 @@
         projectWrapper.classList.remove('page-hidden');
         globalFooter.style.display = 'none';
         loadProject(projectSlug);
-        history.pushState(null, '', '#project/' + projectSlug);
+        history.pushState(null, '', '/project/' + projectSlug);
         document.title = `Yanne Vicente - ${getProjectTitle(projectSlug)}`;
       } else if (page === 'design') {
         designSection.style.display = 'flex';
         designSection.classList.remove('page-hidden');
         globalFooter.style.display = 'none';
         navDesign.classList.add('active');
-        history.pushState(null, '', '#design');
+        history.pushState(null, '', '/design');
         document.title = 'Yanne Vicente - Design';
       } else if (page === 'contact') {
         contactSection.style.display = 'grid';
         contactSection.classList.remove('page-hidden');
         globalFooter.style.display = 'block';
         navContact.classList.add('active');
-        history.pushState(null, '', '#contact');
+        history.pushState(null, '', '/contact');
         document.title = 'Yanne Vicente - Contact';
       }
       window.scrollTo(0, 0);
@@ -1483,7 +1483,7 @@
       globalFooter.style.display = 'block';
       navWork.classList.add('active');
       
-      history.pushState(null, '', '#work');
+      history.pushState(null, '', '/?tag=' + encodeURIComponent(tag));
       document.title = `Yanne Vicente - Illustration - ${tag}`;
       window.scrollTo(0, 0);
       
@@ -1509,7 +1509,7 @@
       document.getElementById('filter-clear').classList.remove('show');
       document.getElementById('active-tag-display').innerHTML = '';
       document.getElementById('back-to-project-btn').style.display = 'none';
-      history.pushState(null, '', '#work');
+      history.pushState(null, '', '/');
       document.title = 'Yanne Vicente - Illustration';
     }
 
@@ -1732,8 +1732,8 @@
     }
 
     function getCurrentProject() {
-      const hash = window.location.hash;
-      const match = hash.match(/^#project\/(.+)$/);
+      const path = window.location.pathname;
+      const match = path.match(/\/project\/([^\/]+)\/?$/);
       const slug = match ? match[1] : null;
       return siteData.portfolio.find(p => p.slug === slug);
     }
@@ -1787,7 +1787,7 @@
       const project = siteData.portfolio.find(p => p.slug === slug);
       if (!project) return;
       
-      const shareUrl = window.location.origin + window.location.pathname + '#project/' + slug;
+      const shareUrl = window.location.origin + '/project/' + slug;
       
       if (navigator.share) {
         navigator.share({ title: project.title, text: `Confira o projeto "${project.title}" por Yanne Vicente!`, url: shareUrl })
@@ -1951,6 +1951,44 @@
     });
 
     // ========================================
+    // FUNÇÕES DE ROTEAMENTO (compartilhadas)
+    // ========================================
+    function handleRoute(path, search) {
+      const params = new URLSearchParams(search || '');
+      const tagParam = params.get('tag');
+      
+      // Normaliza a rota: remove trailing slash (exceto na raiz)
+      let route = path;
+      if (route.length > 1 && route.endsWith('/')) {
+        route = route.slice(0, -1);
+      }
+      
+      const projectMatch = route.match(/^\/project\/([^\/]+)$/);
+      
+      if (projectMatch) {
+        const slug = projectMatch[1];
+        if (siteData.portfolio.some(p => p.slug === slug)) {
+          navigateTo('project', slug);
+        } else {
+          goToHome();
+        }
+      } else if (route === '/design') {
+        navigateTo('design');
+      } else if (route === '/contact') {
+        navigateTo('contact');
+      } else if (tagParam) {
+        const tag = decodeURIComponent(tagParam);
+        if (siteData.portfolio.some(p => p.tags && p.tags.includes(tag))) {
+          filterByTag(tag);
+          return;
+        }
+        goToHome();
+      } else {
+        goToHome();
+      }
+    }
+
+    // ========================================
     // ROTEAMENTO INICIAL
     // ========================================
     document.addEventListener('DOMContentLoaded', function() {
@@ -1958,22 +1996,23 @@
       renderProfile();
       renderSocial();
 
+      // Compatibilidade com links antigos (#hash) — redireciona para URLs limpas
       const hash = window.location.hash;
-      
-      if (hash.startsWith('#project/')) {
-        const slug = hash.replace('#project/', '');
-        if (siteData.portfolio.some(p => p.slug === slug)) {
-          navigateTo('project', slug);
-        } else {
-          goToHome();
+      if (hash) {
+        if (hash.startsWith('#project/')) {
+          window.location.replace('/project/' + hash.replace('#project/', ''));
+          return;
+        } else if (hash === '#design') {
+          window.location.replace('/design');
+          return;
+        } else if (hash === '#contact') {
+          window.location.replace('/contact');
+          return;
         }
-      } else if (hash === '#design') {
-        navigateTo('design');
-      } else if (hash === '#contact') {
-        navigateTo('contact');
-      } else {
-        goToHome();
       }
+
+      // Rota inicial baseada no pathname
+      handleRoute(window.location.pathname, window.location.search);
 
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
@@ -2002,21 +2041,7 @@
       });
 
       window.addEventListener('popstate', () => {
-        const newHash = window.location.hash;
-        if (newHash.startsWith('#project/')) {
-          const slug = newHash.replace('#project/', '');
-          if (siteData.portfolio.some(p => p.slug === slug)) {
-            navigateTo('project', slug);
-          } else {
-            goToHome();
-          }
-        } else if (newHash === '#design') {
-          navigateTo('design');
-        } else if (newHash === '#contact') {
-          navigateTo('contact');
-        } else {
-          goToHome();
-        }
+        handleRoute(window.location.pathname, window.location.search);
       });
     });
   </script>
