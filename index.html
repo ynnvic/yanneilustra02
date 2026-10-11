@@ -1151,7 +1151,7 @@
     <section class="portfolio-wrapper" style="max-width:1100px;margin:0 auto;">
       <div class="section-header" style="flex-direction:column;align-items:flex-start;gap:8px;">
         <h2 style="color: rgb(131, 147, 195);">From the sketchbook ✏️✨</h2>
-        <p style="color:#aab0c4;font-size:15px;font-weight:500;">Thoughts, processes, and stories — fresh from my Medium.</p>
+        <p style="color:#aab0c4;font-size:15px;font-weight:500;">Thoughts, processes, and stories — fresh from my Substack.</p>
       </div>
       <div id="blog-grid" class="blog-grid">
         <div class="loader-container"><div class="loader"></div></div>
@@ -2082,7 +2082,7 @@
     });
 
     // ========================================
-    // BLOG (Medium via RSS)
+    // BLOG (Substack via RSS)
     // ========================================
     let blogLoaded = false;
 
@@ -2091,9 +2091,9 @@
       const grid = document.getElementById('blog-grid');
       if (!grid) return;
 
-      // Usa um proxy público gratuito (RSS2JSON) para converter o feed do Medium
-      const mediumUser = 'yannevicente';
-      const rssUrl = `https://medium.com/feed/@${mediumUser}`;
+      // Feed RSS do Substack
+      const substackUrl = 'https://yannevicente.substack.com';
+      const rssUrl = `${substackUrl}/feed`;
       const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
 
       fetch(apiUrl)
@@ -2114,6 +2114,9 @@
               const match = item.content.match(/<img[^>]+src="([^">]+)"/);
               if (match) imageUrl = match[1];
             }
+            if (!imageUrl && item.enclosure && item.enclosure.link) {
+              imageUrl = item.enclosure.link;
+            }
             if (!imageUrl) {
               imageUrl = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225"%3E%3Crect fill="%23e8e6e4" width="400" height="225"/%3E%3C/svg%3E';
             }
@@ -2121,6 +2124,8 @@
             // Extrai um resumo limpo (sem HTML)
             let excerpt = item.description || '';
             excerpt = excerpt.replace(/<[^>]+>/g, '').trim();
+            // Remove possível prefixo "Continue reading..." do Substack
+            excerpt = excerpt.replace(/Continue reading.*$/i, '').trim();
             if (excerpt.length > 140) excerpt = excerpt.substring(0, 140) + '…';
 
             return `
@@ -2133,7 +2138,7 @@
                   <div class="blog-card-date">${dateStr}</div>
                   <h3 class="blog-card-title">${escapeHtml(item.title)}</h3>
                   <p class="blog-card-excerpt">${escapeHtml(excerpt)}</p>
-                  <span class="blog-card-readmore">Read on Medium →</span>
+                  <span class="blog-card-readmore">Read on Substack →</span>
                 </div>
               </a>
             `;
@@ -2149,10 +2154,10 @@
       if (!grid) return;
       grid.innerHTML = `
         <div class="blog-empty">
-          <p>Não foi possível carregar os posts do Medium agora. 😕</p>
+          <p>Não foi possível carregar os posts do Substack agora. 😕</p>
           <p>Mas você pode ler tudo direto por lá:</p>
           <p style="margin-top:16px;">
-            <a href="https://medium.com/@yannevicente" target="_blank" rel="noopener">medium.com/@yannevicente →</a>
+            <a href="https://yannevicente.substack.com" target="_blank" rel="noopener">yannevicente.substack.com →</a>
           </p>
         </div>
       `;
