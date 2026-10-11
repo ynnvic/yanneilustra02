@@ -2084,6 +2084,9 @@
     // ========================================
     // BLOG (Substack via RSS)
     // ========================================
+        // ========================================
+    // BLOG (Substack API nativa — sem proxy)
+    // ========================================
     let blogLoaded = false;
 
     function loadBlogPosts() {
@@ -2091,19 +2094,74 @@
       const grid = document.getElementById('blog-grid');
       if (!grid) return;
 
-      // Feed RSS do Substack
-      const substackUrl = 'https://yannevicente.substack.com';
-      const rssUrl = `${substackUrl}/feed`;
-      const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+      // API pública do Substack — não precisa de proxy!
+      const apiUrl = 'https://yannevicente.substack.com/api/v1/archive?sort=new&limit=12';
 
       fetch(apiUrl)
         .then(res => res.json())
-        .then(data => {
-          if (!data || data.status !== 'ok' || !data.items || data.items.length === 0) {
+        .then(posts => {
+          if (!Array.isArray(posts) || posts.length === 0) {
             renderBlogEmpty();
             return;
           }
 
+          grid.innerHTML = posts.slice(0, 9).map(post => {
+            const date = new Date(post.post_date);
+            const dateStr = isNaN(date) ? '' : date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+
+            // Imagem de capa
+            let imageUrl = post.cover_image || '';
+            if (!imageUrl && post.body_html) {
+              const match = post.body_html.match(/<img[^>]+src="([^">]+)"/);
+              if (match) imageUrl = match[1];
+            }
+            if (!imageUrl) {
+              imageUrl = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225"%3E%3Crect fill="%23e8e6e4" width="400" height="225"/%3E%3C/svg%3E';
+            }
+
+            // Resumo
+            let excerpt = (post.subtitle || post.description || '').trim();
+            if (!excerpt && post.body_html) {
+              excerpt = post.body_html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+            }
+            if (excerpt.length > 140) excerpt = excerpt.substring(0, 140) + '…';
+
+            const postUrl = post.canonical_url || `https://yannevicente.substack.com/p/${post.slug}`;
+
+            return `
+              <a class="blog-card" href="${postUrl}" target="_blank" rel="noopener">
+                <div class="blog-card-image">
+                  <img src="${imageUrl}" alt="${escapeHtml(post.title)}" loading="lazy" decoding="async"
+                       onerror="this.style.display='none'">
+                </div>
+                <div class="blog-card-body">
+                  <div class="blog-card-date">${dateStr}</div>
+                  <h3 class="blog-card-title">${escapeHtml(post.title || 'Untitled')}</h3>
+                  <p class="blog-card-excerpt">${escapeHtml(excerpt)}</p>
+                  <span class="blog-card-readmore">Read on Substack →</span>
+                </div>
+              </a>
+            `;
+          }).join('');
+
+          blogLoaded = true;
+        })
+        .catch(() => renderBlogEmpty());
+    }
+
+    function renderBlogEmpty() {
+      const grid = document.getElementById('blog-grid');
+      if (!grid) return;
+      grid.innerHTML = `
+        <div class="blog-empty">
+          <p>Não foi possível carregar os posts do Substack agora. 😕</p>
+          <p>Mas você pode ler tudo direto por lá:</p>
+          <p style="margin-top:16px;">
+            <a href="https://yannevicente.substack.com" target="_blank" rel="noopener">yannevicente.substack.com →</a>
+          </p>
+        </div>
+      `;
+    }
           grid.innerHTML = data.items.slice(0, 9).map(item => {
             const date = new Date(item.pubDate);
             const dateStr = date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
