@@ -2082,9 +2082,6 @@
     });
 
     // ========================================
-    // BLOG (Substack via RSS)
-    // ========================================
-        // ========================================
     // BLOG (Substack API nativa — sem proxy)
     // ========================================
     let blogLoaded = false;
@@ -2137,64 +2134,6 @@
                 <div class="blog-card-body">
                   <div class="blog-card-date">${dateStr}</div>
                   <h3 class="blog-card-title">${escapeHtml(post.title || 'Untitled')}</h3>
-                  <p class="blog-card-excerpt">${escapeHtml(excerpt)}</p>
-                  <span class="blog-card-readmore">Read on Substack →</span>
-                </div>
-              </a>
-            `;
-          }).join('');
-
-          blogLoaded = true;
-        })
-        .catch(() => renderBlogEmpty());
-    }
-
-    function renderBlogEmpty() {
-      const grid = document.getElementById('blog-grid');
-      if (!grid) return;
-      grid.innerHTML = `
-        <div class="blog-empty">
-          <p>Não foi possível carregar os posts do Substack agora. 😕</p>
-          <p>Mas você pode ler tudo direto por lá:</p>
-          <p style="margin-top:16px;">
-            <a href="https://yannevicente.substack.com" target="_blank" rel="noopener">yannevicente.substack.com →</a>
-          </p>
-        </div>
-      `;
-    }
-          grid.innerHTML = data.items.slice(0, 9).map(item => {
-            const date = new Date(item.pubDate);
-            const dateStr = date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
-
-            // Extrai imagem de capa do conteúdo
-            let imageUrl = item.thumbnail || '';
-            if (!imageUrl && item.content) {
-              const match = item.content.match(/<img[^>]+src="([^">]+)"/);
-              if (match) imageUrl = match[1];
-            }
-            if (!imageUrl && item.enclosure && item.enclosure.link) {
-              imageUrl = item.enclosure.link;
-            }
-            if (!imageUrl) {
-              imageUrl = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225"%3E%3Crect fill="%23e8e6e4" width="400" height="225"/%3E%3C/svg%3E';
-            }
-
-            // Extrai um resumo limpo (sem HTML)
-            let excerpt = item.description || '';
-            excerpt = excerpt.replace(/<[^>]+>/g, '').trim();
-            // Remove possível prefixo "Continue reading..." do Substack
-            excerpt = excerpt.replace(/Continue reading.*$/i, '').trim();
-            if (excerpt.length > 140) excerpt = excerpt.substring(0, 140) + '…';
-
-            return `
-              <a class="blog-card" href="${item.link}" target="_blank" rel="noopener">
-                <div class="blog-card-image">
-                  <img src="${imageUrl}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async"
-                       onerror="this.style.display='none'">
-                </div>
-                <div class="blog-card-body">
-                  <div class="blog-card-date">${dateStr}</div>
-                  <h3 class="blog-card-title">${escapeHtml(item.title)}</h3>
                   <p class="blog-card-excerpt">${escapeHtml(excerpt)}</p>
                   <span class="blog-card-readmore">Read on Substack →</span>
                 </div>
