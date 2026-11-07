@@ -115,50 +115,51 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 10px 60px;      /* margem lateral p/ caber as setas fora da imagem */
       min-height: 400px;
       height: 100%;
       overflow: hidden;
+      gap: 12px;               /* espaço entre imagem principal e thumbnails */
     }
     
     .project-carousel .main-image-container {
-      width: 100%;
-      height: 100%;
-      display: flex;
+      position: relative;
+      display: inline-flex;                    /* encolhe até o tamanho da imagem */
       align-items: center;
       justify-content: center;
       cursor: zoom-in;
-      position: relative;
       background: #ffffff;
-      overflow: hidden;
-      max-height: calc(100vh - 200px);
+      max-width: 100%;
+      max-height: calc(100vh - 300px);         /* reserva espaço p/ thumbs + back + navbar */
+      flex: 0 1 auto;
+      min-height: 0;
     }
     
     .project-carousel .main-image-container img {
       max-width: 100%;
-      max-height: 100%;
+      max-height: calc(100vh - 300px);         /* antes era 100% */
       width: auto;
       height: auto;
       object-fit: contain;
+      display: block;
       transition: transform 0.3s ease;
     }
     
     .carousel-controls {
       position: absolute;
       top: 50%;
-      left: 0;
-      right: 0;
+      left: -50px;             /* setas ficam logo fora da imagem */
+      right: -50px;
       transform: translateY(-50%);
       display: flex;
       justify-content: space-between;
-      padding: 0 10px;
       pointer-events: none;
       z-index: 10;
     }
     
     .carousel-controls button {
       pointer-events: auto;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       border: 1px solid #ddd;
       border-radius: 50%;
       width: 40px;
@@ -169,6 +170,7 @@
       cursor: pointer;
       transition: all 0.3s ease;
       color: var(--brand-dark);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .carousel-controls button:hover { background: var(--brand-yellow); border-color: var(--brand-yellow); }
     .carousel-controls button.hidden { display: none !important; }
@@ -177,7 +179,7 @@
       display: flex;
       gap: 10px;
       overflow-x: auto;
-      padding: 16px 20px 10px 20px;
+      padding: 4px 20px 0 20px;
       width: 100%;
       max-width: 90%;
       justify-content: center;
@@ -255,8 +257,7 @@
       padding: 4px 12px;
       border-radius: 9999px;
       transition: all 0.2s;
-      /* STROKE EXTERNO DE 5PX */
-      box-shadow: 0 0 0 2px #FFBD59;
+      box-shadow: 0 0 0 2px #FEC94E; /* STROKE EXTERNO DE 5PX */
     }
     .project-info .tags-container .tag:hover {
       background: var(--brand-yellow);
@@ -334,6 +335,8 @@
       .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
       .portfolio-wrapper, .project-layout, .project-section .back-btn { padding-left: 40px; padding-right: 40px; }
       .project-layout { grid-template-columns: 1fr; height: auto; }
+      .project-carousel { padding: 10px 40px; }
+      .carousel-controls { left: -30px; right: -30px; }
     }
     @media (max-width: 640px) {
       .portfolio-grid { grid-template-columns: 1fr; }
@@ -357,9 +360,9 @@
       padding-top: 2rem;
     }
     .about-grid .image-col img {
-      width: 100%;              /* 2x em relação ao valor anterior (50%) */
+      width: 100%;
       height: auto;
-      max-height: calc(100vh - 300px); /* trava p/ não empurrar o footer */
+      max-height: calc(100vh - 300px);
       object-fit: contain;
       display: block;
     }
@@ -788,12 +791,14 @@
           <div class="project-carousel">
             <div class="main-image-container" onclick="openZoom()">
               <img id="project-main-image" src="${images[0]}" alt="${project.title}">
+              ${images.length > 1 ? `
+                <div class="carousel-controls">
+                  <button onclick="event.stopPropagation(); changeImg(-1, '${slug}')">‹</button>
+                  <button onclick="event.stopPropagation(); changeImg(1, '${slug}')">›</button>
+                </div>
+              ` : ''}
             </div>
             ${images.length > 1 ? `
-              <div class="carousel-controls">
-                <button onclick="event.stopPropagation(); changeImg(-1, '${slug}')">‹</button>
-                <button onclick="event.stopPropagation(); changeImg(1, '${slug}')">›</button>
-              </div>
               <div class="carousel-thumbnails">
                 ${images.map((img, idx) => `<img src="${img}" class="${idx === 0 ? 'active-thumb' : ''}" onclick="event.stopPropagation(); setImg(${idx}, '${slug}')">`).join('')}
               </div>` : ''}
