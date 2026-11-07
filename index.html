@@ -70,6 +70,28 @@
     }
     .nav-link:hover { color: var(--brand-dark) !important; }
     .nav-link.active { color: var(--brand-dark) !important; font-weight: 500; }
+
+    /* ÍCONES SOCIAIS DA NAVBAR */
+    .navbar-socials {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 1rem;
+    }
+    .navbar-socials a {
+      color: var(--brand-blue);
+      font-size: 20px;
+      transition: color 0.3s ease, transform 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .navbar-socials a:hover {
+      color: var(--brand-yellow);
+      transform: translateY(-3px);
+    }
+
     .page-hidden { display: none !important; }
     
     /* PÁGINA DE PROJETO */
@@ -115,29 +137,29 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 10px 60px;      /* margem lateral p/ caber as setas fora da imagem */
+      padding: 10px 60px;
       min-height: 400px;
       height: 100%;
       overflow: hidden;
-      gap: 12px;               /* espaço entre imagem principal e thumbnails */
+      gap: 12px;
     }
     
     .project-carousel .main-image-container {
       position: relative;
-      display: inline-flex;                    /* encolhe até o tamanho da imagem */
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: zoom-in;
       background: #ffffff;
       max-width: 100%;
-      max-height: calc(100vh - 300px);         /* reserva espaço p/ thumbs + back + navbar */
+      max-height: calc(100vh - 300px);
       flex: 0 1 auto;
       min-height: 0;
     }
     
     .project-carousel .main-image-container img {
       max-width: 100%;
-      max-height: calc(100vh - 300px);         /* antes era 100% */
+      max-height: calc(100vh - 300px);
       width: auto;
       height: auto;
       object-fit: contain;
@@ -148,7 +170,7 @@
     .carousel-controls {
       position: absolute;
       top: 50%;
-      left: -50px;             /* setas ficam logo fora da imagem */
+      left: -50px;
       right: -50px;
       transform: translateY(-50%);
       display: flex;
@@ -241,8 +263,8 @@
     .project-info .tags-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;            /* espaço p/ o stroke de 5px não sobrepor a tag vizinha */
-      padding-top: 20px;    /* espaço p/ o stroke não encostar na linha divisória */
+      gap: 12px;
+      padding-top: 20px;
       margin-top: 10px;
       border-top: 1px solid #eee;
     }
@@ -257,14 +279,14 @@
       padding: 4px 12px;
       border-radius: 9999px;
       transition: all 0.2s;
-      box-shadow: 0 0 0 2px #FEC94E; /* STROKE EXTERNO DE 5PX */
+      box-shadow: 0 0 0 2px #FEC94E;
     }
     .project-info .tags-container .tag:hover {
       background: var(--brand-yellow);
       border-color: var(--brand-yellow);
     }
 
-    /* PORTFOLIO GRID (3 COLUNAS, ORDEM PRESERVADA) */
+    /* PORTFOLIO GRID */
     .portfolio-wrapper {
       width: 100%;
       max-width: 100%;
@@ -309,7 +331,6 @@
     }
     .portfolio-item:hover .overlay { opacity: 1; }
     
-    /* FILTRO BARRA DE INFORMAÇÃO DA TAG SELECIONADA */
     .filter-bar {
       margin-bottom: 20px;
       display: flex;
@@ -348,7 +369,6 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       align-items: start;
-      /* min-height removido: o footer sobe para a dobra da página */
     }
     .about-grid .image-col {
       background: transparent;
@@ -420,7 +440,7 @@
       text-decoration: underline;
     }
 
-    /* FORMULÁRIO AMARELO (#FFBD59) */
+    /* FORMULÁRIO AMARELO */
     .form-section {
       background-color: #FEC94E;
       border-radius: 12px;
@@ -525,6 +545,18 @@
       <a onclick="navigateTo('about')" class="nav-link" id="nav-about">about</a>
       <a href="https://yannevicente.substack.com/" target="_blank" rel="noopener" class="nav-link" id="nav-blog">blog</a>
     </div>
+
+    <!-- ÍCONES SOCIAIS CENTRALIZADOS -->
+    <div class="navbar-socials">
+      <a href="https://api.whatsapp.com/send/?phone=%2B5581996385618&text&type=phone_number&app_absent=0"
+         target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+      </a>
+      <a href="https://instagram.com/yanne.vicente"
+         target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">
+        <i class="fa-brands fa-instagram"></i>
+      </a>
+    </div>
   </nav>
 
   <!-- WRAPPER DE PROJETOS -->
@@ -593,7 +625,7 @@
     </div>
   </main>
 
-  <!-- MODAL DE ZOOM (Fechar clicando fora, na imagem ou ESC) -->
+  <!-- MODAL DE ZOOM -->
   <div id="zoomModal" class="zoom-modal" onclick="closeZoom()">
     <button class="close-zoom" onclick="closeZoom()">×</button>
     <img id="zoomImage" src="" alt="Zoom" onclick="closeZoom()">
@@ -877,7 +909,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Formspree AJAX submission
       const form = document.getElementById('contact-form');
       const successMsg = document.getElementById('form-success-message');
       if (form) {
@@ -902,7 +933,6 @@
         });
       }
 
-      // Atalho de fechar imagem no ESC
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           closeZoom();
