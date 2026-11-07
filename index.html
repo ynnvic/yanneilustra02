@@ -40,7 +40,7 @@
       margin-bottom: 1rem;
       text-align: center;
     }
-    .navbar-logo img { height: 36px; width: auto; cursor: pointer; }
+    .navbar-logo img { height: 50px; width: auto; cursor: pointer; } /* Altura ajustada para 50px */
     .navbar-logo span {
       font-weight: 400;
       font-size: 32px;
@@ -260,18 +260,17 @@
       border-color: var(--brand-yellow);
     }
 
-    /* PORTFOLIO GRID */
+    /* PORTFOLIO MOSAIC GRID (3 COLUNAS, MARGEM DE 100PX E ASPECT RATIO ORIGINAL) */
     .portfolio-wrapper {
       width: 100%;
-      max-width: 1600px;
+      max-width: 100%;
       margin: 0 auto;
-      padding: 40px 100px;
+      padding: 20px 100px; /* Margem de 100px nas bordas */
     }
     
     .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 25px;
+      column-count: 3;
+      column-gap: 25px; /* Espaço entre colunas ajustado */
       width: 100%;
     }
     
@@ -279,15 +278,16 @@
       position: relative; 
       cursor: pointer;
       overflow: hidden;
-      aspect-ratio: 1/1;
       background: #f8f8f8;
       border-radius: 8px;
+      margin-bottom: 25px; /* Espaço entre linhas */
+      break-inside: avoid; /* Mantém integridade das imagens no layout de colunas */
+      display: block;
     }
     
     .portfolio-item img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto; /* Mantém o formato/proporção original */
       display: block;
       transition: transform 0.4s ease;
     }
@@ -305,15 +305,35 @@
     }
     .portfolio-item:hover .overlay { opacity: 1; }
     
-    @media (max-width: 1200px) {
-      .portfolio-wrapper, .project-layout, .project-section .back-btn { padding-left: 40px; padding-right: 40px; }
+    /* FILTRO BARRA DE INFORMAÇÃO DA TAG SELECIONADA */
+    .filter-bar {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
+    .filter-bar .active-tag {
+      background: var(--brand-yellow);
+      color: var(--brand-dark);
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .filter-bar .clear-btn {
+      color: #888;
+      cursor: pointer;
+      font-size: 13px;
+      text-decoration: underline;
+    }
+
     @media (max-width: 1024px) {
-      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+      .portfolio-grid { column-count: 2; }
+      .portfolio-wrapper, .project-layout, .project-section .back-btn { padding-left: 40px; padding-right: 40px; }
       .project-layout { grid-template-columns: 1fr; height: auto; }
     }
     @media (max-width: 640px) {
-      .portfolio-grid { grid-template-columns: 1fr; }
+      .portfolio-grid { column-count: 1; }
       .portfolio-wrapper, .project-layout, .project-section .back-btn { padding-left: 20px; padding-right: 20px; }
     }
 
@@ -321,19 +341,23 @@
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      align-items: end; /* Faz a coluna da foto acompanhar a altura do formulário/conteúdo */
       min-height: calc(100vh - 120px);
     }
     .about-grid .image-col {
       background: #f8f8f8;
       overflow: hidden;
+      height: 100%;
+      display: flex;
     }
     .about-grid .image-col img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
     .about-grid .about-content {
-      padding: 4rem 5rem;
+      padding: 2rem 5rem 4rem 5rem;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -467,9 +491,10 @@
       pointer-events: none;
       transition: opacity 0.3s ease;
       padding: 40px;
+      cursor: pointer;
     }
     .zoom-modal.active { opacity: 1; pointer-events: auto; }
-    .zoom-modal img { max-width: 90vw; max-height: 85vh; object-fit: contain; }
+    .zoom-modal img { max-width: 90vw; max-height: 85vh; object-fit: contain; cursor: pointer; }
     .close-zoom { position: fixed; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--brand-dark); }
   </style>
 </head>
@@ -479,12 +504,12 @@
   <!-- NAVEGAÇÃO -->
   <nav class="navbar">
     <div class="navbar-logo">
-      <img src="/assets/images/logo.svg" alt="Yanne Vicente" onclick="goToHome()" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" width="40" height="40">
+      <img src="/assets/images/logo.svg" alt="Yanne Vicente" onclick="goToHome()" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" width="50" height="50">
       <span id="logo-fallback" class="cursor-pointer" style="display: none;" onclick="goToHome()">yanne vicente</span>
     </div>
     <div class="navbar-menu">
       <a onclick="goToHome()" class="nav-link active" id="nav-work">portfolio</a>
-      <a onclick="navigateTo('editorial')" class="nav-link" id="nav-editorial">editorial</a>
+      <a onclick="navigateTo('editorial')" class="nav-link" id="nav-editorial">publishing & book covers</a>
       <a onclick="navigateTo('about')" class="nav-link" id="nav-about">about</a>
       <a href="https://yannevicente.substack.com/" target="_blank" rel="noopener" class="nav-link" id="nav-blog">blog</a>
     </div>
@@ -505,6 +530,11 @@
   <!-- PORTFÓLIO -->
   <main id="work-section" class="w-full flex-1">
     <section class="portfolio-wrapper">
+      <div id="filter-bar" class="filter-bar" style="display: none;">
+        <span>Filtered by:</span>
+        <span id="active-tag-name" class="active-tag"></span>
+        <span class="clear-btn" onclick="goToHome()">Clear filter</span>
+      </div>
       <div class="portfolio-grid" id="portfolio-grid"></div>
     </section>
   </main>
@@ -512,14 +542,12 @@
   <!-- ABOUT & CONTACT -->
   <main id="about-section" class="about-grid page-hidden flex-1" style="display:none;">
     <div class="image-col">
-      <img id="profile-photo" class="w-full h-full object-cover" loading="lazy" src="/assets/images/profile.jpg" alt="Yanne Vicente">
+      <img id="profile-photo" loading="lazy" src="/assets/images/profile.jpg" alt="Yanne Vicente">
     </div>
     <div class="about-content">
       <div>
-        <h1 style="font-size: 36px; font-weight: 700; color: var(--brand-yellow); margin-bottom: 20px; line-height: 1;">HEY!!</h1>
-        
         <div class="bio-wrapper">
-          <p>I’m a queer artist and freelance illustrator based in Pernambuco, Brazil. I develop characters and stories with strong sensitivity and expression.</p>
+          <p><strong>Hi! I’m Yanne Vicente</strong>, a non-binary artist and freelance illustrator based in Pernambuco, Brazil. I create characters and stories with strong sensitivity and expression for publishing, editorial, and commercial projects!</p>
           <p>Since I was little, I’ve been encouraged to appreciate and create art in its many forms, and today I dedicate my life to bringing a little more sensitivity and color to the world!</p>
           <p>You can contact me through my email or any of my social media. Shall we talk a bit about drawings?</p>
         </div>
@@ -536,8 +564,8 @@
       </div>
       
       <section class="form-section">
-        <h3>Send a message ✨</h3>
-        <div id="form-success-message" class="mt-3 p-3 rounded text-white font-medium text-sm" style="background: rgba(255,255,255,0.25); display:none;">Message sent successfully! :) ✨</div>
+        <h3>Send a message</h3>
+        <div id="form-success-message" class="mt-3 p-3 rounded text-white font-medium text-sm" style="background: rgba(255,255,255,0.25); display:none;">Message sent successfully! :)</div>
         <form id="contact-form" class="space-y-3 mt-3" action="https://formspree.io/f/mgogvbke" method="POST">
           <div>
             <label>E-mail*</label> 
@@ -553,10 +581,10 @@
     </div>
   </main>
 
-  <!-- MODAL DE ZOOM -->
+  <!-- MODAL DE ZOOM (Fechar clicando fora, na imagem ou ESC) -->
   <div id="zoomModal" class="zoom-modal" onclick="closeZoom()">
     <button class="close-zoom" onclick="closeZoom()">×</button>
-    <img id="zoomImage" src="" alt="Zoom">
+    <img id="zoomImage" src="" alt="Zoom" onclick="closeZoom()">
   </div>
 
   <!-- FOOTER -->
@@ -569,7 +597,7 @@
       portfolio: [
         {
           id: 1, slug: "winnies-flying-guide", title: "Winnie's Flying Guide", category: "Children's picture book", year: 2024, isEditorial: true,
-          tags: ["CHILDREN'S BOOK", "EDITORIAL", "CARTOON ART"],
+          tags: ["children's book", "editorial", "cartoon art", "children's illustration", "publishing"],
           description: [
             "Winnie's Flying Guide is a poetry picture book for children ages 4 to 6 explores themes of belonging and friendship.",
             "It is most about the flying lessons of Winnie Pendragon, the good witch of East Winds, privately published for family and friends."
@@ -579,56 +607,56 @@
         },
         {
           id: 2, slug: "captain-octopus-sailorboy", title: "Captain Octopus & Sailorboy", category: "Children's Book Cover", year: 2022, isEditorial: true,
-          tags: ["BOOK COVER", "EDITORIAL", "CHILDREN'S BOOK"], 
+          tags: ["book cover", "editorial", "children's book", "publishing"], 
           description: ["A children's cover book illustration concept I made for Escolinha São José (St. Joseph Elementary School)."],
           coverImage: "/assets/images/projeto2.jpg", 
           carouselImages: ["/assets/images/projeto2.jpg", "/assets/images/projeto2_1.jpg"]
         },
         {
           id: 3, slug: "safari-wallpaper", title: "Safari Wallpaper", category: "Children's Illustration", year: 2024, isEditorial: false,
-          tags: ["CHILDREN'S WALLPAPER", "SAFARI"], 
+          tags: ["children's wallpaper", "children's illustration"], 
           description: ["In January 2024, I worked with Fino Toque, an interior design company based in Recife, Brazil, illustrating children's wallpapers."],
           coverImage: "/assets/images/projeto3.jpg", 
           carouselImages: ["/assets/images/projeto3.jpg", "/assets/images/projeto3_1.jpg", "/assets/images/projeto3_2.jpg"]
         },
         {
           id: 4, slug: "childrens-school-illustration", title: "School Illustration", category: "Children's Illustration", year: 2025, isEditorial: false,
-          tags: ["CHILDREN'S ILLUSTRATION", "MURAL"], 
+          tags: ["children's illustration", "doodle"], 
           description: ["A series of illustrations created to decorate the elementary school corridors across all seven GGE school campuses."],
           coverImage: "/assets/images/projeto4.jpg", 
           carouselImages: ["/assets/images/projeto4.jpg", "/assets/images/projeto4_1.jpg", "/assets/images/projeto4_2.jpg"]
         },
         {
           id: 5, slug: "stellar-cafe", title: "Stellar Cafe", category: "Webcomic Art", year: 2022, isEditorial: true,
-          tags: ["EDITORIAL", "WEBCOMICS", "LGBTQIAP+"], 
+          tags: ["editorial", "webcomic", "LGBTQIAPN+", "queer art", "comic art"], 
           description: ["Stellar Cafe (Café Estelar) is an LGBTQIAP+ sci-fi romance webcomic I began conceptualizing during the 2020 lockdown."],
           coverImage: "/assets/images/projeto5.jpg", 
           carouselImages: ["/assets/images/projeto5.jpg", "/assets/images/projeto5_1.jpg", "/assets/images/projeto5_2.jpg"]
         },
         {
           id: 6, slug: "character-illustration-pack", title: "Character's Illustration Pack", category: "Character Design", year: 2022, isEditorial: false,
-          tags: ["CHARACTER DESIGN", "CARTOON ART"], 
+          tags: ["cartoon art", "comission"], 
           description: ["Evandro and Jaque Lemos are two fantastic YouTubers from my hometown, Gravatá, in Pernambuco, Brazil."],
           coverImage: "/assets/images/projeto6.jpg", 
           carouselImages: ["/assets/images/projeto6.jpg", "/assets/images/projeto6_1.jpg", "/assets/images/projeto6_2.jpg"]
         },
         {
           id: 7, slug: "webcomic-travelers", title: "Webcomic Travelers", category: "Comic art", year: 2025, isEditorial: true,
-          tags: ["EDITORIAL", "WEBCOMIC", "CARTOON ART"],
+          tags: ["editorial", "webcomic", "cartoon art", "comic art"],
           description: ["Timeless Journey is a webcomic I'm creating as the continuation of my undergraduate thesis project 'TRAVELERS'."],
           coverImage: "/assets/images/projeto7.jpg",
           carouselImages: ["/assets/images/projeto7.jpg", "/assets/images/projeto7_1.jpg", "/assets/images/projeto7_2.jpg"]
         },
         {
           id: 8, slug: "rpg-character-commission", title: "RPG Character's Commission", category: "Character Design & Concept Art", year: 2025, isEditorial: false,
-          tags: ["CONCEPT ART", "RPG"],
+          tags: ["comission", "personal art"],
           description: ["These are some of the best commissions created for a group of RPG players ranging from D&D to Vampire: The Masquerade."],
           coverImage: "/assets/images/projeto8.jpg",
           carouselImages: ["/assets/images/projeto8.jpg", "/assets/images/projeto8_1.jpg", "/assets/images/projeto8_2.jpg"]
         },
         {
           id: 9, slug: "steven-universe-fanart", title: "Steven Universe's Fanart", category: "Digital Cartoon Art", year: 2019, isEditorial: false,
-          tags: ["FANART", "CHARACTER DESIGN"],
+          tags: ["personal art", "cartoon art"],
           description: ["A personal project in which I created a fan art illustration based on the character Sardonyx."],
           coverImage: "/assets/images/projeto9.jpg",
           carouselImages: ["/assets/images/projeto9.jpg", "/assets/images/projeto9_1.jpg"]
@@ -638,17 +666,41 @@
 
     let currentImageIndex = 0;
     let isEditorialPage = false;
+    let currentTagFilter = null;
 
     function goToHome(pushHistory = true) {
+      isEditorialPage = false;
+      currentTagFilter = null;
+      togglePages('work-section');
+      document.getElementById('nav-work').classList.add('active');
+      document.getElementById('nav-editorial').classList.remove('active');
+      document.getElementById('nav-about').classList.remove('active');
+      document.getElementById('filter-bar').style.display = 'none';
+      renderPortfolio(siteData.portfolio);
+      document.title = 'Yanne Vicente - Illustration';
+      if (pushHistory) {
+        history.pushState({page: 'home'}, '', '/');
+      }
+    }
+
+    function filterByTag(tag, pushHistory = true) {
+      currentTagFilter = tag;
       isEditorialPage = false;
       togglePages('work-section');
       document.getElementById('nav-work').classList.add('active');
       document.getElementById('nav-editorial').classList.remove('active');
       document.getElementById('nav-about').classList.remove('active');
-      renderPortfolio(siteData.portfolio);
-      document.title = 'Yanne Vicente - Illustration';
+      
+      const filterBar = document.getElementById('filter-bar');
+      document.getElementById('active-tag-name').textContent = tag;
+      filterBar.style.display = 'flex';
+
+      const filtered = siteData.portfolio.filter(p => p.tags && p.tags.map(t => t.toLowerCase()).includes(tag.toLowerCase()));
+      renderPortfolio(filtered);
+      document.title = `Yanne Vicente - Tag: ${tag}`;
+
       if (pushHistory) {
-        history.pushState({page: 'home'}, '', '/');
+        history.pushState({page: 'tag', tag: tag}, '', '/?tag=' + encodeURIComponent(tag));
       }
     }
 
@@ -661,12 +713,14 @@
         }
       } else if (page === 'editorial') {
         isEditorialPage = true;
+        currentTagFilter = null;
         togglePages('work-section');
+        document.getElementById('filter-bar').style.display = 'none';
         document.getElementById('nav-editorial').classList.add('active');
         document.getElementById('nav-work').classList.remove('active');
         document.getElementById('nav-about').classList.remove('active');
         renderPortfolio(siteData.portfolio.filter(p => p.isEditorial));
-        document.title = 'Yanne Vicente - Editorial';
+        document.title = 'Yanne Vicente - Publishing & Book Covers';
         if (pushHistory) {
           history.pushState({page: 'editorial'}, '', '/editorial');
         }
@@ -698,6 +752,10 @@
 
     function renderPortfolio(projects) {
       const grid = document.getElementById('portfolio-grid');
+      if (projects.length === 0) {
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888; padding: 40px;">No projects found with this tag.</p>`;
+        return;
+      }
       grid.innerHTML = projects.map(p => `
         <div class="portfolio-item" onclick="navigateTo('project', '${p.slug}')">
           <img loading="lazy" src="${p.coverImage}" alt="${p.title}" onerror="this.src='https://via.placeholder.com/600x800/eee/999?text=Art'">
@@ -736,7 +794,7 @@
             <p class="client">${project.category} · ${project.year}</p>
             <hr class="divider">
             <div class="description">${project.description.map(d => `<p>${d}</p>`).join('')}</div>
-            <div class="tags-container">${project.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+            <div class="tags-container">${project.tags.map(t => `<span class="tag" onclick="filterByTag('${t.replace(/'/g, "\\'")}')">${t}</span>`).join('')}</div>
           </div>
         </div>
       `;
@@ -786,6 +844,10 @@
 
     function handleRoute() {
       const path = window.location.pathname;
+      const search = window.location.search;
+      const params = new URLSearchParams(search);
+      const tagParam = params.get('tag');
+
       const match = path.match(/\/project\/([^\/]+)\/?$/);
       if (match) {
         navigateTo('project', match[1], false);
@@ -793,6 +855,8 @@
         navigateTo('editorial', null, false);
       } else if (path === '/about' || path === '/contact') {
         navigateTo('about', null, false);
+      } else if (tagParam) {
+        filterByTag(decodeURIComponent(tagParam), false);
       } else {
         goToHome(false);
       }
@@ -823,6 +887,13 @@
           });
         });
       }
+
+      // Atalho de fechar imagem no ESC
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeZoom();
+        }
+      });
 
       handleRoute();
 
