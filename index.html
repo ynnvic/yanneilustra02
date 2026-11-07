@@ -51,11 +51,38 @@
     }
     
     .navbar-menu { 
+      position: relative;
+      width: 100%;
       display: flex; 
       align-items: center; 
       justify-content: center;
       gap: 2rem; 
       flex-wrap: wrap;
+      padding: 0 100px; /* espaço para os ícones não encostarem nos links */
+    }
+
+    /* ÍCONES SOCIAIS (WHATSAPP / INSTAGRAM) ALINHADOS COM A GRADE */
+    .navbar-socials {
+      position: absolute;
+      top: 50%;
+      right: 84px; /* 100px (padding da grade) - 16px (padding do navbar) */
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .navbar-socials a {
+      color: #777777;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .navbar-socials a:hover {
+      color: var(--brand-dark);
+      transform: translateY(-2px);
     }
     
     .nav-link { 
@@ -70,28 +97,6 @@
     }
     .nav-link:hover { color: var(--brand-dark) !important; }
     .nav-link.active { color: var(--brand-dark) !important; font-weight: 500; }
-
-    /* ÍCONES SOCIAIS DA NAVBAR */
-    .navbar-socials {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      margin-top: 1rem;
-    }
-    .navbar-socials a {
-      color: var(--brand-blue);
-      font-size: 20px;
-      transition: color 0.3s ease, transform 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .navbar-socials a:hover {
-      color: var(--brand-yellow);
-      transform: translateY(-3px);
-    }
-
     .page-hidden { display: none !important; }
     
     /* PÁGINA DE PROJETO */
@@ -286,7 +291,7 @@
       border-color: var(--brand-yellow);
     }
 
-    /* PORTFOLIO GRID */
+    /* PORTFOLIO GRID (3 COLUNAS, ORDEM PRESERVADA) */
     .portfolio-wrapper {
       width: 100%;
       max-width: 100%;
@@ -331,6 +336,7 @@
     }
     .portfolio-item:hover .overlay { opacity: 1; }
     
+    /* FILTRO BARRA DE INFORMAÇÃO DA TAG SELECIONADA */
     .filter-bar {
       margin-bottom: 20px;
       display: flex;
@@ -358,6 +364,19 @@
       .project-layout { grid-template-columns: 1fr; height: auto; }
       .project-carousel { padding: 10px 40px; }
       .carousel-controls { left: -30px; right: -30px; }
+      .navbar-menu { padding: 0 70px; }
+      /* alinha com a grade (40px de padding) - 16px do navbar = 24px */
+      .navbar-socials { right: 24px; }
+    }
+    @media (max-width: 900px) {
+      .navbar-menu { padding: 0; }
+      .navbar-socials {
+        position: static;
+        transform: none;
+        flex-basis: 100%;
+        justify-content: center;
+        margin-top: 4px;
+      }
     }
     @media (max-width: 640px) {
       .portfolio-grid { grid-template-columns: 1fr; }
@@ -440,7 +459,7 @@
       text-decoration: underline;
     }
 
-    /* FORMULÁRIO AMARELO */
+    /* FORMULÁRIO AMARELO (#FFBD59) */
     .form-section {
       background-color: #FEC94E;
       border-radius: 12px;
@@ -544,18 +563,15 @@
       <a onclick="navigateTo('editorial')" class="nav-link" id="nav-editorial">publishing & book covers</a>
       <a onclick="navigateTo('about')" class="nav-link" id="nav-about">about</a>
       <a href="https://yannevicente.substack.com/" target="_blank" rel="noopener" class="nav-link" id="nav-blog">blog</a>
-    </div>
 
-    <!-- ÍCONES SOCIAIS CENTRALIZADOS -->
-    <div class="navbar-socials">
-      <a href="https://api.whatsapp.com/send/?phone=%2B5581996385618&text&type=phone_number&app_absent=0"
-         target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">
-        <i class="fa-brands fa-whatsapp"></i>
-      </a>
-      <a href="https://instagram.com/yanne.vicente"
-         target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">
-        <i class="fa-brands fa-instagram"></i>
-      </a>
+      <div class="navbar-socials">
+        <a href="https://wa.me/5581996385618" target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+        <a href="https://instagram.com/yanne.vicente" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+      </div>
     </div>
   </nav>
 
@@ -625,7 +641,7 @@
     </div>
   </main>
 
-  <!-- MODAL DE ZOOM -->
+  <!-- MODAL DE ZOOM (Fechar clicando fora, na imagem ou ESC) -->
   <div id="zoomModal" class="zoom-modal" onclick="closeZoom()">
     <button class="close-zoom" onclick="closeZoom()">×</button>
     <img id="zoomImage" src="" alt="Zoom" onclick="closeZoom()">
@@ -909,6 +925,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Formspree AJAX submission
       const form = document.getElementById('contact-form');
       const successMsg = document.getElementById('form-success-message');
       if (form) {
@@ -933,6 +950,7 @@
         });
       }
 
+      // Atalho de fechar imagem no ESC
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           closeZoom();
