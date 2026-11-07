@@ -12,14 +12,19 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <!-- Usando uma fonte leve ou mantendo Poppins com pesos delicados -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   
   <style>
-    body { font-family: 'Poppins', sans-serif; background: #ffffff; color: #333333; }
+    :root {
+      --brand-yellow: #feca50;
+      --brand-dark: #111111;
+      --brand-blue: #8393c3;
+    }
+
+    body { font-family: 'Poppins', sans-serif; background: #ffffff; color: var(--brand-dark); }
     
-    /* NAVEGAÇÃO ESTILO MART LETT (Centralizada e Limpa) */
+    /* NAVEGAÇÃO */
     .navbar {
       display: flex;
       flex-direction: column;
@@ -35,13 +40,13 @@
       margin-bottom: 1rem;
       text-align: center;
     }
-    .navbar-logo img { height: 50px; width: auto; cursor: pointer; }
+    .navbar-logo img { height: 36px; width: auto; cursor: pointer; }
     .navbar-logo span {
       font-weight: 400;
       font-size: 32px;
       letter-spacing: 2px;
-      color: #2c2c2c;
-      font-family: serif; /* Estilo mais orgânico/editorial */
+      color: var(--brand-dark);
+      font-family: serif;
     }
     
     .navbar-menu { 
@@ -60,10 +65,10 @@
       letter-spacing: 1px;
       text-decoration: none;
       cursor: pointer;
-      text-transform: lowercase; /* Visual artístico sutil */
+      text-transform: lowercase;
     }
-    .nav-link:hover { color: #111111 !important; }
-    .nav-link.active { color: #111111 !important; font-weight: 500; }
+    .nav-link:hover { color: var(--brand-dark) !important; }
+    .nav-link.active { color: var(--brand-dark) !important; font-weight: 500; }
     .page-hidden { display: none !important; }
     
     /* PÁGINA DE PROJETO */
@@ -79,17 +84,17 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      color: #777;
+      color: var(--brand-dark);
       font-weight: 400;
       cursor: pointer;
       transition: color 0.3s ease;
       background: none;
       border: none;
       font-size: 14px;
-      padding: 20px 30px 10px 30px;
+      padding: 20px 100px 10px 100px;
       flex-shrink: 0;
     }
-    .project-section .back-btn:hover { color: #111; }
+    .project-section .back-btn:hover { color: var(--brand-blue); }
     
     .project-layout {
       display: grid;
@@ -99,6 +104,7 @@
       min-height: 0;
       background: #ffffff;
       height: calc(100vh - 80px - 70px);
+      padding: 0 100px;
     }
     
     .project-carousel {
@@ -161,9 +167,9 @@
       justify-content: center;
       cursor: pointer;
       transition: all 0.3s ease;
-      color: #333;
+      color: var(--brand-dark);
     }
-    .carousel-controls button:hover { background: #000; color: #fff; border-color: #000; }
+    .carousel-controls button:hover { background: var(--brand-yellow); border-color: var(--brand-yellow); }
     .carousel-controls button.hidden { display: none !important; }
     
     .carousel-thumbnails {
@@ -184,15 +190,17 @@
       object-fit: cover;
       cursor: pointer;
       opacity: 0.6;
+      border-radius: 4px;
       transition: all 0.3s ease;
     }
     .carousel-thumbnails img:hover, .carousel-thumbnails img.active-thumb {
       opacity: 1;
+      border: 2px solid var(--brand-yellow);
     }
     
     .project-info {
       background: #ffffff;
-      padding: 30px 35px 20px 30px;
+      padding: 30px 35px 20px 35px;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -202,14 +210,14 @@
     }
     
     .project-info .title {
-      color: #222;
+      color: var(--brand-dark);
       font-weight: 600;
       font-size: 24px;
       line-height: 1.2;
       margin-bottom: 4px;
     }
     .project-info .client {
-      color: #888;
+      color: var(--brand-blue);
       font-weight: 400;
       font-size: 13px;
       margin-bottom: 20px;
@@ -225,6 +233,7 @@
       font-size: 14px;
       line-height: 1.8;
     }
+    .project-info .description p { margin-bottom: 12px; }
     
     .project-info .tags-container {
       display: flex;
@@ -235,62 +244,58 @@
       border-top: 1px solid #eee;
     }
     .project-info .tags-container .tag {
-      color: #888;
+      color: var(--brand-dark);
       font-size: 11px;
       font-weight: 400;
       letter-spacing: 0.5px;
       cursor: pointer;
-      background: #f9f9f9;
-      border: 1px solid #eee;
-      padding: 4px 10px;
-      border-radius: 4px;
+      background: #faf9f6;
+      border: 1px solid #e0e0e0;
+      padding: 4px 12px;
+      border-radius: 9999px;
       transition: all 0.2s;
     }
     .project-info .tags-container .tag:hover {
-      background: #111;
-      color: #fff;
-      border-color: #111;
+      background: var(--brand-yellow);
+      border-color: var(--brand-yellow);
     }
 
-    /* GALERIA ASSIMÉTRICA ESTILO PINTEREST / MART LETT */
+    /* PORTFOLIO GRID */
     .portfolio-wrapper {
       width: 100%;
-      max-width: 1300px;
+      max-width: 1600px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 40px 100px;
     }
     
-    /* Usando colunas CSS para criar o efeito assimétrico fluido */
     .portfolio-grid {
-      column-count: 3;
-      column-gap: 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
       width: 100%;
     }
     
     .portfolio-item { 
-      break-inside: avoid;
-      margin-bottom: 20px;
       position: relative; 
       cursor: pointer;
       overflow: hidden;
+      aspect-ratio: 1/1;
       background: #f8f8f8;
+      border-radius: 8px;
     }
     
     .portfolio-item img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
       display: block;
-      transition: transform 0.4s ease, opacity 0.4s ease;
-    }
-    
-    .portfolio-item:hover img { 
-      transform: scale(1.02); 
+      transition: transform 0.4s ease;
     }
     
     .portfolio-item .overlay {
       position: absolute; 
       inset: 0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(255, 255, 255, 0.56);
       display: flex; 
       flex-direction: column; 
       justify-content: flex-end;
@@ -300,14 +305,19 @@
     }
     .portfolio-item:hover .overlay { opacity: 1; }
     
+    @media (max-width: 1200px) {
+      .portfolio-wrapper, .project-layout, .project-section .back-btn { padding-left: 40px; padding-right: 40px; }
+    }
     @media (max-width: 1024px) {
-      .portfolio-grid { column-count: 2; }
+      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+      .project-layout { grid-template-columns: 1fr; height: auto; }
     }
     @media (max-width: 640px) {
-      .portfolio-grid { column-count: 1; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .portfolio-wrapper, .project-layout, .project-section .back-btn { padding-left: 20px; padding-right: 20px; }
     }
 
-    /* ABOUT & CONTACT GRID */
+    /* ABOUT & CONTACT */
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -323,7 +333,7 @@
       object-fit: cover;
     }
     .about-grid .about-content {
-      padding: 4rem;
+      padding: 4rem 5rem;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -336,58 +346,113 @@
     }
     
     .bio-wrapper p {
-      color: #555;
+      color: #444;
       font-size: 15px;
       line-height: 1.8;
-      margin-bottom: 15px;
+      margin-bottom: 18px;
+    }
+
+    .about-socials {
+      display: flex;
+      gap: 18px;
+      margin-top: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .about-socials a {
+      color: var(--brand-blue);
+      font-size: 24px;
+      transition: color 0.3s ease, transform 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .about-socials a:hover {
+      color: var(--brand-yellow);
+      transform: translateY(-3px);
+    }
+    .about-email-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: var(--brand-dark);
+      font-weight: 500;
+      font-size: 16px;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .about-email-link:hover {
+      color: var(--brand-blue);
+      text-decoration: underline;
     }
 
     .form-section {
-      background-color: #f9f9f9;
-      border: 1px solid #eee;
-      border-radius: 8px;
+      background-color: var(--brand-blue);
+      border-radius: 12px;
       padding: 30px;
-      margin-top: 30px;
+      margin-top: 35px;
+    }
+    .form-section h3 {
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    .form-section label {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     .form-section input,
     .form-section textarea {
-      background: #ffffff;
-      border: 1px solid #ddd;
-      color: #333;
-      padding: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+      color: #ffffff;
+      padding: 12px 10px;
       width: 100%;
-      border-radius: 4px;
+      border-radius: 4px 4px 0 0;
       font-size: 14px;
       margin-top: 5px;
+      transition: background 0.3s, border-color 0.3s;
     }
     .form-section input:focus,
     .form-section textarea:focus {
       outline: none;
-      border-color: #111;
+      border-bottom-color: var(--brand-yellow);
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .form-section input::placeholder,
+    .form-section textarea::placeholder {
+      color: rgba(255, 255, 255, 0.6);
     }
     .form-section .submit-btn {
-      background: #111;
-      color: #fff;
+      background: var(--brand-yellow);
+      color: var(--brand-dark);
       padding: 12px 30px;
-      border-radius: 4px;
-      font-weight: 500;
+      border-radius: 9999px;
+      font-weight: 600;
       font-size: 13px;
       letter-spacing: 1px;
       border: none;
       cursor: pointer;
-      transition: background 0.3s;
-      margin-top: 15px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      margin-top: 20px;
     }
-    .form-section .submit-btn:hover { background: #333; }
+    .form-section .submit-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
 
-    /* Outros ajustes visuais limpos */
     .footer-clean {
       background: #ffffff;
       border-top: 1px solid #eee;
       padding: 2rem 0;
       text-align: center;
-      color: #888;
-      font-size: 13px;
+      color: var(--brand-dark);
+      font-weight: 500;
+      font-size: 14px;
     }
     
     .zoom-modal {
@@ -405,13 +470,13 @@
     }
     .zoom-modal.active { opacity: 1; pointer-events: auto; }
     .zoom-modal img { max-width: 90vw; max-height: 85vh; object-fit: contain; }
-    .close-zoom { position: fixed; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #111; }
+    .close-zoom { position: fixed; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--brand-dark); }
   </style>
 </head>
 
 <body class="w-full min-h-screen flex flex-col">
 
-  <!-- NAVEGAÇÃO MINIMALISTA ESTILO MART LETT -->
+  <!-- NAVEGAÇÃO -->
   <nav class="navbar">
     <div class="navbar-logo">
       <img src="/assets/images/logo.svg" alt="Yanne Vicente" onclick="goToHome()" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" width="40" height="40">
@@ -419,9 +484,9 @@
     </div>
     <div class="navbar-menu">
       <a onclick="goToHome()" class="nav-link active" id="nav-work">portfolio</a>
-      <a onclick="navigateTo('editorial')" class="nav-link" id="nav-editorial">editorial & covers</a>
-      <a onclick="navigateTo('about')" class="nav-link" id="nav-about">about & contact</a>
-      <a onclick="navigateTo('blog')" class="nav-link" id="nav-blog">blog</a>
+      <a onclick="navigateTo('editorial')" class="nav-link" id="nav-editorial">editorial</a>
+      <a onclick="navigateTo('about')" class="nav-link" id="nav-about">about</a>
+      <a href="https://yannevicente.substack.com/" target="_blank" rel="noopener" class="nav-link" id="nav-blog">blog</a>
     </div>
   </nav>
 
@@ -437,19 +502,10 @@
     </div>
   </div>
 
-  <!-- PORTFÓLIO / GALERIA ASSIMÉTRICA -->
+  <!-- PORTFÓLIO -->
   <main id="work-section" class="w-full flex-1">
     <section class="portfolio-wrapper">
       <div class="portfolio-grid" id="portfolio-grid"></div>
-    </section>
-  </main>
-
-  <!-- BLOG -->
-  <main id="blog-section" class="page-hidden flex-1" style="display:none;">
-    <section class="portfolio-wrapper" style="max-width:1000px;">
-      <div id="blog-grid" class="blog-grid">
-        <div class="loader-container"><div class="loader"></div></div>
-      </div>
     </section>
   </main>
 
@@ -460,25 +516,38 @@
     </div>
     <div class="about-content">
       <div>
-        <h1 id="profile-name" style="font-size: 32px; font-weight: 500; color: #111; margin-bottom: 5px;"></h1>
-        <p id="profile-subtitle" style="color: #888; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 25px;"></p>
-        <div class="bio-wrapper" id="profile-bio"></div>
-        <div class="social-buttons" style="display: flex; gap: 15px; margin-top: 25px;" id="social-buttons"></div>
+        <h1 style="font-size: 36px; font-weight: 700; color: var(--brand-yellow); margin-bottom: 20px; line-height: 1;">HEY!!</h1>
+        
+        <div class="bio-wrapper">
+          <p>I’m a queer artist and freelance illustrator based in Pernambuco, Brazil. I develop characters and stories with strong sensitivity and expression.</p>
+          <p>Since I was little, I’ve been encouraged to appreciate and create art in its many forms, and today I dedicate my life to bringing a little more sensitivity and color to the world!</p>
+          <p>You can contact me through my email or any of my social media. Shall we talk a bit about drawings?</p>
+        </div>
+
+        <div class="mt-4">
+          <a class="about-email-link" href="mailto:yanne.vicentepaz@gmail.com"><i class="fa-regular fa-envelope mr-2"></i>yanne.vicentepaz@gmail.com</a>
+        </div>
+
+        <div class="about-socials" id="social-buttons">
+          <a href="https://instagram.com/yanne.vicente" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://bsky.app/profile/yannevicente.bsky.social" target="_blank" rel="noopener" title="Bluesky"><i class="fa-brands fa-bluesky"></i></a>
+          <a href="https://linkedin.com/in/yannevicente" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+        </div>
       </div>
       
       <section class="form-section">
-        <h3 style="color: #111; font-weight: 600; font-size: 16px; margin-bottom: 15px;">Send a message</h3>
-        <div id="form-success-message" class="form-success mt-2" style="background:#e6f4ea; color:#137333; padding:10px; border-radius:4px; display:none;">Message sent successfully!</div>
-        <form id="contact-form" class="space-y-3" action="https://formspree.io/f/mgogvbke" method="POST">
+        <h3>Send a message ✨</h3>
+        <div id="form-success-message" class="mt-3 p-3 rounded text-white font-medium text-sm" style="background: rgba(255,255,255,0.25); display:none;">Message sent successfully! :) ✨</div>
+        <form id="contact-form" class="space-y-3 mt-3" action="https://formspree.io/f/mgogvbke" method="POST">
           <div>
-            <label style="font-size: 12px; color: #666; font-weight: 500;">Email*</label> 
+            <label>E-mail*</label> 
             <input type="email" name="email" required placeholder="your@email.com">
           </div>
           <div>
-            <label style="font-size: 12px; color: #666; font-weight: 500;">Message*</label> 
-            <textarea name="message" required rows="3" placeholder="Your message..."></textarea>
+            <label>Message*</label> 
+            <textarea name="message" required rows="3" placeholder="Your message here..."></textarea>
           </div>
-          <button type="submit" class="submit-btn">Send</button>
+          <button type="submit" class="submit-btn">SEND</button>
         </form>
       </section>
     </div>
@@ -492,7 +561,7 @@
 
   <!-- FOOTER -->
   <footer class="footer-clean">
-    <p>© 2026 Yanne Vicente. All Rights Reserved.</p>
+    <p>Yanne Vicente © 2026</p>
   </footer>
 
   <script>
@@ -501,96 +570,121 @@
         {
           id: 1, slug: "winnies-flying-guide", title: "Winnie's Flying Guide", category: "Children's picture book", year: 2024, isEditorial: true,
           tags: ["CHILDREN'S BOOK", "EDITORIAL", "CARTOON ART"],
-          description: ["Winnie's Flying Guide is a poetry picture book for children ages 4 to 6 explores themes of belonging and friendship."],
-          coverImage: "/assets/images/projeto1.jpg", carouselImages: ["/assets/images/projeto1_1.jpg", "/assets/images/projeto1_2.jpg"]
+          description: [
+            "Winnie's Flying Guide is a poetry picture book for children ages 4 to 6 explores themes of belonging and friendship.",
+            "It is most about the flying lessons of Winnie Pendragon, the good witch of East Winds, privately published for family and friends."
+          ],
+          coverImage: "/assets/images/projeto1.jpg", 
+          carouselImages: ["/assets/images/projeto1_1.jpg", "/assets/images/projeto1_2.jpg", "/assets/images/projeto1_3.jpg", "/assets/images/projeto1_4.jpg", "/assets/images/projeto1_5.jpg"]
         },
         {
           id: 2, slug: "captain-octopus-sailorboy", title: "Captain Octopus & Sailorboy", category: "Children's Book Cover", year: 2022, isEditorial: true,
-          tags: ["BOOK COVER", "EDITORIAL"], description: ["A children's cover book illustration concept."],
-          coverImage: "/assets/images/projeto2.jpg", carouselImages: ["/assets/images/projeto2_1.jpg"]
+          tags: ["BOOK COVER", "EDITORIAL", "CHILDREN'S BOOK"], 
+          description: ["A children's cover book illustration concept I made for Escolinha São José (St. Joseph Elementary School)."],
+          coverImage: "/assets/images/projeto2.jpg", 
+          carouselImages: ["/assets/images/projeto2.jpg", "/assets/images/projeto2_1.jpg"]
         },
         {
-          id: 3, slug: "safari-wallpaper", title: "Safari Wallpaper", category: "Illustration", year: 2024, isEditorial: false,
-          tags: ["ILLUSTRATION", "SAFARI"], description: ["Children's wallpapers for interior design catalogue."],
-          coverImage: "/assets/images/projeto3.jpg", carouselImages: ["/assets/images/projeto3_1.jpg"]
+          id: 3, slug: "safari-wallpaper", title: "Safari Wallpaper", category: "Children's Illustration", year: 2024, isEditorial: false,
+          tags: ["CHILDREN'S WALLPAPER", "SAFARI"], 
+          description: ["In January 2024, I worked with Fino Toque, an interior design company based in Recife, Brazil, illustrating children's wallpapers."],
+          coverImage: "/assets/images/projeto3.jpg", 
+          carouselImages: ["/assets/images/projeto3.jpg", "/assets/images/projeto3_1.jpg", "/assets/images/projeto3_2.jpg"]
         },
         {
-          id: 4, slug: "childrens-school-illustration", title: "School Illustration", category: "Illustration", year: 2025, isEditorial: false,
-          tags: ["ILLUSTRATION", "MURAL"], description: ["Corridor decorations across school campuses."],
-          coverImage: "/assets/images/projeto4.jpg", carouselImages: ["/assets/images/projeto4_1.jpg"]
+          id: 4, slug: "childrens-school-illustration", title: "School Illustration", category: "Children's Illustration", year: 2025, isEditorial: false,
+          tags: ["CHILDREN'S ILLUSTRATION", "MURAL"], 
+          description: ["A series of illustrations created to decorate the elementary school corridors across all seven GGE school campuses."],
+          coverImage: "/assets/images/projeto4.jpg", 
+          carouselImages: ["/assets/images/projeto4.jpg", "/assets/images/projeto4_1.jpg", "/assets/images/projeto4_2.jpg"]
         },
         {
-          id: 5, slug: "stellar-cafe", title: "Stellar Cafe", category: "Webcomic", year: 2022, isEditorial: true,
-          tags: ["EDITORIAL", "WEBCOMIC"], description: ["Sci-fi romance webcomic."],
-          coverImage: "/assets/images/projeto5.jpg", carouselImages: ["/assets/images/projeto5_1.jpg"]
+          id: 5, slug: "stellar-cafe", title: "Stellar Cafe", category: "Webcomic Art", year: 2022, isEditorial: true,
+          tags: ["EDITORIAL", "WEBCOMICS", "LGBTQIAP+"], 
+          description: ["Stellar Cafe (Café Estelar) is an LGBTQIAP+ sci-fi romance webcomic I began conceptualizing during the 2020 lockdown."],
+          coverImage: "/assets/images/projeto5.jpg", 
+          carouselImages: ["/assets/images/projeto5.jpg", "/assets/images/projeto5_1.jpg", "/assets/images/projeto5_2.jpg"]
         },
         {
-          id: 6, slug: "character-illustration-pack", title: "Character Pack", category: "Character Design", year: 2022, isEditorial: false,
-          tags: ["CHARACTER DESIGN"], description: ["Commissioned character design pack."],
-          coverImage: "/assets/images/projeto6.jpg", carouselImages: ["/assets/images/projeto6_1.jpg"]
+          id: 6, slug: "character-illustration-pack", title: "Character's Illustration Pack", category: "Character Design", year: 2022, isEditorial: false,
+          tags: ["CHARACTER DESIGN", "CARTOON ART"], 
+          description: ["Evandro and Jaque Lemos are two fantastic YouTubers from my hometown, Gravatá, in Pernambuco, Brazil."],
+          coverImage: "/assets/images/projeto6.jpg", 
+          carouselImages: ["/assets/images/projeto6.jpg", "/assets/images/projeto6_1.jpg", "/assets/images/projeto6_2.jpg"]
+        },
+        {
+          id: 7, slug: "webcomic-travelers", title: "Webcomic Travelers", category: "Comic art", year: 2025, isEditorial: true,
+          tags: ["EDITORIAL", "WEBCOMIC", "CARTOON ART"],
+          description: ["Timeless Journey is a webcomic I'm creating as the continuation of my undergraduate thesis project 'TRAVELERS'."],
+          coverImage: "/assets/images/projeto7.jpg",
+          carouselImages: ["/assets/images/projeto7.jpg", "/assets/images/projeto7_1.jpg", "/assets/images/projeto7_2.jpg"]
+        },
+        {
+          id: 8, slug: "rpg-character-commission", title: "RPG Character's Commission", category: "Character Design & Concept Art", year: 2025, isEditorial: false,
+          tags: ["CONCEPT ART", "RPG"],
+          description: ["These are some of the best commissions created for a group of RPG players ranging from D&D to Vampire: The Masquerade."],
+          coverImage: "/assets/images/projeto8.jpg",
+          carouselImages: ["/assets/images/projeto8.jpg", "/assets/images/projeto8_1.jpg", "/assets/images/projeto8_2.jpg"]
+        },
+        {
+          id: 9, slug: "steven-universe-fanart", title: "Steven Universe's Fanart", category: "Digital Cartoon Art", year: 2019, isEditorial: false,
+          tags: ["FANART", "CHARACTER DESIGN"],
+          description: ["A personal project in which I created a fan art illustration based on the character Sardonyx."],
+          coverImage: "/assets/images/projeto9.jpg",
+          carouselImages: ["/assets/images/projeto9.jpg", "/assets/images/projeto9_1.jpg"]
         }
-      ],
-      profile: {
-        name: "Yanne Vicente",
-        subtitle: "Illustrator & Visual Storyteller",
-        bio: ["I'm a non-binary illustrator based in Recife, Brazil, dedicated to making the world a bit more colorful, one drawing at a time."],
-        photo: "/assets/images/profile.jpg",
-        email: "yanne.vicentepaz@gmail.com"
-      },
-      social: {
-        instagram: "https://instagram.com/yanne.vicente",
-        linkedin: "https://linkedin.com/in/yannevicente"
-      }
+      ]
     };
 
     let currentImageIndex = 0;
     let isEditorialPage = false;
 
-    function goToHome() {
+    function goToHome(pushHistory = true) {
       isEditorialPage = false;
       togglePages('work-section');
       document.getElementById('nav-work').classList.add('active');
       document.getElementById('nav-editorial').classList.remove('active');
       document.getElementById('nav-about').classList.remove('active');
-      document.getElementById('nav-blog').classList.remove('active');
       renderPortfolio(siteData.portfolio);
-      history.pushState(null, '', '/');
+      document.title = 'Yanne Vicente - Illustration';
+      if (pushHistory) {
+        history.pushState({page: 'home'}, '', '/');
+      }
     }
 
-    function navigateTo(page, slug) {
+    function navigateTo(page, slug, pushHistory = true) {
       if (page === 'project' && slug) {
         togglePages('project-wrapper');
         loadProject(slug);
-        history.pushState(null, '', '/project/' + slug);
+        if (pushHistory) {
+          history.pushState({page: 'project', slug: slug}, '', '/project/' + slug);
+        }
       } else if (page === 'editorial') {
         isEditorialPage = true;
         togglePages('work-section');
         document.getElementById('nav-editorial').classList.add('active');
         document.getElementById('nav-work').classList.remove('active');
         document.getElementById('nav-about').classList.remove('active');
-        document.getElementById('nav-blog').classList.remove('active');
         renderPortfolio(siteData.portfolio.filter(p => p.isEditorial));
-        history.pushState(null, '', '/editorial');
+        document.title = 'Yanne Vicente - Editorial';
+        if (pushHistory) {
+          history.pushState({page: 'editorial'}, '', '/editorial');
+        }
       } else if (page === 'about') {
         togglePages('about-section');
         document.getElementById('nav-about').classList.add('active');
         document.getElementById('nav-work').classList.remove('active');
         document.getElementById('nav-editorial').classList.remove('active');
-        document.getElementById('nav-blog').classList.remove('active');
-        history.pushState(null, '', '/about');
-      } else if (page === 'blog') {
-        togglePages('blog-section');
-        document.getElementById('nav-blog').classList.add('active');
-        document.getElementById('nav-work').classList.remove('active');
-        document.getElementById('nav-editorial').classList.remove('active');
-        document.getElementById('nav-about').classList.remove('active');
-        history.pushState(null, '', '/blog');
+        document.title = 'Yanne Vicente - About';
+        if (pushHistory) {
+          history.pushState({page: 'about'}, '', '/about');
+        }
       }
       window.scrollTo(0, 0);
     }
 
     function togglePages(activeId) {
-      ['work-section', 'project-wrapper', 'about-section', 'blog-section'].forEach(id => {
+      ['work-section', 'project-wrapper', 'about-section'].forEach(id => {
         const el = document.getElementById(id);
         if (id === activeId) {
           el.style.display = id === 'project-wrapper' ? 'flex' : (id === 'about-section' ? 'grid' : 'block');
@@ -608,8 +702,8 @@
         <div class="portfolio-item" onclick="navigateTo('project', '${p.slug}')">
           <img loading="lazy" src="${p.coverImage}" alt="${p.title}" onerror="this.src='https://via.placeholder.com/600x800/eee/999?text=Art'">
           <div class="overlay">
-            <p style="color:white; font-weight:500; font-size:14px;">${p.title}</p>
-            <p style="color:rgba(255,255,255,0.7); font-size:11px; margin-top:2px;">${p.category}</p>
+            <p style="color:var(--brand-dark); font-weight:600; font-size:16px;">${p.title}</p>
+            <p style="color:var(--brand-dark); font-size:13px; margin-top:2px; font-weight:400;">${p.category} · ${p.year}</p>
           </div>
         </div>
       `).join('');
@@ -620,7 +714,7 @@
       if (!project) return goToHome();
       currentImageIndex = 0;
       const container = document.getElementById('project-content');
-      const images = project.carouselImages || [project.coverImage];
+      const images = project.carouselImages && project.carouselImages.length > 0 ? project.carouselImages : [project.coverImage];
       
       container.innerHTML = `
         <div class="project-layout">
@@ -630,11 +724,11 @@
             </div>
             ${images.length > 1 ? `
               <div class="carousel-controls">
-                <button onclick="changeImg(-1, '${slug}')">‹</button>
-                <button onclick="changeImg(1, '${slug}')">›</button>
+                <button onclick="event.stopPropagation(); changeImg(-1, '${slug}')">‹</button>
+                <button onclick="event.stopPropagation(); changeImg(1, '${slug}')">›</button>
               </div>
               <div class="carousel-thumbnails">
-                ${images.map((img, idx) => `<img src="${img}" class="${idx === 0 ? 'active-thumb' : ''}" onclick="setImg(${idx}, '${slug}')">`).join('')}
+                ${images.map((img, idx) => `<img src="${img}" class="${idx === 0 ? 'active-thumb' : ''}" onclick="event.stopPropagation(); setImg(${idx}, '${slug}')">`).join('')}
               </div>` : ''}
           </div>
           <div class="project-info">
@@ -646,19 +740,34 @@
           </div>
         </div>
       `;
+      document.title = `Yanne Vicente - ${project.title}`;
     }
 
     function changeImg(direction, slug) {
       const project = siteData.portfolio.find(p => p.slug === slug);
-      const images = project.carouselImages;
+      const images = project.carouselImages && project.carouselImages.length > 0 ? project.carouselImages : [project.coverImage];
       currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
       document.getElementById('project-main-image').src = images[currentImageIndex];
+      updateThumbnails();
     }
 
     function setImg(index, slug) {
       const project = siteData.portfolio.find(p => p.slug === slug);
+      const images = project.carouselImages && project.carouselImages.length > 0 ? project.carouselImages : [project.coverImage];
       currentImageIndex = index;
-      document.getElementById('project-main-image').src = project.carouselImages[index];
+      document.getElementById('project-main-image').src = images[index];
+      updateThumbnails();
+    }
+
+    function updateThumbnails() {
+      const thumbs = document.querySelectorAll('.carousel-thumbnails img');
+      thumbs.forEach((t, idx) => {
+        if (idx === currentImageIndex) {
+          t.classList.add('active-thumb');
+        } else {
+          t.classList.remove('active-thumb');
+        }
+      });
     }
 
     function openZoom() {
@@ -672,16 +781,54 @@
     }
 
     function goBackFromProject() {
-      if (isEditorialPage) navigateTo('editorial');
-      else goToHome();
+      window.history.back();
+    }
+
+    function handleRoute() {
+      const path = window.location.pathname;
+      const match = path.match(/\/project\/([^\/]+)\/?$/);
+      if (match) {
+        navigateTo('project', match[1], false);
+      } else if (path === '/editorial') {
+        navigateTo('editorial', null, false);
+      } else if (path === '/about' || path === '/contact') {
+        navigateTo('about', null, false);
+      } else {
+        goToHome(false);
+      }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      renderPortfolio(siteData.portfolio);
-      const p = siteData.profile;
-      document.getElementById('profile-name').textContent = p.name;
-      document.getElementById('profile-subtitle').textContent = p.subtitle;
-      document.getElementById('profile-bio').innerHTML = p.bio.map(b => `<p>${b}</p>`).join('');
+      // Formspree AJAX submission
+      const form = document.getElementById('contact-form');
+      const successMsg = document.getElementById('form-success-message');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const formData = new FormData(form);
+          fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+          }).then(response => {
+            if (response.ok) {
+              successMsg.style.display = 'block';
+              form.reset();
+              setTimeout(() => { successMsg.style.display = 'none'; }, 5000);
+            } else {
+              alert('Something went wrong. Please try again!');
+            }
+          }).catch(() => {
+            alert('Something went wrong. Please try again!');
+          });
+        });
+      }
+
+      handleRoute();
+
+      window.addEventListener('popstate', (e) => {
+        handleRoute();
+      });
     });
   </script>
 </body>
