@@ -298,6 +298,7 @@
     }
 
     /* MUDANÇA PRINCIPAL: PORTFOLIO GRID FLUIDO (ESTILO MOSAICO / MASONRY) */
+    /* PORTFÓLIO GRID (ORDEM EXATA PRESERVADA E ALINHADA) */
     .portfolio-wrapper {
       width: 100%;
       max-width: 100%;
@@ -306,8 +307,9 @@
     }
     
     .portfolio-grid {
-      column-count: 3;
-      column-gap: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
       width: 100%;
     }
     
@@ -317,15 +319,16 @@
       overflow: hidden;
       background: #f8f8f8;
       border-radius: 8px;
-      display: inline-block; /* Crucial para o column-count funcionar sem cortar blocos */
-      width: 100%;
-      margin-bottom: 16px;
-      break-inside: avoid; /* Evita que o cartão quebre no meio entre colunas */
+      display: flex;
+      flex-direction: column;
     }
     
     .portfolio-item img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      min-height: 280px; 
+      max-height: 420px; 
+      object-fit: cover;  
       display: block;
       transition: transform 0.4s ease;
     }
