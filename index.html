@@ -65,14 +65,13 @@
       justify-content: center;
       gap: 2rem; 
       flex-wrap: wrap;
-      padding: 0 100px; /* espaço para os ícones não encostarem nos links */
+      padding: 0 100px;
     }
 
-    /* ÍCONES SOCIAIS (WHATSAPP / INSTAGRAM) ALINHADOS COM A GRADE */
     .navbar-socials {
       position: absolute;
       top: 50%;
-      right: 84px; /* 100px (padding da grade) - 16px (padding do navbar) */
+      right: 84px;
       transform: translateY(-50%);
       display: flex;
       align-items: center;
@@ -298,7 +297,7 @@
       border-color: var(--brand-yellow);
     }
 
-    /* PORTFOLIO GRID (3 COLUNAS, ORDEM PRESERVADA) */
+    /* MUDANÇA PRINCIPAL: PORTFOLIO GRID FLUIDO (ESTILO MOSAICO / MASONRY) */
     .portfolio-wrapper {
       width: 100%;
       max-width: 100%;
@@ -307,11 +306,9 @@
     }
     
     .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      column-count: 3;
+      column-gap: 16px;
       width: 100%;
-      align-items: start;
     }
     
     .portfolio-item { 
@@ -320,7 +317,10 @@
       overflow: hidden;
       background: #f8f8f8;
       border-radius: 8px;
-      display: block;
+      display: inline-block; /* Crucial para o column-count funcionar sem cortar blocos */
+      width: 100%;
+      margin-bottom: 16px;
+      break-inside: avoid; /* Evita que o cartão quebre no meio entre colunas */
     }
     
     .portfolio-item img {
@@ -329,11 +329,15 @@
       display: block;
       transition: transform 0.4s ease;
     }
+
+    .portfolio-item:hover img {
+      transform: scale(1.02);
+    }
     
     .portfolio-item .overlay {
       position: absolute; 
       inset: 0;
-      background: rgba(255, 255, 255, 0.77);
+      background: rgba(255, 255, 255, 0.85);
       display: flex; 
       flex-direction: column; 
       justify-content: flex-end;
@@ -366,13 +370,12 @@
     }
 
     @media (max-width: 1024px) {
-      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+      .portfolio-grid { column-count: 2; }
       .portfolio-wrapper, .project-layout, .project-section .back-btn { padding-left: 40px; padding-right: 40px; }
       .project-layout { grid-template-columns: 1fr; height: auto; }
       .project-carousel { padding: 10px 40px; }
       .carousel-controls { left: -30px; right: -30px; }
       .navbar-menu { padding: 0 70px; }
-      /* alinha com a grade (40px de padding) - 16px do navbar = 24px */
       .navbar-socials { right: 24px; }
     }
     @media (max-width: 900px) {
@@ -386,7 +389,7 @@
       }
     }
     @media (max-width: 640px) {
-      .portfolio-grid { grid-template-columns: 1fr; }
+      .portfolio-grid { column-count: 1; }
       .portfolio-wrapper, .project-layout, .project-section .back-btn { padding-left: 20px; padding-right: 20px; }
     }
 
@@ -466,7 +469,6 @@
       text-decoration: underline;
     }
 
-    /* FORMULÁRIO AMARELO (#FFBD59) */
     .form-section {
       background-color: #FEC94E;
       border-radius: 12px;
@@ -648,7 +650,7 @@
     </div>
   </main>
 
-  <!-- MODAL DE ZOOM (Fechar clicando fora, na imagem ou ESC) -->
+  <!-- MODAL DE ZOOM -->
   <div id="zoomModal" class="zoom-modal" onclick="closeZoom()">
     <button class="close-zoom" onclick="closeZoom()">×</button>
     <img id="zoomImage" src="" alt="Zoom" onclick="closeZoom()">
@@ -820,7 +822,7 @@
     function renderPortfolio(projects) {
       const grid = document.getElementById('portfolio-grid');
       if (projects.length === 0) {
-        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888; padding: 40px;">No projects found with this tag.</p>`;
+        grid.innerHTML = `<p style="column-count: 1; text-align: center; color: #888; padding: 40px;">No projects found with this tag.</p>`;
         return;
       }
       grid.innerHTML = projects.map(p => `
@@ -932,7 +934,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Formspree AJAX submission
       const form = document.getElementById('contact-form');
       const successMsg = document.getElementById('form-success-message');
       if (form) {
@@ -957,7 +958,6 @@
         });
       }
 
-      // Atalho de fechar imagem no ESC
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           closeZoom();
