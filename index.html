@@ -86,10 +86,9 @@
       justify-content: center;
       transition: color 0.3s ease, transform 0.3s ease;
     }
-    .navbar-socials a:hover {
-      color: var(--brand-dark);
-      transform: translateY(-2px);
-    }
+  .navbar-socials a:hover {
+  color: var(--brand-dark);
+}
     
     .nav-link { 
       transition: color 0.3s ease; 
@@ -330,9 +329,6 @@
       transition: transform 0.4s ease;
     }
 
-    .portfolio-item:hover img {
-      transform: scale(1.02);
-    }
     
     .portfolio-item .overlay {
       position: absolute; 
@@ -818,14 +814,33 @@
         }
       });
     }
+    let currentlyRenderedProjects = [];
 
-    function renderPortfolio(projects) {
+    function getColumnCount() {
+      const w = window.innerWidth;
+      if (w <= 640) return 1;
+      if (w <= 1024) return 2;
+      return 3;
+    }
+
+    function reorderForColumns(items, columns) {
+      if (columns <= 1) return items;
+      const buckets = Array.from({ length: columns }, () => []);
+      items.forEach((item, i) => buckets[i % columns].push(item));
+      return buckets.flat();
+    }
+        function renderPortfolio(projects) {
+      currentlyRenderedProjects = projects;
+
       const grid = document.getElementById('portfolio-grid');
       if (projects.length === 0) {
         grid.innerHTML = `<p style="column-count: 1; text-align: center; color: #888; padding: 40px;">No projects found with this tag.</p>`;
         return;
       }
-      grid.innerHTML = projects.map(p => `
+
+      const ordered = reorderForColumns(projects, getColumnCount());
+
+      grid.innerHTML = ordered.map(p => `
         <div class="portfolio-item" onclick="navigateTo('project', '${p.slug}')">
           <img loading="lazy" src="${p.coverImage}" alt="${p.title}" onerror="this.src='https://via.placeholder.com/600x800/eee/999?text=Art'">
           <div class="overlay">
@@ -965,7 +980,18 @@
       });
 
       handleRoute();
-
+let lastCols = getColumnCount();
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          const cols = getColumnCount();
+          if (cols !== lastCols && currentlyRenderedProjects.length > 0) {
+            lastCols = cols;
+            renderPortfolio(currentlyRenderedProjects);
+          }
+        }, 150);
+      });
       window.addEventListener('popstate', (e) => {
         handleRoute();
       });
